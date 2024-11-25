@@ -2,6 +2,7 @@
   "dependencies": {
     "@iconify-json/gg": "^1.2.1",
     "@iconify-json/icon-park-solid": "^1.2.1",
+    "@iconify-json/mdi": "^1.2.1",
     "@iconify-json/meteor-icons": "^1.2.0",
     "@iconify-json/mingcute": "^1.2.1",
     "tailwindcss": "^3.4.15"

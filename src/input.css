@@ -26,6 +26,9 @@
   .iconBtn{
     @apply text-4xl hover:text-lime-green hover:cursor-pointer active:text-dark-green;
   }
+  .modalContainer{
+    @apply h-full w-screen bg-black/20 flex justify-center items-center pt-32 backdrop-blur-xl absolute top-0 z-10;
+  }
 }
 
 body::before {
@@ -38,4 +41,16 @@ body::before {
   bottom: 0;
   top: 0;
   background-image: linear-gradient(to top, #000000b0 20%, transparent);
+}
+
+@keyframes test {
+    0% {
+        filter: brightness(100%);
+    }
+    50% {
+        filter: brightness(125%);
+    }
+    100% {
+        filter: brightness(100%);
+    }
 }
