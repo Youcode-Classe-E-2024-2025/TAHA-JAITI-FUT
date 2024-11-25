@@ -66,6 +66,8 @@ const changeFormation = (formationValue) => {
 };
 
 const addForm = document.getElementById('addForm');
+const closeAdd = addForm.querySelector('#closeAdd');
+const openAdd = document.getElementById('openAdd');
 
 const addInputs = {
     name: document.querySelector('#nameInput'),
@@ -83,9 +85,17 @@ const addInputs = {
     photo: document.querySelector('#photoInput'),
 };
 
+closeAdd.addEventListener('click', () => {
+    addForm.parentElement.classList.toggle('hidden');
+});
+
+openAdd.addEventListener('click', () => {
+    addForm.parentElement.classList.toggle('hidden');
+})
+
 console.log(addInputs);
 
-document.querySelector('#addBtn').addEventListener('click', (e) => {
+document.querySelector('#addBtn').addEventListener('click', async (e) => {
     e.preventDefault();
 
     const oldMsg = document.querySelectorAll('.error-msg');
@@ -133,19 +143,16 @@ document.querySelector('#addBtn').addEventListener('click', (e) => {
         }
     });
 
-
     if (isValid) {
         const newPlayer = {};
 
-        Object.entries(addInputs).forEach(([key, input]) => {
-            if (input.type === 'file') {
-                const imageConverted = convertToWebp(input.files[0]);
-                newPlayer[key] = imageConverted;
+        for (const [key, input] of Object.entries(addInputs)) {
+            if (input.type === 'file' && input.files.length > 0) {
+                newPlayer[key] = await convertToWebp(input.files[0]);
             } else {
                 newPlayer[key] = input.value;
             }
-        });
-
+        }
         data.push(newPlayer);
         localStorage.setItem('players', JSON.stringify(data));
 
@@ -153,11 +160,10 @@ document.querySelector('#addBtn').addEventListener('click', (e) => {
         succedMsg.className = "text-lime-green text-center error-msg font-bold text-xl";
         succedMsg.textContent = 'Player Added Succesfully!';
         addForm.insertBefore(succedMsg, addForm.firstChild);
-        setTimeout(()=> {succedMsg.remove();},10000);
+        setTimeout(() => { succedMsg.remove(); }, 10000);
 
         Object.values(addInputs).forEach((input) => { input.value = ''; });
     }
-
 });
 
 function convertToWebp(file) {
