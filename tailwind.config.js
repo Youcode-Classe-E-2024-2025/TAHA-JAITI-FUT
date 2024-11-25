@@ -10,6 +10,7 @@ module.exports = {
         'stadium': "url('./assets/field-bg.webp')",
         'card': "url('./assets/card.webp')",
         'bg-stadium': "url('./assets/stadium.webp')",
+        'gold-card': "url('./assets/goldcard.webp')",
       },
       fontFamily: {
         'roboto': 'Roboto Condensed',

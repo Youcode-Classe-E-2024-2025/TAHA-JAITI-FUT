@@ -4,7 +4,7 @@
 
 @layer components {
   .player {
-    @apply transition-all relative m-auto h-[10rem] w-[7rem] bg-card bg-cover bg-top bg-no-repeat text-white text-center flex p-2 flex-col justify-center items-center;
+    @apply transition-all relative m-auto h-[15rem] w-[10rem] bg-card bg-cover bg-top bg-no-repeat text-white text-center flex p-2 flex-col justify-center items-center;
   }
 
   .player:hover {
