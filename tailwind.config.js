@@ -2,7 +2,12 @@
 module.exports = {
   content: ["./public/*.{html,js}"],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'stadium': "url('./assets/field-bg.webp')",
+        'card': "url('./assets/card.webp')",
+      },
+    },
   },
   plugins: [],
 }
