@@ -4,10 +4,17 @@
 
 @layer components {
   .player {
-    @apply bg-card bg-contain bg-top bg-no-repeat text-white text-center p-2 h-[10rem] w-[10rem] m-auto;
+    @apply transition-all m-auto h-[15rem] w-[10rem] bg-card bg-cover bg-top bg-no-repeat text-white text-center flex pt-4 flex-col items-center;
+  }
+
+  .player:hover{
+    @apply scale-105 filter opacity-80 cursor-pointer brightness-125;
+  }
+  .player:active{
+    @apply scale-100 opacity-100;
   }
 
   .formation-container {
-    @apply grid grid-rows-3 grid-cols-4 gap-4 items-center justify-center w-full h-[90%] border border-red-500;
+    @apply grid grid-rows-3 grid-cols-4 gap-2 items-center justify-center w-full h-[90%] border border-red-500;
   }
 }

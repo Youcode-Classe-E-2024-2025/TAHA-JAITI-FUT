@@ -4,18 +4,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="style.css">
     <title>Document</title>
 </head>
 
-<body class="bg-slate-700">
+<body class="bg-black-rich font-roboto">
+
+    <header class="w-full bg-black-slate text-white font-bold px-4 py-2 text-xl">
+        <h1><span class="text-lime-green">FUT</span> SQUAD BUILDER</h1>
+        
+    </header>
 
     <main class="flex justify-center items-center flex-col gap-10">
 
-        <div class="mt-14 w-1/2 h-full bg-white bg-center bg-contain bg-no-repeat bg-stadium">
+        <div class="mt-14 w-2/3 h-full bg-white bg-center bg-cover bg-no-repeat bg-stadium">
             <div class="formation-container">
-                <div class="player col-start-2 row-start-1">ST</div>
+                <div class="player col-start-2 row-start-1">
+                    <div class="font-bold">
+                        <p>ST</p>
+                        <p>89</p>
+                    </div>
+                    <p class="max-w-36 text-center">PLAYERNAME</p>
+                    <div class="flex gap-2">
+                        <img class="w-5 h-4" src="assets/playerclub.png" alt="player club">
+                        <img class="w-5 h-4" src="assets/playerflag.png" alt="player flag">
+                    </div>
+                    <img class="h-1/2" src="assets/playerimage.png" alt="player image">
+                </div>
                 <div class="player col-start-3 row-start-1">ST</div>
                 <div class="player col-start-1 row-start-2">LM</div>
                 <div class="player col-start-2 row-start-2">CM</div>

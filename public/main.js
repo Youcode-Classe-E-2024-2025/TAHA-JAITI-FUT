@@ -72,9 +72,6 @@ document.getElementById("formationSelector").addEventListener("change", (e) => {
     changeFormation(selectedFormation);
 });
 
-// Initialize with a default formation
-changeFormation("4-4-2");
-
 
 
 document.addEventListener('DOMContentLoaded', fetchData)
