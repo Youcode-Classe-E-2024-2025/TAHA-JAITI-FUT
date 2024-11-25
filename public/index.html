@@ -13,20 +13,21 @@
     <title>Document</title>
 </head>
 
-<body class="bg-black-rich font-roboto bg-bg-stadium bg-cover bg-no-repeat relative h-fit w-screen">
+<body class="bg-black-rich font-roboto bg-bg-stadium bg-blend-overlay bg-cover bg-no-repeat relative h-fit w-screen">
 
     <header class="w-full bg-black-slate text-white font-bold px-4 py-2 text-xl flex items-center justify-between">
         <h1><span class="text-lime-green">FUT</span> SQUAD BUILDER</h1>
         <span
-            class="icon-[mingcute--user-add-fill] text-4xl hover:text-lime-green hover:cursor-pointer active:text-dark-green"></span>
+            class="icon-[mingcute--user-add-fill] iconBtn"></span>
     </header>
 
-    <main class="flex justify-between items-center flex-row gap-5 ">
+    <main class="flex justify-evenly items-center flex-row gap-5 ">
 
         <!-- FORMATION TABLE -->
-        <div class="mt-14 w-2/3 h-full bg-center bg-cover bg-no-repeat bg-stadium">
+        <div
+            class="mt-14 w-1/2 h-full items-center flex flex-col justify-center bg-center bg-contain bg-no-repeat bg-stadium">
             <div class="formation-container">
-                <div class="player col-start-2 row-start-1">
+                <div class="player col-start-2 row-start-1 bottom-4">
                     <div class="font-bold">
                         <p>ST</p>
                         <p>89</p>
@@ -38,19 +39,19 @@
                     </div>
                     <img class="h-1/2" src="assets/playerimage.png" alt="player image">
                 </div>
-                <div class="player col-start-3 row-start-1">
+                <div class="player col-start-3 row-start-1 bottom-4">
                     <span class="icon-[gg--add] text-4xl text-lime-green "></span>
                 </div>
-                <div class="player col-start-1 row-start-2">LM</div>
-                <div class="player col-start-2 row-start-2">CM</div>
-                <div class="player col-start-3 row-start-2">CM</div>
-                <div class="player col-start-4 row-start-2">RM</div>
-                <div class="player col-start-1 row-start-3">LB</div>
-                <div class="player col-start-2 row-start-3">CB</div>
-                <div class="player col-start-3 row-start-3">CB</div>
-                <div class="player col-start-4 row-start-3">RB</div>
+                <div class="player col-start-1 row-start-2 bottom-12">LM</div>
+                <div class="player col-start-2 row-start-2 left-4 top-2">CM</div>
+                <div class="player col-start-3 row-start-2 right-4 top-2">CM</div>
+                <div class="player col-start-4 row-start-2 bottom-12">RM</div>
+                <div class="player col-start-1 row-start-3 bottom-4">LB</div>
+                <div class="player col-start-2 row-start-3 left-4 top-2">CB</div>
+                <div class="player col-start-3 row-start-3 right-4 top-2">CB</div>
+                <div class="player col-start-4 row-start-3 bottom-4">RB</div>
             </div>
-            <div class="player col-span-4 justify-self-center row-start-4">GK</div>
+            <div class="player col-span-4 justify-self-center row-start-4 relative">GK</div>
         </div>
 
         <!-- MENU -->
@@ -67,14 +68,96 @@
     </main>
 
     <section class="h-full w-screen bg-black/20 flex justify-center items-center backdrop-blur-xl absolute top-0 z-10">
-        <div class="w-2/3 h-2/3 bg-black-slate rounded p-2 text-white">
-            <h2 class="text-center text-2xl">ADD A PLAYER</h2>
-            <form>
-                <label for="name">PLAYER NAME</label>
-                <input type="text" name="name" id="nameInput">
-            </form>
+        <div id="addForm" class="w-2/3 lg:w-1/2 bg-black-slate rounded-lg p-4 text-white">
+          <div class="flex justify-between">
+            <h2 class="text-center text-2xl font-bold mb-4">ADD A PLAYER</h2>
+          <span class="icon-[meteor-icons--xmark] iconBtn"></span>
+          </div>
+          <form class="flex flex-col gap-4">
+            <!-- Info Column -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="flex flex-col">
+                <label for="name" class="mb-1 text-sm font-semibold">Player Name</label>
+                <input type="text" id="nameInput" placeholder="Enter player name" class="input ">
+              </div>
+      
+              <div class="flex flex-col">
+                <label for="nationality" class="mb-1 text-sm font-semibold">Nationality</label>
+                <input type="text" id="natioInput" placeholder="Enter nationality" class="input">
+              </div>
+      
+              <div class="flex flex-col">
+                <label for="club" class="mb-1 text-sm font-semibold">Club Name</label>
+                <input type="text" id="clubInput" placeholder="Enter club name" class="input ">
+              </div>
+      
+              <div class="flex flex-col">
+                <label for="position" class="mb-1 text-sm font-semibold">Position</label>
+                <input type="text" id="positionInput" placeholder="Enter position" class="input">
+              </div>
+            </div>
+      
+            <!-- Images Section -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="flex flex-col">
+                <label for="player-photo" class="mb-1 text-sm font-semibold">Player Photo</label>
+                <input type="file" id="photoInput" class="input">
+              </div>
+      
+              <div class="flex flex-col">
+                <label for="club-photo" class="mb-1 text-sm font-semibold">Club Photo</label>
+                <input type="file" id="clubImageInput" class="input">
+              </div>
+      
+              <div class="flex flex-col">
+                <label for="flag-photo" class="mb-1 text-sm font-semibold">National Flag</label>
+                <input type="file" id="flagImageInput" class="input w-full">
+              </div>
+            </div>
+      
+            <!-- Stats Section -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="flex flex-col">
+                    <label for="pace" class="mb-1 text-sm font-semibold">Pace</label>
+                    <input type="number" id="paceInput" placeholder="Pace (0-100)" class="input" min="0" max="100">
+                  </div>
+                  
+                  <div class="flex flex-col">
+                    <label for="shooting" class="mb-1 text-sm font-semibold">Shooting</label>
+                    <input type="number" id="shootingInput" placeholder="Shooting (0-100)" class="input" min="0" max="100">
+                  </div>
+                  
+                  <div class="flex flex-col">
+                    <label for="passing" class="mb-1 text-sm font-semibold">Passing</label>
+                    <input type="number" id="passingInput" placeholder="Passing (0-100)" class="input" min="0" max="100">
+                  </div>
+                  
+                  <div class="flex flex-col">
+                    <label for="Dribbling" class="mb-1 text-sm font-semibold">Dribbling</label>
+                    <input type="number" id="dribblingInput" placeholder="Dribbling (0-100)" class="input" min="0" max="100">
+                  </div>
+                  
+                  <div class="flex flex-col">
+                    <label for="Defending" class="mb-1 text-sm font-semibold">Defending</label>
+                    <input type="number" id="defendingInput" placeholder="Defending (0-100)" class="input" min="0" max="100">
+                  </div>
+                  
+                  <div class="flex flex-col">
+                    <label for="Physical" class="mb-1 text-sm font-semibold">Physical</label>
+                    <input type="number" id="physicalInput" placeholder="Physical (0-100)" class="input" min="0" max="100">
+                  </div>                  
+            </div>
+      
+            <!-- Submit Button -->
+            <div class="flex justify-center mt-4">
+              <button id="addBtn" class="submitBtn">
+                Submit Player
+              </button>
+            </div>
+          </form>
         </div>
     </section>
+      
 
 
     <script src="main.js"></script>

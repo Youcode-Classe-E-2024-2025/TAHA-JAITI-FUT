@@ -65,7 +65,69 @@ const changeFormation = (formationValue) => {
     });
 };
 
+const addForm = document.getElementById('addForm');
 
+const addInputs = {
+    name: document.querySelector('#nameInput'),
+    nationality: document.querySelector('#natioInput'),
+    club: document.querySelector('#clubInput'),
+    position: document.querySelector('#positionInput'),
+    pace: document.querySelector('#paceInput'),
+    shooting: document.querySelector('#shootingInput'),
+    passing: document.querySelector('#passingInput'),
+    dribbling: document.querySelector('#dribblingInput'),
+    defending: document.querySelector('#defendingInput'),
+    physical: document.querySelector('#physicalInput'),
+    clubImage: document.querySelector('#clubImageInput'),
+    flagImage: document.querySelector('#flagImageInput'),
+    playerImage: document.querySelector('#photoInput'),
+};
+
+console.log(addInputs);
+
+document.querySelector('#addBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+
+    const oldMsg = document.querySelectorAll('.error-msg');
+    oldMsg.forEach((error) => error.remove());
+
+    let isValid = true;
+
+    Object.entries(addInputs).forEach(([key, input]) => {
+        const errorMsg = document.createElement('p');
+        errorMsg.classList.add('text-red-500', 'error-msg');
+
+        if (!input.value && input.type !== 'file') {
+            errorMsg.textContent = `Error: ${key} cannot be empty.`;
+            input.parentElement.appendChild(errorMsg);
+            isValid = false;
+        } else if (key === 'name' && !/^[a-zA-Z\s]+$/.test(input.value)) {
+            errorMsg.textContent = 'Error: Enter a valid name (letters and spaces only).';
+            input.parentElement.appendChild(errorMsg);
+            isValid = false;
+        } else if (key === 'pace' || key === 'shooting' || key === 'passing' ||
+                   key === 'dribbling' || key === 'defending' || key === 'physical') {
+            if (input.value < 0 || input.value > 100) {
+                errorMsg.textContent = `Error: ${key} must be between 0 and 100.`;
+                input.parentElement.appendChild(errorMsg);
+                isValid = false;
+            }
+        } else if (input.type === 'file' && !input.files.length) {
+            errorMsg.textContent = `Error: Please upload a file for ${key}.`;
+            input.parentElement.appendChild(errorMsg);
+            isValid = false;
+        }
+
+        setTimeout(() => {
+            errorMsg.remove();
+        },7000);
+    });
+
+    if (isValid) {
+        console.log('Form submitted successfully!');
+    }
+    
+});
 
 
 
