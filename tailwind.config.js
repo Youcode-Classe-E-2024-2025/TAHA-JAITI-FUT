@@ -1,3 +1,6 @@
+const { addDynamicIconSelectors } = require('@iconify/tailwind');
+const { addIconSelectors } = require('@iconify/tailwind');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./public/*.{html,js}"],
@@ -6,6 +9,7 @@ module.exports = {
       backgroundImage: {
         'stadium': "url('./assets/field-bg.webp')",
         'card': "url('./assets/card.webp')",
+        'bg-stadium': "url('./assets/stadium.webp')",
       },
       fontFamily: {
         'roboto': 'Roboto Condensed',
@@ -18,6 +22,6 @@ module.exports = {
       }
     },
   },
-  plugins: [],
+  plugins: [addDynamicIconSelectors(), addIconSelectors(['gg','mingcute']),],
 }
 

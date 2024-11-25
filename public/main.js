@@ -63,14 +63,10 @@ const changeFormation = (formationValue) => {
         playerDiv.textContent = player.position;
         container.appendChild(playerDiv);
     });
-}
+};
 
 
 
-document.getElementById("formationSelector").addEventListener("change", (e) => {
-    const selectedFormation = e.target.value;
-    changeFormation(selectedFormation);
-});
 
 
 

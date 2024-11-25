@@ -13,16 +13,18 @@
     <title>Document</title>
 </head>
 
-<body class="bg-black-rich font-roboto">
+<body class="bg-black-rich font-roboto bg-bg-stadium bg-cover bg-no-repeat relative h-fit w-screen">
 
-    <header class="w-full bg-black-slate text-white font-bold px-4 py-2 text-xl">
+    <header class="w-full bg-black-slate text-white font-bold px-4 py-2 text-xl flex items-center justify-between">
         <h1><span class="text-lime-green">FUT</span> SQUAD BUILDER</h1>
-        
+        <span
+            class="icon-[mingcute--user-add-fill] text-4xl hover:text-lime-green hover:cursor-pointer active:text-dark-green"></span>
     </header>
 
-    <main class="flex justify-center items-center flex-col gap-10">
+    <main class="flex justify-between items-center flex-row gap-5 ">
 
-        <div class="mt-14 w-2/3 h-full bg-white bg-center bg-cover bg-no-repeat bg-stadium">
+        <!-- FORMATION TABLE -->
+        <div class="mt-14 w-2/3 h-full bg-center bg-cover bg-no-repeat bg-stadium">
             <div class="formation-container">
                 <div class="player col-start-2 row-start-1">
                     <div class="font-bold">
@@ -36,7 +38,9 @@
                     </div>
                     <img class="h-1/2" src="assets/playerimage.png" alt="player image">
                 </div>
-                <div class="player col-start-3 row-start-1">ST</div>
+                <div class="player col-start-3 row-start-1">
+                    <span class="icon-[gg--add] text-4xl text-lime-green "></span>
+                </div>
                 <div class="player col-start-1 row-start-2">LM</div>
                 <div class="player col-start-2 row-start-2">CM</div>
                 <div class="player col-start-3 row-start-2">CM</div>
@@ -49,11 +53,29 @@
             <div class="player col-span-4 justify-self-center row-start-4">GK</div>
         </div>
 
-        <select id="formationSelector">
-            <option value="4-4-2">4-4-2</option>
-            <option value="4-3-3" selected>4-3-3</option>
-        </select>
+        <!-- MENU -->
+        <div class="rounded w-1/4 h-1/2 bg-black-rich text-white p-2 flex flex-col gap-2 items-center mr-12">
+            <h2 class="text-2xl">SQUAD INFO</h2>
+            <p>FORMATION</p>
+            <select class="bg-black-slate w-1/2 text-lime-green" name="formation" id="formationSelect">
+                <option value="4-4-2">4-4-2</option>
+                <option value="4-3-3">4-3-3</option>
+            </select>
+            <p>TOTAL CHEMISTRY</p>
+            <p class="text-lime-green">100%</p>
+        </div>
     </main>
+
+    <section class="h-full w-screen bg-black/20 flex justify-center items-center backdrop-blur-xl absolute top-0 z-10">
+        <div class="w-2/3 h-2/3 bg-black-slate rounded p-2 text-white">
+            <h2 class="text-center text-2xl">ADD A PLAYER</h2>
+            <form>
+                <label for="name">PLAYER NAME</label>
+                <input type="text" name="name" id="nameInput">
+            </form>
+        </div>
+    </section>
+
 
     <script src="main.js"></script>
 </body>
