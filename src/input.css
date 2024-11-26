@@ -40,6 +40,16 @@
   .modalContainer {
     @apply h-full w-full bg-black/20 flex justify-center items-center backdrop-blur-xl fixed top-0 z-10;
   }
+
+  .selectedCard{
+    @apply scale-110;
+  }
+
+  .selectedCard::before {
+    content: "";
+    @apply absolute inset-0 w-full h-full rounded opacity-100 bg-blue-500/30 blur-2xl transition-all;
+    z-index: -1;
+  }
 }
 
 body::before {

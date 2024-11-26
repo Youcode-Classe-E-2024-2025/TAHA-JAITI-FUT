@@ -31,7 +31,7 @@
             <div
                 class="mt-14 w-2/3 h-full items-center flex flex-col justify-center bg-center bg-contain bg-no-repeat bg-stadium">
                 <!-- CONTAINER -->
-                <div class="formation-container">
+                <div id="formationContainer" class="formation-container">
                     <!-- PLAYER CARD -->
                     <div data-pos="ST" class="player bg-gold-card col-start-2 row-start-1 bottom-4 text-black">
                         <div class="w-fit font-semibold absolute top-6 left-2">
@@ -295,6 +295,26 @@
                 <div id="allPlayersContainer"
                     class="w-full h-[88%] flex flex-wrap gap-12 p-6 justify-start overflow-x-hidden overflow-y-auto">
 
+                </div>
+            </div>
+        </section>
+
+        <!-- INSERT PLAYERS FORM -->
+        <section class="hidden modalContainer">
+             <!-- PLAYERS CONTAINER -->
+             <div class="w-2/3 h-2/3 bg-black-slate text-white rounded">
+                <div class="flex justify-between p-4 bg-black-rich">
+                        <h2 class="text-xl">INSERT PLAYER</h2>
+                        <span id="closeInsert" class="icon-[meteor-icons--xmark] iconBtn"></span>
+                </div>
+                <!-- MAIN CONTAINER -->
+                <div id="insertContainer"
+                    class="w-full h-[88%] flex flex-wrap gap-12 p-6 justify-start overflow-x-hidden overflow-y-auto">
+
+                </div>
+                <!--  -->
+                <div class="bg-black-rich w-full p-2">
+                    <button id="insertBtn" class="submitBtn bg-dark-green">APPLY</button>
                 </div>
             </div>
         </section>

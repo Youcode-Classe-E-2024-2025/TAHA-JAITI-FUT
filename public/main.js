@@ -1,9 +1,12 @@
 let data = JSON.parse(localStorage.getItem("players") || "[]");
 
+let nextId = data.length > 0 ? data.length + 1 : 1;
+
+
 const fetchData = async () => {
     if (data.length === 0 && !localStorage.getItem("players_loaded")) {
         try {
-            const response = await axios.get('https://raw.githubusercontent.com/aymanebenhima/FUT-Champ-Ultimate-Team-Assets/refs/heads/main/players.json');
+            const response = await axios.get('./players.json');
             if (response.data && response.data.players) {
                 data = response.data.players;
                 localStorage.setItem("players", JSON.stringify(data));
@@ -14,9 +17,8 @@ const fetchData = async () => {
             console.error("Error fetching data:", error);
         }
     }
-    loadPlayers(data);
+    loadPlayers(data, allPlayers);
 }
-
 
 const formations = {
     "4-3-3": [
@@ -66,6 +68,7 @@ const changeFormation = (formationValue) => {
     });
 };
 
+const formationContainer = document.getElementById('#formationContainer');
 const addForm = document.getElementById('addForm');
 const closeAdd = addForm.querySelector('#closeAdd');
 const openAdd = document.getElementById('openAdd');
@@ -73,7 +76,11 @@ const allPlayers = document.querySelector('#allPlayersContainer');
 const closeAll = document.querySelector('#closeAll');
 const openAll = document.getElementById('openAll');
 const closeDisplay = document.querySelector('#closeDisplay');
+const closeInsert = document.querySelector("#closeInsert");
+const insertContainer = document.querySelector('#insertContainer');
 const emptyCard = document.querySelectorAll('.emptyCard');
+const insertBtn = document.querySelector('#insertBtn');
+
 
 const addInputs = {
     name: document.querySelector('#nameInput'),
@@ -91,18 +98,6 @@ const addInputs = {
     photo: document.querySelector('#photoInput'),
     rating: document.querySelector('#ratingInput'),
 };
-const postions = {
-    ST: 'ST',
-    LW: 'LW',
-    RW: 'RW',
-    RM: 'RM',
-    LM: 'LM',
-    CM: 'CM',
-    LB: 'LB',
-    RB: 'RB',
-    CB: 'CB',
-    GK: 'GK',
-}
 
 const searchInput = document.querySelector('#playerSearch');
 
@@ -123,8 +118,12 @@ closeAll.addEventListener('click', () => {
 });
 
 openAll.addEventListener('click', () => {
-    loadPlayers(data);
+    loadPlayers(data, allPlayers);
     allPlayers.parentElement.parentElement.classList.toggle('hidden');
+})
+
+closeInsert.addEventListener('click', () => {
+    insertContainer.parentElement.parentElement.classList.toggle('hidden');
 })
 
 document.querySelector('#addBtn').addEventListener('click', async (e) => {
@@ -138,7 +137,7 @@ document.querySelector('#addBtn').addEventListener('click', async (e) => {
     Object.entries(addInputs).forEach(([key, input]) => {
         let errorText = null;
         const validateField = () => {
-            if (!input.value && input.type !== 'file') {
+            if (!input.value && input.type !== 'file' && !key === 'id') {
                 return `${key} can't be empty.`;
             }
             if (key === 'name' && !/^[a-zA-Z\s]+$/.test(input.value)) {
@@ -178,6 +177,8 @@ document.querySelector('#addBtn').addEventListener('click', async (e) => {
     if (isValid) {
         const newPlayer = {};
 
+        newPlayer.id = nextId++;
+
         for (const [key, input] of Object.entries(addInputs)) {
             if (input.type === 'file' && input.files.length > 0) {
                 newPlayer[key] = await convertToWebp(input.files[0]);
@@ -187,7 +188,7 @@ document.querySelector('#addBtn').addEventListener('click', async (e) => {
         }
         data.push(newPlayer);
         localStorage.setItem('players', JSON.stringify(data));
-        loadPlayers(data);
+        loadPlayers(data, allPlayers);
 
         const succedMsg = document.createElement('p');
         succedMsg.className = "text-lime-green text-center error-msg font-bold text-xl";
@@ -221,13 +222,13 @@ function convertToWebp(file) {
     });
 };
 
-const loadPlayers = (players) => {
-    allPlayers.innerHTML = "";
+const loadPlayers = (players, container) => {
+    container.innerHTML = "";
     players.forEach((player) => {
         if (player.position === 'GK') {
-            allPlayers.innerHTML += `
+            container.innerHTML += `
                     <!-- PLAYER CARD -->
-                    <div data-pos="${player.position}" class="player bg-gold-card m-0 text-black">
+                    <div data-id="${player.id}" data-pos="${player.position}" class="player notSelected bg-gold-card m-0 text-black">
                         <div class="w-fit font-semibold absolute top-6 left-2">
                             <p>${player.rating}</p>
                             <p>${player.position}</p>
@@ -250,9 +251,9 @@ const loadPlayers = (players) => {
                     </div>
         `
         } else {
-            allPlayers.innerHTML += `
+            container.innerHTML += `
                     <!-- PLAYER CARD -->
-                    <div data-pos="${player.position}" class="player bg-gold-card m-0 text-black">
+                    <div data-id="${player.id}" data-pos="${player.position}" class="player notSelected bg-gold-card m-0 text-black">
                         <div class="w-fit font-semibold absolute top-6 left-2">
                             <p>${player.rating}</p>
                             <p>${player.position}</p>
@@ -278,23 +279,74 @@ const loadPlayers = (players) => {
     })
 };
 
+let posArray = [];
+let selectedPlayer = null;
+let targetCard = null;
+
 emptyCard.forEach((card) => {
     card.addEventListener('click', (e) => {
         e.preventDefault();
 
-        const target = e.target.dataset.pos || null;
-        let posArray = [];
+        targetCard = e.target.dataset.pos;
 
         data.forEach((players) => {
-            if (players.position === target) {
+            if (players.position === targetCard) {
                 posArray.push(players);
             }
         })
+        
+        loadPlayers(posArray, insertContainer);
+        insertContainer.parentElement.parentElement.classList.toggle('hidden');
 
-        loadPlayers(posArray);
-        allPlayers.parentElement.parentElement.classList.toggle('hidden');
+        const playerCards = insertContainer.querySelectorAll('.notSelected');
+
+        playerCards.forEach((playerCard) => {
+            playerCard.addEventListener('click', () => {
+                playerCards.forEach((card) => card.classList.remove('selectedCard'));
+                playerCard.classList.add('selectedCard');
+                selectedPlayer = playerCard.dataset.id;
+
+            });
+        });
     });
 });
+
+insertBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (posArray) {
+        const targetPosition = document.querySelector(`[data-pos="${targetCard}"]`);
+        console.log(posArray);
+        let playerData = posArray.find(plr => String(plr.id) === selectedPlayer);
+
+        targetPosition.innerHTML = `
+                <!-- PLAYER CARD -->
+                <div data-id="${playerData.id}" data-pos="${playerData.position}" class="player inFormation notSelected bg-gold-card m-0 text-black">
+                    <div class="w-fit font-semibold absolute top-6 left-2">
+                        <p>${playerData.rating}</p>
+                        <p>${playerData.position}</p>
+                    </div>
+                    <img class="h-1/2 mt-7" src="${playerData.photo}" alt="">
+                    <p>${playerData.name}</p>
+                    <div class="flex text-xs gap-1">
+                        <p>PAC ${playerData.pace}</p>
+                        <p>SHO ${playerData.shooting}</p>
+                        <p>DRI ${playerData.dribbling}</p>
+                        <p>PAS ${playerData.passing}</p>
+                        <p>DEF ${playerData.defending}</p>
+                        <p>PHY ${playerData.physical}</p>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <img class="h-4" src="${playerData.flag}" alt="">
+                        <img class="h-5 object-fill" src="${playerData.logo}" alt="">
+                    </div>
+
+                </div>
+        `
+        insertContainer.parentElement.parentElement.classList.toggle('hidden');
+
+        posArray = [];
+    }
+})
 
 
 searchInput.addEventListener('keyup', (e) => {
@@ -308,7 +360,7 @@ searchInput.addEventListener('keyup', (e) => {
 
             const filtered = data.filter(o => o.name.toLowerCase().includes(searchData));
 
-            loadPlayers(filtered);
+            loadPlayers(filtered, allPlayers);
         }, 250);
     }
 });
