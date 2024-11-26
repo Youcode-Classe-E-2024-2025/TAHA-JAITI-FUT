@@ -79,7 +79,6 @@ const closeDisplay = document.querySelector('#closeDisplay');
 const closeInsert = document.querySelector("#closeInsert");
 const insertContainer = document.querySelector('#insertContainer');
 const emptyCard = document.querySelectorAll('.emptyCard');
-const insertBtn = document.querySelector('#insertBtn');
 
 
 const addInputs = {
@@ -285,21 +284,27 @@ let targetCard = null;
 let currentTarget = null;
 
 emptyCard.forEach((card) => {
-    card.addEventListener('click', (e) => {
+    card.addEventListener('click', async (e) => {
         e.preventDefault();
 
-        posArray = [];
+        posArray.length = 0;
 
         currentTarget = e.currentTarget;
         targetCard = e.target.dataset.pos;
 
+
+
         data.forEach((players) => {
+            let existingCard = document.querySelector(`#inTeam${players.id}`);
+            if (existingCard){
+                return;
+            }
             if (players.position === targetCard) {
                 posArray.push(players);
             }
-        })
-        
-        loadPlayers(posArray, insertContainer);
+        });
+
+        await loadPlayers(posArray, insertContainer);
         insertContainer.parentElement.parentElement.classList.toggle('hidden');
 
         const playerCards = insertContainer.querySelectorAll('.notSelected');
@@ -312,10 +317,13 @@ emptyCard.forEach((card) => {
 
             });
         });
+
+        let insertBtn = document.querySelector('#insertBtn');
+        insertBtn.addEventListener('click', applyInsert);
     });
 });
 
-insertBtn.addEventListener('click', (e) => {
+const applyInsert = (e) => {
     e.preventDefault();
     if (posArray) {
         console.log(posArray);
@@ -323,7 +331,7 @@ insertBtn.addEventListener('click', (e) => {
 
         currentTarget.innerHTML = `
                 <!-- PLAYER CARD -->
-                <div data-id="${playerData.id}" data-pos="${playerData.position}" class="player inFormation notSelected bg-gold-card m-0 text-black">
+                <div id="inTeam${playerData.id}" data-pos="${playerData.position}" class="player inTeam bg-gold-card m-0 text-black">
                     <div class="w-fit font-semibold absolute top-6 left-2">
                         <p>${playerData.rating}</p>
                         <p>${playerData.position}</p>
@@ -349,7 +357,7 @@ insertBtn.addEventListener('click', (e) => {
 
         posArray = [];
     }
-})
+}
 
 
 searchInput.addEventListener('keyup', (e) => {
