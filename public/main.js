@@ -72,6 +72,7 @@ const openAdd = document.getElementById('openAdd');
 const allPlayers = document.getElementById('allPlayersContainer');
 const closeAll = document.querySelector('#closeAll');
 const openAll = document.getElementById('openAll');
+const closeDisplay = document.querySelector('#closeDisplay');
 
 const addInputs = {
     name: document.querySelector('#nameInput'),
@@ -89,6 +90,11 @@ const addInputs = {
     photo: document.querySelector('#photoInput'),
     rating: document.querySelector('#ratingInput'),
 };
+const searchInput = document.querySelector('#playerSearch');
+
+closeDisplay.addEventListener('click', () => {
+    closeDisplay.parentElement.parentElement.classList.toggle('hidden');
+})
 
 closeAdd.addEventListener('click', () => {
     addForm.parentElement.classList.toggle('hidden');
@@ -105,8 +111,6 @@ closeAll.addEventListener('click', () => {
 openAll.addEventListener('click', () => {
     allPlayers.parentElement.parentElement.classList.toggle('hidden');
 })
-
-console.log(addInputs);
 
 document.querySelector('#addBtn').addEventListener('click', async (e) => {
     e.preventDefault();
@@ -200,7 +204,7 @@ function convertToWebp(file) {
         reader.onerror = reject;
         reader.readAsDataURL(file);
     });
-}
+};
 
 const loadPlayers = (players) => {
     allPlayers.innerHTML = "";
@@ -257,6 +261,26 @@ const loadPlayers = (players) => {
         `
         }
     })
-}
+};
+
+let debounce;
+
+searchInput.addEventListener('keyup', (e) => {
+    e.stopPropagation();
+
+    clearTimeout(debounce);
+
+    if (e.target.value === ""){
+        return
+    } else {
+        timeout = setTimeout(() => {
+            const searchData = e.target.value.toLowerCase();
+    
+            const filtered = data.filter(o => o.name.toLowerCase().includes(searchData));
+    
+            loadPlayers(filtered);
+        }, 250);
+    }
+});
 
 document.addEventListener('DOMContentLoaded', fetchData)

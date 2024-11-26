@@ -205,7 +205,7 @@
         </section>
 
         <!-- DISPLAY FORM -->
-        <section class="hidden modalContainer gap-12">
+        <section class="hidden modalContainer gap-12 flex-col md:flex-row">
             <!-- PLAYER CARD -->
             <div class="player animate-pulse bg-gold-card scale-150 hover:scale-150 m-0 text-black">
                 <div class="w-fit font-semibold absolute top-6 left-2">
@@ -228,14 +228,23 @@
                 </div>
 
             </div>
-            <div class="w-1/3 bg-black-rich text-white text-2xl p-2">
+            <div class=" w-full md:w-1/3 bg-black-rich text-white text-2xl p-2 flex flex-col gap-2 relative">
+                <span id="closeDisplay" class="icon-[meteor-icons--xmark] iconBtn self-end absolute"></span>
                 <div class="w-fit flex gap-2 items-center hover:text-red-300 cursor-pointer">
-                    <span class="icon-[meteor-icons--trash-can]"></span>
+                    <span class="icon-[fluent--person-delete-24-filled]"></span>
                     <p>REMOVE PLAYER</p>
                 </div>
-                <div class="w-fit flex gap-2 items-center hover:text-blue-300 cursor-pointer">
+                <div class="w-fit flex gap-2 items-center hover:text-green-300 cursor-pointer">
                     <span class="icon-[mdi--account-switch]"></span>
                     <p>CHANGE PLAYER</p>
+                </div>
+                <div class="w-fit flex gap-2 items-center hover:text-blue-300 cursor-pointer">
+                    <span class="icon-[mingcute--user-edit-fill]"></span>
+                    <p>EDIT PLAYER</p>
+                </div>
+                <div class="w-fit flex gap-2 items-center hover:text-red-600 cursor-pointer">
+                    <span class="icon-[meteor-icons--trash-can]"></span>
+                    <p>DELETE PLAYER</p>
                 </div>
             </div>
 
@@ -263,10 +272,6 @@
         </section>
 
     </main>
-
-
-
-
 
     <script src="main.js"></script>
 </body>

@@ -9,6 +9,7 @@
   },
   "devDependencies": {
     "@egoist/tailwindcss-icons": "^1.8.1",
+    "@iconify-json/fluent": "^1.2.8",
     "@iconify-json/heroicons-solid": "^1.2.0",
     "@iconify/tailwind": "^1.1.3"
   }
