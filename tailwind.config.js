@@ -20,7 +20,10 @@ module.exports = {
         'black-slate': '#141414',
         'lime-green': '#7AE7C7',
         'dark-green': '#75BBA7',
-      }
+      },
+      boxShadow: {
+        glow: '0 0 15px 5px rgba(255, 215, 0, 0.8)',
+      },
     },
   },
   plugins: [addDynamicIconSelectors(), addIconSelectors(['gg','mingcute']),],

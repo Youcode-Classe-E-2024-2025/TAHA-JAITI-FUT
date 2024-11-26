@@ -52,7 +52,6 @@
                             <img class="h-4" src="assets/playerflag.png" alt="">
                             <img class="h-5 object-fill" src="assets/playerclub.png" alt="">
                         </div>
-
                     </div>
 
                     <!-- EMPTY CARD -->
@@ -94,7 +93,7 @@
         </div>
 
         <!-- ADD FORM -->
-        <section class="hidden modalContainer">
+        <section class="modalContainer">
             <div id="addForm" class="w-2/3 lg:w-1/2 bg-black-slate rounded-lg p-4 text-white">
                 <div class="flex justify-between">
                     <h2 class="text-center text-2xl font-bold mb-4">ADD A PLAYER</h2>
@@ -179,6 +178,11 @@
                             <input type="number" id="physicalInput" placeholder="Physical (0-100)" class="input" min="0"
                                 max="100">
                         </div>
+                        <div class="flex flex-col">
+                            <label for="rating" class="mb-1 text-sm font-semibold">Rating</label>
+                            <input type="number" id="ratingInput" placeholder="Rating (0-100)" class="input" min="0"
+                                max="100">
+                        </div>
                     </div>
 
                     <!-- Submit Button -->
@@ -229,17 +233,22 @@
         </section>
 
         <!-- ALL PLAYERS FORM -->
-        <section class="modalContainer">
+        <section class="hidden modalContainer">
             <!-- PLAYERS CONTAINER -->
             <div class="w-2/3 h-2/3 bg-black-slate text-white rounded">
                 <div class="flex justify-between p-4 bg-black-rich">
                     <input class="bg-black-slate rounded px-1" placeholder="Search for a player" type="text"
                         name="search" id="playerSearch">
-                    <h2>PLAYER LIST</h2>
+                    <div class="flex gap-2 items-center">
+                        <h2 class="text-xl">PLAYER LIST</h2>
+                        <span id="closeAll" class="icon-[meteor-icons--xmark] iconBtn"></span>
+                    </div>
+
                 </div>
                 <!-- MAIN CONTAINER -->
-                <div id="allPlayersContainer" class="w-full h-[90%] flex flex-wrap gap-12 p-6 justify-start overflow-y-auto">
-                    
+                <div id="allPlayersContainer"
+                    class="w-full h-[88%] flex flex-wrap gap-12 p-6 justify-start overflow-x-hidden overflow-y-auto">
+
                 </div>
             </div>
         </section>

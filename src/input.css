@@ -4,29 +4,40 @@
 
 @layer components {
   .player {
-    @apply transition-all relative m-auto h-[15rem] w-[10rem] bg-card bg-cover bg-top bg-no-repeat text-white text-center flex p-2 flex-col justify-center items-center;
+    @apply transition-all relative m-auto h-[15rem] w-[10rem] bg-card bg-cover bg-top bg-no-repeat text-white text-center flex p-2 flex-col justify-center items-center z-10;
   }
 
   .player:hover {
-    @apply scale-105 filter opacity-80 cursor-pointer brightness-125;
+    @apply scale-105 filter cursor-pointer brightness-125;
   }
+
   .player:active {
     @apply scale-100 opacity-100;
+  }
+
+  .player::before {
+    content: "";
+    @apply absolute inset-0 w-full h-full rounded bg-blue-500/40 opacity-0 blur-2xl transition-all;
+    z-index: -1;
+  }
+
+  .player:hover::before {
+    opacity: 1;
   }
 
   .formation-container {
     @apply grid grid-rows-3 grid-cols-4 gap-2 items-center justify-center w-full h-[90%] border border-red-500;
   }
-  .input{
+  .input {
     @apply w-full p-2 rounded-sm bg-black-rich drop-shadow-lg border border-black;
   }
-  .submitBtn{
+  .submitBtn {
     @apply bg-black-rich hover:bg-black-slate border border-black hover:border-white py-2 px-6 rounded-sm shadow-lg transition-all;
   }
-  .iconBtn{
+  .iconBtn {
     @apply text-4xl hover:text-lime-green hover:cursor-pointer active:text-dark-green;
   }
-  .modalContainer{
+  .modalContainer {
     @apply h-full w-full bg-black/20 flex justify-center items-center backdrop-blur-xl fixed top-0 z-10;
   }
 }
@@ -44,13 +55,13 @@ body::before {
 }
 
 @keyframes test {
-    0% {
-        filter: brightness(100%);
-    }
-    50% {
-        filter: brightness(125%);
-    }
-    100% {
-        filter: brightness(100%);
-    }
+  0% {
+    filter: brightness(100%);
+  }
+  50% {
+    filter: brightness(125%);
+  }
+  100% {
+    filter: brightness(100%);
+  }
 }

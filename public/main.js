@@ -14,6 +14,7 @@ const fetchData = async () => {
             console.error("Error fetching data:", error);
         }
     }
+    loadPlayers(data);
 }
 
 
@@ -68,6 +69,9 @@ const changeFormation = (formationValue) => {
 const addForm = document.getElementById('addForm');
 const closeAdd = addForm.querySelector('#closeAdd');
 const openAdd = document.getElementById('openAdd');
+const allPlayers = document.getElementById('allPlayersContainer');
+const closeAll = document.querySelector('#closeAll');
+const openAll = document.getElementById('openAll');
 
 const addInputs = {
     name: document.querySelector('#nameInput'),
@@ -83,6 +87,7 @@ const addInputs = {
     logo: document.querySelector('#clubImageInput'),
     flag: document.querySelector('#flagImageInput'),
     photo: document.querySelector('#photoInput'),
+    rating: document.querySelector('#ratingInput'),
 };
 
 closeAdd.addEventListener('click', () => {
@@ -91,6 +96,14 @@ closeAdd.addEventListener('click', () => {
 
 openAdd.addEventListener('click', () => {
     addForm.parentElement.classList.toggle('hidden');
+})
+
+closeAll.addEventListener('click', () => {
+    allPlayers.parentElement.parentElement.classList.toggle('hidden');
+});
+
+openAll.addEventListener('click', () => {
+    allPlayers.parentElement.parentElement.classList.toggle('hidden');
 })
 
 console.log(addInputs);
@@ -112,7 +125,7 @@ document.querySelector('#addBtn').addEventListener('click', async (e) => {
             if (key === 'name' && !/^[a-zA-Z\s]+$/.test(input.value)) {
                 return 'Enter a valid name.';
             }
-            if (['pace', 'shooting', 'passing', 'dribbling', 'defending', 'physical'].includes(key)) {
+            if (['pace', 'shooting', 'passing', 'dribbling', 'defending', 'physical','rating'].includes(key)) {
                 if (input.value < 0 || input.value > 100) {
                     return `${key} must be between 0 and 100.`;
                 }
@@ -120,7 +133,7 @@ document.querySelector('#addBtn').addEventListener('click', async (e) => {
             if (key === 'position') {
                 const validPositions = ['ST', 'LW', 'RW', 'CDM', 'CAM', 'CM', 'RM', 'LM', 'CB', 'RB', 'LB', 'GK'];
                 if (!validPositions.includes(input.value.toUpperCase())) {
-                    return `Enter a valid position (ex., ST, LW, GK).`;
+                    return `Select a valid position.`;
                 }
             }
             if (input.type === 'file' && !input.files.length) {
@@ -188,5 +201,61 @@ function convertToWebp(file) {
     });
 }
 
+const loadPlayers = (players) => {
+    allPlayers.innerHTML = "";
+    players.forEach((player) => {
+        if (player.position === 'GK'){
+            allPlayers.innerHTML += `
+                    <!-- PLAYER CARD -->
+                    <div data-pos="${player.position}" class="player bg-gold-card m-0 text-black">
+                        <div class="w-fit font-semibold absolute top-6 left-2">
+                            <p>${player.rating}</p>
+                            <p>${player.position}</p>
+                        </div>
+                        <img class="h-1/2 mt-7" src="${player.photo}" alt="">
+                        <p>${player.name}</p>
+                        <div class="flex text-xs gap-1">
+                            <p>DIV ${player.diving}</p>
+                            <p>HAN ${player.handling}</p>
+                            <p>KIC ${player.kicking}</p>
+                            <p>REF ${player.reflexes}</p>
+                            <p>SPE ${player.speed}</p>
+                            <p>POS ${player.positioning}</p>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <img class="h-4" src="${player.flag}" alt="">
+                            <img class="h-5 object-fill" src="${player.logo}" alt="">
+                        </div>
+
+                    </div>
+        `
+        } else {
+            allPlayers.innerHTML += `
+                    <!-- PLAYER CARD -->
+                    <div data-pos="${player.position}" class="player bg-gold-card m-0 text-black">
+                        <div class="w-fit font-semibold absolute top-6 left-2">
+                            <p>${player.rating}</p>
+                            <p>${player.position}</p>
+                        </div>
+                        <img class="h-1/2 mt-7" src="${player.photo}" alt="">
+                        <p>${player.name}</p>
+                        <div class="flex text-xs gap-1">
+                            <p>PAC ${player.pace}</p>
+                            <p>SHO ${player.shooting}</p>
+                            <p>DRI ${player.dribbling}</p>
+                            <p>PAS ${player.passing}</p>
+                            <p>DEF ${player.defending}</p>
+                            <p>PHY ${player.physical}</p>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <img class="h-4" src="${player.flag}" alt="">
+                            <img class="h-5 object-fill" src="${player.logo}" alt="">
+                        </div>
+
+                    </div>
+        `
+        }
+    })
+}
 
 document.addEventListener('DOMContentLoaded', fetchData)
