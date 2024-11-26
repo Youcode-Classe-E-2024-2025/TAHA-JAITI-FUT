@@ -75,6 +75,7 @@ const openAdd = document.getElementById('openAdd');
 const allPlayers = document.querySelector('#allPlayersContainer');
 const closeAll = document.querySelector('#closeAll');
 const openAll = document.getElementById('openAll');
+const plrDisplay = document.getElementById('plrDisplay');
 const closeDisplay = document.querySelector('#closeDisplay');
 const closeInsert = document.querySelector("#closeInsert");
 const insertContainer = document.querySelector('#insertContainer');
@@ -97,6 +98,21 @@ const addInputs = {
     photo: document.querySelector('#photoInput'),
     rating: document.querySelector('#ratingInput'),
 };
+
+const displayValues = {
+    name: document.querySelector('.displayName'),
+    position: document.querySelector('.displayPos'),
+    pace: document.querySelector('.displayPAC'),
+    shooting: document.querySelector('.displaySHO'),
+    passing: document.querySelector('.displayPAS'),
+    dribbling: document.querySelector('.displayDRI'),
+    defending: document.querySelector('.displayDEF'),
+    physical: document.querySelector('.displayPHY'),
+    logo: document.querySelector('.displayClub'),
+    flag: document.querySelector('.displayFlag'),
+    photo: document.querySelector('.displayPhoto'),
+    rating: document.querySelector('.displayRating'),
+}
 
 const searchInput = document.querySelector('#playerSearch');
 
@@ -295,8 +311,8 @@ emptyCard.forEach((card) => {
 
 
         data.forEach((players) => {
-            let existingCard = document.querySelector(`#inTeam${players.id}`);
-            if (existingCard){
+            let existingCard = document.querySelector(`#plr${players.id}`);
+            if (existingCard) {
                 return;
             }
             if (players.position === targetCard) {
@@ -331,7 +347,7 @@ const applyInsert = (e) => {
 
         currentTarget.innerHTML = `
                 <!-- PLAYER CARD -->
-                <div id="inTeam${playerData.id}" data-pos="${playerData.position}" class="player inTeam bg-gold-card m-0 text-black">
+                <div id="plr${playerData.id}" data-id="${playerData.id}" data-pos="${playerData.position}" class="player inTeam bg-gold-card m-0 text-black">
                     <div class="w-fit font-semibold absolute top-6 left-2">
                         <p>${playerData.rating}</p>
                         <p>${playerData.position}</p>
@@ -357,7 +373,33 @@ const applyInsert = (e) => {
 
         posArray = [];
     }
+
+    const inTeam = document.querySelectorAll('.inTeam');
+    inTeam.forEach((player) => {
+        player.addEventListener('click', (e) => {
+            e.stopPropagation();
+
+            const displayedPlr = data.find(plr => String(plr.id) === e.currentTarget.dataset.id);
+            console.log(displayedPlr);
+
+            Object.keys(displayValues).forEach(key => {
+                if (['PAC', 'PAS', 'DRI', 'PHY', 'DEF', 'SHO'].includes(key)) {
+                    displayValues[key].textContent = `${key} ${displayedPlr[key]}`;
+
+                } else if (key === 'photo' || key === 'flag' || key === 'logo') {
+
+                    displayValues[key].src = displayedPlr[key];
+                } else {
+
+                    displayValues[key].textContent = displayedPlr[key];
+                }
+            });
+
+            plrDisplay.classList.toggle('hidden');
+        })
+    })
 }
+
 
 
 searchInput.addEventListener('keyup', (e) => {

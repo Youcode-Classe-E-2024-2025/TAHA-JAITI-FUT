@@ -233,26 +233,26 @@
         </section>
 
         <!-- DISPLAY FORM -->
-        <section class="hidden modalContainer gap-12 flex-col md:flex-row z-50">
+        <section id="plrDisplay" class="hidden modalContainer gap-12 flex-col md:flex-row z-50">
             <!-- PLAYER CARD -->
             <div class="player animate-pulse bg-gold-card scale-150 hover:scale-150 m-0 text-black">
                 <div class="w-fit font-semibold absolute top-6 left-2">
-                    <p>90</p>
-                    <p>ST</p>
+                    <p class="displayRating">90</p>
+                    <p class="displayPos">ST</p>
                 </div>
-                <img class="h-1/2 mt-7" src="assets/playerimage.png" alt="">
-                <p>NAME</p>
+                <img class="h-1/2 mt-7 displayPhoto" src="assets/playerimage.png" alt="">
+                <p class="displayName">NAME</p>
                 <div class="flex text-xs gap-1">
-                    <p>PAC 80</p>
-                    <p>PAC 80</p>
-                    <p>PAC 80</p>
-                    <p>PAC 80</p>
-                    <p>PAC 80</p>
-                    <p>PAC 80</p>
+                    <p class="displayPAC">PAC 80</p>
+                    <p class="displaySHO">SHO 80</p>
+                    <p class="displayDRI">DRI 80</p>
+                    <p class="displayPAS">PAC 80</p>
+                    <p class="displayDEF">PAC 80</p>
+                    <p class="displayPHY">PAC 80</p>
                 </div>
                 <div class="flex items-center gap-1">
-                    <img class="h-4" src="assets/playerflag.png" alt="">
-                    <img class="h-5 object-fill" src="assets/playerclub.png" alt="">
+                    <img class="h-4 displayFlag" src="assets/playerflag.png" alt="">
+                    <img class="h-5 object-fill displayClub" src="assets/playerclub.png" alt="">
                 </div>
 
             </div>
