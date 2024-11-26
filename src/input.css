@@ -27,7 +27,7 @@
     @apply text-4xl hover:text-lime-green hover:cursor-pointer active:text-dark-green;
   }
   .modalContainer{
-    @apply h-full w-screen bg-black/20 flex justify-center items-center pt-32 backdrop-blur-xl absolute top-0 z-10;
+    @apply h-full w-full bg-black/20 flex justify-center items-center backdrop-blur-xl fixed top-0 z-10;
   }
 }
 
