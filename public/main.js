@@ -69,10 +69,11 @@ const changeFormation = (formationValue) => {
 const addForm = document.getElementById('addForm');
 const closeAdd = addForm.querySelector('#closeAdd');
 const openAdd = document.getElementById('openAdd');
-const allPlayers = document.getElementById('allPlayersContainer');
+const allPlayers = document.querySelector('#allPlayersContainer');
 const closeAll = document.querySelector('#closeAll');
 const openAll = document.getElementById('openAll');
 const closeDisplay = document.querySelector('#closeDisplay');
+const emptyCard = document.querySelectorAll('.emptyCard');
 
 const addInputs = {
     name: document.querySelector('#nameInput'),
@@ -90,6 +91,19 @@ const addInputs = {
     photo: document.querySelector('#photoInput'),
     rating: document.querySelector('#ratingInput'),
 };
+const postions = {
+    ST: 'ST',
+    LW: 'LW',
+    RW: 'RW',
+    RM: 'RM',
+    LM: 'LM',
+    CM: 'CM',
+    LB: 'LB',
+    RB: 'RB',
+    CB: 'CB',
+    GK: 'GK',
+}
+
 const searchInput = document.querySelector('#playerSearch');
 
 closeDisplay.addEventListener('click', () => {
@@ -109,6 +123,7 @@ closeAll.addEventListener('click', () => {
 });
 
 openAll.addEventListener('click', () => {
+    loadPlayers(data);
     allPlayers.parentElement.parentElement.classList.toggle('hidden');
 })
 
@@ -129,7 +144,7 @@ document.querySelector('#addBtn').addEventListener('click', async (e) => {
             if (key === 'name' && !/^[a-zA-Z\s]+$/.test(input.value)) {
                 return 'Enter a valid name.';
             }
-            if (['pace', 'shooting', 'passing', 'dribbling', 'defending', 'physical','rating'].includes(key)) {
+            if (['pace', 'shooting', 'passing', 'dribbling', 'defending', 'physical', 'rating'].includes(key)) {
                 if (input.value < 0 || input.value > 100) {
                     return `${key} must be between 0 and 100.`;
                 }
@@ -209,7 +224,7 @@ function convertToWebp(file) {
 const loadPlayers = (players) => {
     allPlayers.innerHTML = "";
     players.forEach((player) => {
-        if (player.position === 'GK'){
+        if (player.position === 'GK') {
             allPlayers.innerHTML += `
                     <!-- PLAYER CARD -->
                     <div data-pos="${player.position}" class="player bg-gold-card m-0 text-black">
@@ -263,21 +278,36 @@ const loadPlayers = (players) => {
     })
 };
 
-let debounce;
+emptyCard.forEach((card) => {
+    card.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        const target = e.target.dataset.pos || null;
+        let posArray = [];
+
+        data.forEach((players) => {
+            if (players.position === target) {
+                posArray.push(players);
+            }
+        })
+
+        loadPlayers(posArray);
+        allPlayers.parentElement.parentElement.classList.toggle('hidden');
+    });
+});
+
 
 searchInput.addEventListener('keyup', (e) => {
     e.stopPropagation();
 
-    clearTimeout(debounce);
-
-    if (e.target.value === ""){
+    if (e.target.value === "") {
         return
     } else {
         timeout = setTimeout(() => {
             const searchData = e.target.value.toLowerCase();
-    
+
             const filtered = data.filter(o => o.name.toLowerCase().includes(searchData));
-    
+
             loadPlayers(filtered);
         }, 250);
     }

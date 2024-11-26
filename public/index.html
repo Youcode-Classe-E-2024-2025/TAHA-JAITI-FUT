@@ -55,19 +55,47 @@
                     </div>
 
                     <!-- EMPTY CARD -->
-                    <div data-pos="ST" class="player bg-card col-start-3 row-start-1 bottom-4">
+                    <div data-pos="ST" class="emptyCard player bg-card col-start-3 row-start-1 bottom-4 gap-2 ">
                         <span class="icon-[gg--add] text-4xl text-lime-green "></span>
+                        <p class="font-bold">ST</p>
                     </div>
-                    <div data-pos="LM" class="player col-start-1 row-start-2 bottom-12">LM</div>
-                    <div data-pos="CM" class="player col-start-2 row-start-2 left-4 top-2">CM</div>
-                    <div data-pos="CM" class="player col-start-3 row-start-2 right-4 top-2">CM</div>
-                    <div data-pos="RM" class="player col-start-4 row-start-2 bottom-12">RM</div>
-                    <div data-pos="LB" class="player col-start-1 row-start-3 bottom-4">LB</div>
-                    <div data-pos="CB" class="player col-start-2 row-start-3 left-4 top-2">CB</div>
-                    <div data-pos="CB" class="player col-start-3 row-start-3 right-4 top-2">CB</div>
-                    <div data-pos="RB" class="player col-start-4 row-start-3 bottom-4">RB</div>
+                    <div data-pos="LM" class="emptyCard player col-start-1 row-start-2 bottom-12">
+                        <span class="icon-[gg--add] text-4xl text-lime-green "></span>
+                        <p class="font-bold">LM</p>
+                    </div>
+                    <div data-pos="CM" class="emptyCard player col-start-2 row-start-2 left-4 top-2">
+                        <span class="icon-[gg--add] text-4xl text-lime-green "></span>
+                        <p class="font-bold">CM</p>
+                    </div>
+                    <div data-pos="CM" class="emptyCard player col-start-3 row-start-2 right-4 top-2">
+                        <span class="icon-[gg--add] text-4xl text-lime-green "></span>
+                        <p class="font-bold">CM</p>
+                    </div>
+                    <div data-pos="RM" class="emptyCard player col-start-4 row-start-2 bottom-12">
+                        <span class="icon-[gg--add] text-4xl text-lime-green "></span>
+                        <p class="font-bold">RM</p>
+                    </div>
+                    <div data-pos="LB" class="emptyCard player col-start-1 row-start-3 bottom-4">
+                        <span class="icon-[gg--add] text-4xl text-lime-green "></span>
+                        <p class="font-bold">LB</p>
+                    </div>
+                    <div data-pos="CB" class="emptyCard player col-start-2 row-start-3 left-4 top-2">
+                        <span class="icon-[gg--add] text-4xl text-lime-green "></span>
+                        <p class="font-bold">CB</p>
+                    </div>
+                    <div data-pos="CB" class="emptyCard player col-start-3 row-start-3 right-4 top-2">
+                        <span class="icon-[gg--add] text-4xl text-lime-green "></span>
+                        <p class="font-bold">CB</p>
+                    </div>
+                    <div data-pos="RB" class="emptyCard player col-start-4 row-start-3 bottom-4">
+                        <span class="icon-[gg--add] text-4xl text-lime-green "></span>
+                        <p class="font-bold">RB</p>
+                    </div>
                 </div>
-                <div data-pos="GK" class="player col-span-4 justify-self-center row-start-4 relative">GK</div>
+                <div data-pos="GK" class="emptyCard player col-span-4 justify-self-center row-start-4 relative">
+                    <span class="icon-[gg--add] text-4xl text-lime-green "></span>
+                    <p class="font-bold">RB</p>
+                </div>
             </div>
 
             <!-- MENU -->
@@ -205,7 +233,7 @@
         </section>
 
         <!-- DISPLAY FORM -->
-        <section class="hidden modalContainer gap-12 flex-col md:flex-row">
+        <section class="hidden modalContainer gap-12 flex-col md:flex-row z-50">
             <!-- PLAYER CARD -->
             <div class="player animate-pulse bg-gold-card scale-150 hover:scale-150 m-0 text-black">
                 <div class="w-fit font-semibold absolute top-6 left-2">
