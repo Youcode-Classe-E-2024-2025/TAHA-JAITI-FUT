@@ -15,6 +15,10 @@
 
 <body class="bg-black-rich font-roboto bg-bg-stadium bg-blend-overlay bg-cover bg-no-repeat relative h-fit w-screen">
 
+    <div id="loadingScreen" class="w-full h-full fixed bg-black-rich z-50 flex items-center justify-center">
+        <span class="icon-[iconoir--soccer-ball] text-lime-green text-6xl animate-spin"></span>
+    </div>
+
     <header class="w-full bg-black-slate text-white font-bold px-4 py-2 text-xl flex items-center justify-between">
         <h1><span class="text-lime-green">FUT</span> SQUAD BUILDER</h1>
         <div class="flex gap-6 justify-between">
@@ -32,29 +36,11 @@
                 class="mt-14 w-2/3 h-full items-center flex flex-col justify-center bg-center bg-contain bg-no-repeat bg-stadium">
                 <!-- CONTAINER -->
                 <div id="formationContainer" class="formation-container">
-                    <!-- PLAYER CARD -->
-                    <div data-pos="ST" class="player bg-gold-card col-start-2 row-start-1 bottom-4 text-black">
-                        <div class="w-fit font-semibold absolute top-6 left-2">
-                            <p>90</p>
-                            <p>ST</p>
-                        </div>
-                        <img class="h-1/2 mt-7" src="assets/playerimage.png" alt="">
-                        <p>NAME</p>
-                        <div class="flex text-xs gap-1">
-                            <p>PAC 80</p>
-                            <p>PAC 80</p>
-                            <p>PAC 80</p>
-                            <p>PAC 80</p>
-                            <p>PAC 80</p>
-                            <p>PAC 80</p>
-                        </div>
-                        <div class="flex items-center gap-1">
-                            <img class="h-4" src="assets/playerflag.png" alt="">
-                            <img class="h-5 object-fill" src="assets/playerclub.png" alt="">
-                        </div>
-                    </div>
-
                     <!-- EMPTY CARD -->
+                    <div data-pos="ST" class="emptyCard player bg-card col-start-2 row-start-1 bottom-4 gap-2 ">
+                        <span class="icon-[gg--add] text-4xl text-lime-green "></span>
+                        <p class="font-bold">ST</p>
+                    </div>
                     <div data-pos="ST" class="emptyCard player bg-card col-start-3 row-start-1 bottom-4 gap-2 ">
                         <span class="icon-[gg--add] text-4xl text-lime-green "></span>
                         <p class="font-bold">ST</p>

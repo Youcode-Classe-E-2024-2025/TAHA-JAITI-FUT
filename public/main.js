@@ -1,3 +1,4 @@
+const loading = document.getElementById('loadingScreen');
 let data = JSON.parse(localStorage.getItem("players") || "[]");
 
 let nextId = data.length > 0 ? data.length + 1 : 1;
@@ -12,12 +13,15 @@ const fetchData = async () => {
                 localStorage.setItem("players", JSON.stringify(data));
                 localStorage.setItem("players_loaded", "true");
                 console.log(data);
+                await loadPlayers(data, allPlayers);
+                loading.classList.add('hidden');
             }
         } catch (error) {
             console.error("Error fetching data:", error);
         }
+    } else {
+        loading.classList.add('hidden');
     }
-    loadPlayers(data, allPlayers);
 }
 
 const formations = {
@@ -78,7 +82,7 @@ const openAll = document.getElementById('openAll');
 const plrDisplay = document.getElementById('plrDisplay');
 const closeDisplay = document.querySelector('#closeDisplay');
 const closeInsert = document.querySelector("#closeInsert");
-const insertContainer = document.querySelector('#insertContainer');
+const insertContainer = document.getElementById('insertContainer');
 const emptyCard = document.querySelectorAll('.emptyCard');
 
 
@@ -132,8 +136,8 @@ closeAll.addEventListener('click', () => {
     allPlayers.parentElement.parentElement.classList.toggle('hidden');
 });
 
-openAll.addEventListener('click', () => {
-    loadPlayers(data, allPlayers);
+openAll.addEventListener('click', async () => {
+    await loadPlayers(data, allPlayers);
     allPlayers.parentElement.parentElement.classList.toggle('hidden');
 })
 
@@ -203,13 +207,13 @@ document.querySelector('#addBtn').addEventListener('click', async (e) => {
         }
         data.push(newPlayer);
         localStorage.setItem('players', JSON.stringify(data));
-        loadPlayers(data, allPlayers);
+        await loadPlayers(data, allPlayers);
 
         const succedMsg = document.createElement('p');
         succedMsg.className = "text-lime-green text-center error-msg font-bold text-xl";
         succedMsg.textContent = 'Player Added Succesfully!';
         addForm.insertBefore(succedMsg, addForm.firstChild);
-        setTimeout(() => { succedMsg.remove(); }, 10000);
+        setTimeout(() => { succedMsg.remove(); }, 5000);
 
         Object.values(addInputs).forEach((input) => { input.value = ''; });
     }
@@ -238,63 +242,52 @@ function convertToWebp(file) {
 };
 
 const loadPlayers = (players, container) => {
-    container.innerHTML = "";
-    players.forEach((player) => {
-        if (player.position === 'GK') {
-            container.innerHTML += `
-                    <!-- PLAYER CARD -->
-                    <div data-id="${player.id}" data-pos="${player.position}" class="player notSelected bg-gold-card m-0 text-black">
-                        <div class="w-fit font-semibold absolute top-6 left-2">
-                            <p>${player.rating}</p>
-                            <p>${player.position}</p>
-                        </div>
-                        <img class="h-1/2 mt-7" src="${player.photo}" alt="">
-                        <p>${player.name}</p>
-                        <div class="flex text-xs gap-1">
-                            <p>DIV ${player.diving}</p>
-                            <p>HAN ${player.handling}</p>
-                            <p>KIC ${player.kicking}</p>
-                            <p>REF ${player.reflexes}</p>
-                            <p>SPE ${player.speed}</p>
-                            <p>POS ${player.positioning}</p>
-                        </div>
-                        <div class="flex items-center gap-1">
-                            <img class="h-4" src="${player.flag}" alt="">
-                            <img class="h-5 object-fill" src="${player.logo}" alt="">
-                        </div>
+    return new Promise((resolve) => {
+        container.innerHTML = "";
+        players.forEach(player => {
+            const stats = player.position === 'GK'
+                ? `
+                    <p>DIV ${player.diving}</p>
+                    <p>HAN ${player.handling}</p>
+                    <p>KIC ${player.kicking}</p>
+                    <p>REF ${player.reflexes}</p>
+                    <p>SPE ${player.speed}</p>
+                    <p>POS ${player.positioning}</p>
+                  `
+                : `
+                    <p>PAC ${player.pace}</p>
+                    <p>SHO ${player.shooting}</p>
+                    <p>DRI ${player.dribbling}</p>
+                    <p>PAS ${player.passing}</p>
+                    <p>DEF ${player.defending}</p>
+                    <p>PHY ${player.physical}</p>
+                  `;
 
-                    </div>
-        `
-        } else {
             container.innerHTML += `
-                    <!-- PLAYER CARD -->
-                    <div data-id="${player.id}" data-pos="${player.position}" class="player notSelected bg-gold-card m-0 text-black">
-                        <div class="w-fit font-semibold absolute top-6 left-2">
-                            <p>${player.rating}</p>
-                            <p>${player.position}</p>
-                        </div>
-                        <img class="h-1/2 mt-7" src="${player.photo}" alt="">
-                        <p>${player.name}</p>
-                        <div class="flex text-xs gap-1">
-                            <p>PAC ${player.pace}</p>
-                            <p>SHO ${player.shooting}</p>
-                            <p>DRI ${player.dribbling}</p>
-                            <p>PAS ${player.passing}</p>
-                            <p>DEF ${player.defending}</p>
-                            <p>PHY ${player.physical}</p>
-                        </div>
-                        <div class="flex items-center gap-1">
-                            <img class="h-4" src="${player.flag}" alt="">
-                            <img class="h-5 object-fill" src="${player.logo}" alt="">
-                        </div>
-
+                <!-- PLAYER CARD -->
+                <div data-id="${player.id}" data-pos="${player.position}" class="player notSelected bg-gold-card m-0 text-black">
+                    <div class="w-fit font-semibold absolute top-6 left-2">
+                        <p>${player.rating}</p>
+                        <p>${player.position}</p>
                     </div>
-        `
-        }
-    })
+                    <img class="h-1/2 mt-7" src="${player.photo}" alt="">
+                    <p>${player.name}</p>
+                    <div class="flex text-xs gap-1">
+                        ${stats} <!-- Dynamic stats block -->
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <img class="h-4" src="${player.flag}" alt="">
+                        <img class="h-5 object-fill" src="${player.logo}" alt="">
+                    </div>
+                </div>
+            `;
+        });
+
+        resolve();
+    });
 };
 
-let posArray = [];
+const posArray = [];
 let selectedPlayer = null;
 let targetCard = null;
 let currentTarget = null;
@@ -304,13 +297,37 @@ emptyCard.forEach((card) => {
     card.addEventListener('click', async (e) => {
         e.preventDefault();
 
-        posArray.length = 0;
-
+        posArray.splice(0, posArray.length);
         currentTarget = e.currentTarget;
         targetCard = e.target.dataset.pos;
 
+        loading.classList.toggle('hidden');
+        await fetchExistingPlayers();
+        await loadPlayers(posArray, insertContainer);
+
+        setTimeout(() => {
+            loading.classList.add('hidden');
+            insertContainer.parentElement.parentElement.classList.remove('hidden');
+        }, 100);
+
+        const playerCards = insertContainer.querySelectorAll('.notSelected');
+
+        playerCards.forEach((playerCard) => {
+            playerCard.addEventListener('click', () => {
+                playerCards.forEach((card) => card.classList.remove('selectedCard'));
+                playerCard.classList.add('selectedCard');
+                selectedPlayer = playerCard.dataset.id;
+            });
+        });
+
+        const insertBtn = document.querySelector('#insertBtn');
+        insertBtn.addEventListener('click', applyInsert);
+    });
+});
 
 
+const fetchExistingPlayers = () => {
+    return new Promise((resolve) => {
         data.forEach((players) => {
             let existingCard = document.querySelector(`#plr${players.id}`);
             if (existingCard) {
@@ -321,32 +338,18 @@ emptyCard.forEach((card) => {
             }
         });
 
-        await loadPlayers(posArray, insertContainer);
-        insertContainer.parentElement.parentElement.classList.toggle('hidden');
-
-        const playerCards = insertContainer.querySelectorAll('.notSelected');
-
-        playerCards.forEach((playerCard) => {
-            playerCard.addEventListener('click', () => {
-                playerCards.forEach((card) => card.classList.remove('selectedCard'));
-                playerCard.classList.add('selectedCard');
-                selectedPlayer = playerCard.dataset.id;
-
-            });
-        });
-
-        let insertBtn = document.querySelector('#insertBtn');
-        insertBtn.addEventListener('click', applyInsert);
+        resolve();
     });
-});
+}
+
+let inTeam = document.querySelectorAll('.inTeam');
+
 
 const applyInsert = (e) => {
     e.preventDefault();
-    if (posArray) {
-        console.log(posArray);
-        let playerData = posArray.find(plr => String(plr.id) === selectedPlayer);
+    let playerData = posArray.find(plr => String(plr.id) === selectedPlayer);
 
-        currentTarget.innerHTML = `
+    currentTarget.innerHTML = `
                 <!-- PLAYER CARD -->
                 <div id="plr${playerData.id}" data-id="${playerData.id}" data-pos="${playerData.position}" class="player inTeam bg-gold-card m-0 text-black">
                     <div class="w-fit font-semibold absolute top-6 left-2">
@@ -370,17 +373,17 @@ const applyInsert = (e) => {
 
                 </div>
         `
-        insertContainer.parentElement.parentElement.classList.toggle('hidden');
+    
+    insertContainer.parentElement.parentElement.classList.toggle('hidden');
 
-        posArray = [];
-    }
-
-    const inTeam = document.querySelectorAll('.inTeam');
+    inTeam = document.querySelectorAll('.inTeam');
+    console.log(inTeam);
     inTeam.forEach((player) => {
-        player.addEventListener('click', (e) => {
-            e.stopPropagation();
+        player.addEventListener('click', (event) => {
+            event.stopPropagation();
 
-            displayedPlr = data.find(plr => String(plr.id) === e.currentTarget.dataset.id);
+            displayedPlr = data.find(plr => String(plr.id) === event.currentTarget.dataset.id);
+            console.log(displayedPlr);
 
             const shortStat = {
                 pace: 'PAC',
@@ -401,12 +404,10 @@ const applyInsert = (e) => {
                 }
             });
 
-            plrDisplay.classList.toggle('hidden');
+            plrDisplay.classList.remove('hidden');
         })
     })
 }
-
-
 
 searchInput.addEventListener('keyup', (e) => {
     e.stopPropagation();
