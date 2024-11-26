@@ -282,11 +282,15 @@ const loadPlayers = (players, container) => {
 let posArray = [];
 let selectedPlayer = null;
 let targetCard = null;
+let currentTarget = null;
 
 emptyCard.forEach((card) => {
     card.addEventListener('click', (e) => {
         e.preventDefault();
 
+        posArray = [];
+
+        currentTarget = e.currentTarget;
         targetCard = e.target.dataset.pos;
 
         data.forEach((players) => {
@@ -314,11 +318,10 @@ emptyCard.forEach((card) => {
 insertBtn.addEventListener('click', (e) => {
     e.preventDefault();
     if (posArray) {
-        const targetPosition = document.querySelector(`[data-pos="${targetCard}"]`);
         console.log(posArray);
         let playerData = posArray.find(plr => String(plr.id) === selectedPlayer);
 
-        targetPosition.innerHTML = `
+        currentTarget.innerHTML = `
                 <!-- PLAYER CARD -->
                 <div data-id="${playerData.id}" data-pos="${playerData.position}" class="player inFormation notSelected bg-gold-card m-0 text-black">
                     <div class="w-fit font-semibold absolute top-6 left-2">
