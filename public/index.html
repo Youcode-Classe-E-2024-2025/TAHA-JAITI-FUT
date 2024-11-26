@@ -93,7 +93,7 @@
         </div>
 
         <!-- ADD FORM -->
-        <section class="modalContainer">
+        <section class="hidden modalContainer">
             <div id="addForm" class="w-2/3 lg:w-1/2 bg-black-slate rounded-lg p-4 text-white">
                 <div class="flex justify-between">
                     <h2 class="text-center text-2xl font-bold mb-4">ADD A PLAYER</h2>
@@ -119,7 +119,16 @@
 
                         <div class="flex flex-col">
                             <label for="position" class="mb-1 text-sm font-semibold">Position</label>
-                            <input type="text" id="positionInput" placeholder="Enter position" class="input">
+                            <select class="input h-10" name="position" id="positionInput">
+                                <option value="ST">ST</option>
+                                <option value="LM">LM</option>
+                                <option value="CM">CM</option>
+                                <option value="RM">RM</option>
+                                <option value="LB">LB</option>
+                                <option value="CB">CB</option>
+                                <option value="RB">RB</option>
+                                <option value="GK">GK</option>
+                            </select>
                         </div>
                     </div>
 

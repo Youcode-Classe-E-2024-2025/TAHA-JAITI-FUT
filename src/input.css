@@ -17,7 +17,7 @@
 
   .player::before {
     content: "";
-    @apply absolute inset-0 w-full h-full rounded bg-blue-500/40 opacity-0 blur-2xl transition-all;
+    @apply absolute inset-0 w-full h-full rounded bg-blue-500/30 opacity-0 blur-2xl transition-all;
     z-index: -1;
   }
 

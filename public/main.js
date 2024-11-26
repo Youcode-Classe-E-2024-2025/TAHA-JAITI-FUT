@@ -168,6 +168,7 @@ document.querySelector('#addBtn').addEventListener('click', async (e) => {
         }
         data.push(newPlayer);
         localStorage.setItem('players', JSON.stringify(data));
+        loadPlayers(data);
 
         const succedMsg = document.createElement('p');
         succedMsg.className = "text-lime-green text-center error-msg font-bold text-xl";

@@ -718,7 +718,7 @@ video {
   height: 100%;
   width: 100%;
   border-radius: 0.25rem;
-  background-color: rgb(59 130 246 / 0.4);
+  background-color: rgb(59 130 246 / 0.3);
   opacity: 0;
   --tw-blur: blur(40px);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
@@ -947,6 +947,10 @@ video {
 
 .h-1\/2 {
   height: 50%;
+}
+
+.h-10 {
+  height: 2.5rem;
 }
 
 .h-2\/3 {
