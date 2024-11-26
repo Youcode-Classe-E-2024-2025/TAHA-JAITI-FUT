@@ -298,6 +298,7 @@ let posArray = [];
 let selectedPlayer = null;
 let targetCard = null;
 let currentTarget = null;
+let displayedPlr = null;
 
 emptyCard.forEach((card) => {
     card.addEventListener('click', async (e) => {
@@ -379,18 +380,23 @@ const applyInsert = (e) => {
         player.addEventListener('click', (e) => {
             e.stopPropagation();
 
-            const displayedPlr = data.find(plr => String(plr.id) === e.currentTarget.dataset.id);
-            console.log(displayedPlr);
+            displayedPlr = data.find(plr => String(plr.id) === e.currentTarget.dataset.id);
+
+            const shortStat = {
+                pace: 'PAC',
+                shooting: 'SHO',
+                dribbling: 'DRI',
+                passing: 'PAS',
+                defending: 'DEF',
+                physical: 'PHY',
+            };
 
             Object.keys(displayValues).forEach(key => {
-                if (['PAC', 'PAS', 'DRI', 'PHY', 'DEF', 'SHO'].includes(key)) {
-                    displayValues[key].textContent = `${key} ${displayedPlr[key]}`;
-
+                if (Object.keys(shortStat).includes(key)) {
+                    displayValues[key].textContent = `${shortStat[key]} ${displayedPlr[key]}`;
                 } else if (key === 'photo' || key === 'flag' || key === 'logo') {
-
                     displayValues[key].src = displayedPlr[key];
                 } else {
-
                     displayValues[key].textContent = displayedPlr[key];
                 }
             });
