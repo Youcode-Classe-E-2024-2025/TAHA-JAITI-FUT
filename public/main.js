@@ -85,6 +85,8 @@ const emptyCard = document.querySelectorAll('.emptyCard');
 
 const removePlr = document.querySelector('#removePlr');
 const changePlr = document.querySelector('#changePlr');
+const editPlr = document.querySelector('#editPlr');
+const deletePlr = document.querySelector('#deletePlr');
 
 const addInputs = {
     name: document.querySelector('#nameInput'),
@@ -232,44 +234,48 @@ function convertToBase64(file) {
 //loadplayers into a container
 const loadPlayers = (players, container) => {
     container.innerHTML = "";
-    players.forEach(player => {
-        const stats = player.position === 'GK'
-            ? `
-                    <p>DIV ${player.diving}</p>
-                    <p>HAN ${player.handling}</p>
-                    <p>KIC ${player.kicking}</p>
-                    <p>REF ${player.reflexes}</p>
-                    <p>SPE ${player.speed}</p>
-                    <p>POS ${player.positioning}</p>
-                  `
-            : `
-                    <p>PAC ${player.pace}</p>
-                    <p>SHO ${player.shooting}</p>
-                    <p>DRI ${player.dribbling}</p>
-                    <p>PAS ${player.passing}</p>
-                    <p>DEF ${player.defending}</p>
-                    <p>PHY ${player.physical}</p>
-                  `;
+    if (players.length === 0) {
+        container.innerHTML = '<p class="text-2xl">No players exist.</p>'
+    } else {
+        players.forEach(player => {
+            const stats = player.position === 'GK'
+                ? `
+                        <p>DIV ${player.diving}</p>
+                        <p>HAN ${player.handling}</p>
+                        <p>KIC ${player.kicking}</p>
+                        <p>REF ${player.reflexes}</p>
+                        <p>SPE ${player.speed}</p>
+                        <p>POS ${player.positioning}</p>
+                      `
+                : `
+                        <p>PAC ${player.pace}</p>
+                        <p>SHO ${player.shooting}</p>
+                        <p>DRI ${player.dribbling}</p>
+                        <p>PAS ${player.passing}</p>
+                        <p>DEF ${player.defending}</p>
+                        <p>PHY ${player.physical}</p>
+                      `;
 
-        container.innerHTML += `
-                <!-- PLAYER CARD -->
-                <div data-id="${player.id}" data-pos="${player.position}" class="player notSelected bg-gold-card m-0 text-black">
-                    <div class="w-fit font-semibold absolute top-6 left-2">
-                        <p>${player.rating}</p>
-                        <p>${player.position}</p>
+            container.innerHTML += `
+                    <!-- PLAYER CARD -->
+                    <div data-id="${player.id}" data-pos="${player.position}" class="player notSelected bg-gold-card m-0 text-black">
+                        <div class="w-fit font-semibold absolute top-6 left-2">
+                            <p>${player.rating}</p>
+                            <p>${player.position}</p>
+                        </div>
+                        <img class="h-1/2 mt-7" src="${player.photo}" alt="">
+                        <p>${player.name}</p>
+                        <div class="flex text-xs gap-1">
+                            ${stats} <!-- Dynamic stats block -->
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <img class="h-4" src="${player.flag}" alt="">
+                            <img class="h-5 object-fill" src="${player.logo}" alt="">
+                        </div>
                     </div>
-                    <img class="h-1/2 mt-7" src="${player.photo}" alt="">
-                    <p>${player.name}</p>
-                    <div class="flex text-xs gap-1">
-                        ${stats} <!-- Dynamic stats block -->
-                    </div>
-                    <div class="flex items-center gap-1">
-                        <img class="h-4" src="${player.flag}" alt="">
-                        <img class="h-5 object-fill" src="${player.logo}" alt="">
-                    </div>
-                </div>
-            `;
-    });
+                `;
+        });
+    }
 };
 
 const posArray = [];
@@ -422,6 +428,22 @@ changePlr.addEventListener('click', (e) => {
     });
 
     insertContainer.parentElement.parentElement.classList.remove('hidden');
+});
+
+deletePlr.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (currTarget) {
+        currTarget.innerHTML = `<span class="icon-[gg--add] text-4xl text-lime-green ">
+                                </span><p class="font-bold">${displayedPlr.position}</p>`;
+
+        const delIndex = data.findIndex((plr) => displayedPlr.id === plr.id);
+        if (delIndex > -1){
+            data.splice(delIndex, 1);
+            localStorage.setItem('players', JSON.stringify(data));
+        }
+
+        plrDisplay.classList.add('hidden');
+    }
 });
 
 //search playerlist
