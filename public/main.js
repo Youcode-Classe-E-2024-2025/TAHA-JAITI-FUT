@@ -373,6 +373,7 @@ const applyInsert = (e) => {
 
             displayedPlr = data.find(plr => String(plr.id) === event.currentTarget.dataset.id);
             console.log(displayedPlr);
+            currentTarget = event.currentTarget;
 
             const shortStat = {
                 pace: 'PAC',
@@ -423,8 +424,10 @@ changePlr.addEventListener('click', (e) => {
             insertPlr.forEach((card) => card.classList.remove('selectedCard'));
             plr.classList.add('selectedCard');
             selectedPlayer = plr.dataset.id;
+            console.log(selectedPlayer);
         });
     });
+
 
     insertContainer.parentElement.parentElement.classList.remove('hidden');
 });
