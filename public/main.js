@@ -93,27 +93,54 @@ const addInputs = {
     nationality: document.querySelector('#natioInput'),
     club: document.querySelector('#clubInput'),
     position: document.querySelector('#positionInput'),
+
     pace: document.querySelector('#paceInput'),
     shooting: document.querySelector('#shootingInput'),
     passing: document.querySelector('#passingInput'),
     dribbling: document.querySelector('#dribblingInput'),
     defending: document.querySelector('#defendingInput'),
     physical: document.querySelector('#physicalInput'),
+
+    diving: document.querySelector('#paceInput'),
+    handling: document.querySelector('#shootingInput'),
+    kicking: document.querySelector('#passingInput'),
+    reflexes: document.querySelector('#dribblingInput'),
+    speed: document.querySelector('#defendingInput'),
+    positioning: document.querySelector('#physicalInput'),
+
     logo: document.querySelector('#clubImageInput'),
     flag: document.querySelector('#flagImageInput'),
     photo: document.querySelector('#photoInput'),
     rating: document.querySelector('#ratingInput'),
 };
 
+addInputs.position.addEventListener('change', (e) => {
+    const value = e.target.value
+    addInputs.pace.previousElementSibling.textContent = value === 'GK' ? 'Diving' : 'Pace';
+    addInputs.shooting.previousElementSibling.textContent = value === 'GK' ? 'Handling' : 'Shooting';
+    addInputs.passing.previousElementSibling.textContent = value === 'GK' ? 'Kicking' : 'Passing';
+    addInputs.dribbling.previousElementSibling.textContent = value === 'GK' ? 'Reflexes' : 'Dribbling';
+    addInputs.defending.previousElementSibling.textContent = value === 'GK' ? 'Speed' : 'Defending';
+    addInputs.physical.previousElementSibling.textContent = value === 'GK' ? 'Positioning' : 'Physical';
+})
+
 const displayValues = {
     name: document.querySelector('.displayName'),
     position: document.querySelector('.displayPos'),
     pace: document.querySelector('.displayPAC'),
     shooting: document.querySelector('.displaySHO'),
-    passing: document.querySelector('.displayPAS'),
     dribbling: document.querySelector('.displayDRI'),
+    passing: document.querySelector('.displayPAS'),
     defending: document.querySelector('.displayDEF'),
     physical: document.querySelector('.displayPHY'),
+
+    diving: document.querySelector('.displayPAC'),
+    handling: document.querySelector('.displaySHO'),
+    kicking: document.querySelector('.displayDRI'),
+    reflexes: document.querySelector('.displayPAS'),
+    speed: document.querySelector('.displayDEF'),
+    positioning: document.querySelector('.displayPHY'),
+
     logo: document.querySelector('.displayClub'),
     flag: document.querySelector('.displayFlag'),
     photo: document.querySelector('.displayPhoto'),
@@ -266,7 +293,7 @@ const loadPlayers = (players, container) => {
                         <img class="h-1/2 mt-7" src="${player.photo}" alt="">
                         <p>${player.name}</p>
                         <div class="flex text-xs gap-1">
-                            ${stats} <!-- Dynamic stats block -->
+                            ${stats}
                         </div>
                         <div class="flex items-center gap-1">
                             <img class="h-4" src="${player.flag}" alt="">
@@ -289,7 +316,7 @@ emptyCard.forEach((card) => {
     card.addEventListener('click', async (e) => {
         e.preventDefault();
         currTarget = e.currentTarget;
-        targetCard = e.target.dataset.pos;
+        if (e.target.dataset.pos) { targetCard = e.target.dataset.pos; }
 
         loading.classList.toggle('hidden');
         fetchExistingPlayers(targetCard);
@@ -323,7 +350,7 @@ const fetchExistingPlayers = (targetPos) => {
         if (existingCard) {
             return;
         }
-        if (players.position === targetPos) {
+        if (players.position === targetPos || currTarget.dataset.sub) {
             posArray.push(players);
         }
     });
@@ -337,6 +364,25 @@ const applyInsert = (e) => {
     let playerData = posArray.find(plr => String(plr.id) === selectedPlayer);
     currTarget.innerHTML = "";
 
+    //checking the gk stats
+    const stats = playerData.position === 'GK'
+        ? `
+                        <p>DIV ${playerData.diving}</p>
+                        <p>HAN ${playerData.handling}</p>
+                        <p>KIC ${playerData.kicking}</p>
+                        <p>REF ${playerData.reflexes}</p>
+                        <p>SPE ${playerData.speed}</p>
+                        <p>POS ${playerData.positioning}</p>
+                      `
+        : `
+                        <p>PAC ${playerData.pace}</p>
+                        <p>SHO ${playerData.shooting}</p>
+                        <p>DRI ${playerData.dribbling}</p>
+                        <p>PAS ${playerData.passing}</p>
+                        <p>DEF ${playerData.defending}</p>
+                        <p>PHY ${playerData.physical}</p>
+                      `;
+
     //fill the container target html
     currTarget.innerHTML = `
                 <!-- PLAYER CARD -->
@@ -348,12 +394,7 @@ const applyInsert = (e) => {
                     <img class="h-1/2 mt-7" src="${playerData.photo}" alt="">
                     <p>${playerData.name}</p>
                     <div class="flex text-xs gap-1">
-                        <p>PAC ${playerData.pace}</p>
-                        <p>SHO ${playerData.shooting}</p>
-                        <p>DRI ${playerData.dribbling}</p>
-                        <p>PAS ${playerData.passing}</p>
-                        <p>DEF ${playerData.defending}</p>
-                        <p>PHY ${playerData.physical}</p>
+                        ${stats}
                     </div>
                     <div class="flex items-center gap-1">
                         <img class="h-4" src="${playerData.flag}" alt="">
@@ -381,11 +422,19 @@ const applyInsert = (e) => {
                 passing: 'PAS',
                 defending: 'DEF',
                 physical: 'PHY',
+                diving: 'DIV',
+                handling: 'HAN',
+                kicking: 'KIC',
+                reflexes: 'REF',
+                speed: 'SPE',
+                positioning: 'POS',
             };
 
             Object.keys(displayValues).forEach(key => {
                 if (Object.keys(shortStat).includes(key)) {
-                    displayValues[key].textContent = `${shortStat[key]} ${displayedPlr[key]}`;
+                    if (displayedPlr.position === 'GK') {
+                        displayValues[key].textContent = `${shortStat[key]} ${displayedPlr[key]}`;
+                    }
                 } else if (key === 'photo' || key === 'flag' || key === 'logo') {
                     displayValues[key].src = displayedPlr[key];
                 } else {
@@ -430,6 +479,7 @@ changePlr.addEventListener('click', (e) => {
     insertContainer.parentElement.parentElement.classList.remove('hidden');
 });
 
+//delete plr
 deletePlr.addEventListener('click', (e) => {
     e.stopPropagation();
     if (currTarget) {
@@ -437,7 +487,7 @@ deletePlr.addEventListener('click', (e) => {
                                 </span><p class="font-bold">${displayedPlr.position}</p>`;
 
         const delIndex = data.findIndex((plr) => displayedPlr.id === plr.id);
-        if (delIndex > -1){
+        if (delIndex > -1) {
             data.splice(delIndex, 1);
             localStorage.setItem('players', JSON.stringify(data));
         }
