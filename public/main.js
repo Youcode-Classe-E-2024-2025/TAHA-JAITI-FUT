@@ -13,7 +13,6 @@ const fetchData = async () => {
                 localStorage.setItem("players", JSON.stringify(data));
                 localStorage.setItem("players_loaded", "true");
                 console.log(data);
-                await loadPlayers(data, allPlayers);
                 loading.classList.add('hidden');
             }
         } catch (error) {
@@ -154,12 +153,12 @@ document.querySelector('#addBtn').addEventListener('click', async (e) => {
 
     Object.entries(addInputs).forEach(([key, input]) => {
         let errorText = null;
-        const validateField = () => {
+        const validateInputs = () => {
             if (!input.value && input.type !== 'file' && !key === 'id') {
                 return `${key} can't be empty.`;
             }
-            if (key === 'name' && !/^[a-zA-Z\s]+$/.test(input.value)) {
-                return 'Enter a valid name.';
+            if (key === 'name' && !/^[a-zA-Z\s]{1,20}$/.test(input.value)) {
+                return 'Enter a valid name (20 characters or less).';
             }
             if (['pace', 'shooting', 'passing', 'dribbling', 'defending', 'physical', 'rating'].includes(key)) {
                 if (input.value < 0 || input.value > 100) {
@@ -177,7 +176,7 @@ document.querySelector('#addBtn').addEventListener('click', async (e) => {
             }
             return null;
         };
-        errorText = validateField();
+        errorText = validateInputs();
 
         if (errorText) {
             const errorMsg = document.createElement('p');
@@ -193,6 +192,7 @@ document.querySelector('#addBtn').addEventListener('click', async (e) => {
     });
 
     if (isValid) {
+        isValid = false;
         const newPlayer = {};
 
         newPlayer.id = nextId++;
@@ -316,6 +316,7 @@ emptyCard.forEach((card) => {
 const fetchExistingPlayers = () => {
     return new Promise((resolve) => {
         data.forEach((players) => {
+            console.log('OK')
             let existingCard = document.querySelector(`#plr${players.id}`);
             if (existingCard) {
                 return;
