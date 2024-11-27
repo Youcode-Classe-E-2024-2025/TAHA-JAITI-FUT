@@ -83,6 +83,7 @@ const closeDisplay = document.querySelector('#closeDisplay');
 const closeInsert = document.querySelector("#closeInsert");
 const insertContainer = document.getElementById('insertContainer');
 const emptyCard = document.querySelectorAll('.emptyCard');
+const removePlr = document.querySelector('#removePlr');
 
 const addInputs = {
     name: document.querySelector('#nameInput'),
@@ -275,10 +276,11 @@ const loadPlayers = (players, container) => {
 };
 
 const posArray = [];
-let selectedPlayer = null;
-let targetCard = null;
-let currentTarget = null;
-let displayedPlr = null;
+let selectedPlayer;
+let targetCard;
+let currentTarget;
+let displayedPlr;
+let displayedPlrDiv;
 
 emptyCard.forEach((card) => {
     card.addEventListener('click', async (e) => {
@@ -360,7 +362,8 @@ const applyInsert = (e) => {
 
                 </div>
         `
-    
+    displayedPlrDiv = currentTarget;
+
     insertContainer.parentElement.parentElement.classList.toggle('hidden');
 
     inTeam = document.querySelectorAll('.inTeam');
@@ -394,7 +397,15 @@ const applyInsert = (e) => {
             plrDisplay.classList.remove('hidden');
         })
     })
-}
+};
+
+removePlr.addEventListener('click', (e) => {
+    e.stopPropagation();
+    displayedPlrDiv.innerHTML = `<span class="icon-[gg--add] text-4xl text-lime-green ">
+                                </span><p class="font-bold">${displayedPlr.position}</p>`;
+
+    plrDisplay.classList.add('hidden');
+});
 
 searchInput.addEventListener('keyup', (e) => {
     e.stopPropagation();
