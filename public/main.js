@@ -85,7 +85,6 @@ const closeInsert = document.querySelector("#closeInsert");
 const insertContainer = document.getElementById('insertContainer');
 const emptyCard = document.querySelectorAll('.emptyCard');
 
-
 const addInputs = {
     name: document.querySelector('#nameInput'),
     nationality: document.querySelector('#natioInput'),
@@ -200,7 +199,7 @@ document.querySelector('#addBtn').addEventListener('click', async (e) => {
 
         for (const [key, input] of Object.entries(addInputs)) {
             if (input.type === 'file' && input.files.length > 0) {
-                newPlayer[key] = await convertToWebp(input.files[0]);
+                newPlayer[key] = await convertToBase64(input.files[0]);
             } else {
                 newPlayer[key] = input.value;
             }
@@ -219,27 +218,15 @@ document.querySelector('#addBtn').addEventListener('click', async (e) => {
     }
 });
 
-function convertToWebp(file) {
+function convertToBase64(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
-        reader.onload = () => {
-            const img = new Image();
-            img.onload = () => {
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-                canvas.width = img.width;
-                canvas.height = img.height;
-                ctx.drawImage(img, 0, 0);
-                const webpDataUrl = canvas.toDataURL('image/webp');
-                resolve(webpDataUrl);
-            };
-            img.onerror = reject;
-            img.src = reader.result;
-        };
+        reader.onload = () => resolve(reader.result);
         reader.onerror = reject;
         reader.readAsDataURL(file);
     });
-};
+}
+
 
 const loadPlayers = (players, container) => {
     return new Promise((resolve) => {
@@ -343,7 +330,6 @@ const fetchExistingPlayers = () => {
 }
 
 let inTeam = document.querySelectorAll('.inTeam');
-
 
 const applyInsert = (e) => {
     e.preventDefault();
