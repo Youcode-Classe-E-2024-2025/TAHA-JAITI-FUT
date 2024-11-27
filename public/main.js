@@ -71,17 +71,21 @@ const fetchData = async () => {
 // };
 
 const formationContainer = document.getElementById('#formationContainer');
+const insertContainer = document.getElementById('insertContainer');
+const allPlayers = document.querySelector('#allPlayersContainer');
+const plrDisplay = document.getElementById('plrDisplay');
 const addForm = document.getElementById('addForm');
+const msgContainer = document.getElementById('msgContainer');
+
 const closeAdd = addForm.querySelector('#closeAdd');
 const openAdd = document.getElementById('openAdd');
-const allPlayers = document.querySelector('#allPlayersContainer');
 const closeAll = document.querySelector('#closeAll');
 const openAll = document.getElementById('openAll');
-const plrDisplay = document.getElementById('plrDisplay');
 const closeDisplay = document.querySelector('#closeDisplay');
 const closeInsert = document.querySelector("#closeInsert");
-const insertContainer = document.getElementById('insertContainer');
+
 const emptyCard = document.querySelectorAll('.emptyCard');
+const searchInput = document.querySelector('#playerSearch');
 
 const removePlr = document.querySelector('#removePlr');
 const changePlr = document.querySelector('#changePlr');
@@ -122,7 +126,7 @@ addInputs.position.addEventListener('change', (e) => {
     addInputs.dribbling.previousElementSibling.textContent = value === 'GK' ? 'Reflexes' : 'Dribbling';
     addInputs.defending.previousElementSibling.textContent = value === 'GK' ? 'Speed' : 'Defending';
     addInputs.physical.previousElementSibling.textContent = value === 'GK' ? 'Positioning' : 'Physical';
-})
+});
 
 const displayValues = {
     name: document.querySelector('.displayName'),
@@ -145,13 +149,22 @@ const displayValues = {
     flag: document.querySelector('.displayFlag'),
     photo: document.querySelector('.displayPhoto'),
     rating: document.querySelector('.displayRating'),
-}
+};
 
-const searchInput = document.querySelector('#playerSearch');
+const displayMsg = (msg,color) => {
+    msgContainer.parentElement.classList.remove('hidden');
+    const msgText = msgContainer.querySelector('#msgDisplay');
+    msgText.textContent = msg;
+    msgText.classList = `text-center text-${color}-400`;
+    msgText.nextElementSibling.addEventListener('click', (e) => {
+        e.stopPropagation();
+        msgContainer.parentElement.classList.add('hidden');
+    })
+};
 
 closeDisplay.addEventListener('click', () => {
     closeDisplay.parentElement.parentElement.classList.toggle('hidden');
-})
+});
 
 closeAdd.addEventListener('click', () => {
     addForm.parentElement.classList.toggle('hidden');
@@ -168,11 +181,11 @@ closeAll.addEventListener('click', () => {
 openAll.addEventListener('click', async () => {
     await loadPlayers(data, allPlayers);
     allPlayers.parentElement.parentElement.classList.toggle('hidden');
-})
+});
 
 closeInsert.addEventListener('click', () => {
     insertContainer.parentElement.parentElement.classList.toggle('hidden');
-})
+});
 
 document.querySelector('#addBtn').addEventListener('click', async (e) => {
     e.preventDefault();
@@ -237,13 +250,9 @@ document.querySelector('#addBtn').addEventListener('click', async (e) => {
         }
         data.push(newPlayer);
         localStorage.setItem('players', JSON.stringify(data));
-        await loadPlayers(data, allPlayers);
+        loadPlayers(data, allPlayers);
 
-        const succedMsg = document.createElement('p');
-        succedMsg.className = "text-lime-green text-center error-msg font-bold text-xl";
-        succedMsg.textContent = 'Player Added Succesfully!';
-        addForm.insertBefore(succedMsg, addForm.firstChild);
-        setTimeout(() => { succedMsg.remove(); }, 5000);
+        displayMsg('Player added successfuly.', 'green');
 
         Object.values(addInputs).forEach((input) => { input.value = ''; });
     }
@@ -481,11 +490,12 @@ changePlr.addEventListener('click', (e) => {
 
 //delete plr
 deletePlr.addEventListener('click', (e) => {
+    displayMsg('This will delete the player completly, are you sure?', 'red');
     e.stopPropagation();
-    if (currTarget) {
+
+    if (currTarget && msgContainer.parentElement.classList.contains('hidden')) {
         currTarget.innerHTML = `<span class="icon-[gg--add] text-4xl text-lime-green ">
                                 </span><p class="font-bold">${displayedPlr.position}</p>`;
-
         const delIndex = data.findIndex((plr) => displayedPlr.id === plr.id);
         if (delIndex > -1) {
             data.splice(delIndex, 1);
