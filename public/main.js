@@ -83,7 +83,9 @@ const closeDisplay = document.querySelector('#closeDisplay');
 const closeInsert = document.querySelector("#closeInsert");
 const insertContainer = document.getElementById('insertContainer');
 const emptyCard = document.querySelectorAll('.emptyCard');
+
 const removePlr = document.querySelector('#removePlr');
+const changePlr = document.querySelector('#changePlr');
 
 const addInputs = {
     name: document.querySelector('#nameInput'),
@@ -226,8 +228,7 @@ function convertToBase64(file) {
         reader.onerror = reject;
         reader.readAsDataURL(file);
     });
-}
-
+};
 
 const loadPlayers = (players, container) => {
     return new Promise((resolve) => {
@@ -285,13 +286,11 @@ let displayedPlrDiv;
 emptyCard.forEach((card) => {
     card.addEventListener('click', async (e) => {
         e.preventDefault();
-
-        posArray.splice(0, posArray.length);
         currentTarget = e.currentTarget;
         targetCard = e.target.dataset.pos;
 
         loading.classList.toggle('hidden');
-        await fetchExistingPlayers();
+        await fetchExistingPlayers(targetCard);
         await loadPlayers(posArray, insertContainer);
 
         setTimeout(() => {
@@ -314,16 +313,16 @@ emptyCard.forEach((card) => {
     });
 });
 
-
-const fetchExistingPlayers = () => {
+const fetchExistingPlayers = (targetPos) => {
     return new Promise((resolve) => {
+        posArray.splice(0, posArray.length);
+        console.log(targetPos);
         data.forEach((players) => {
-            console.log('OK')
             let existingCard = document.querySelector(`#plr${players.id}`);
             if (existingCard) {
                 return;
             }
-            if (players.position === targetCard) {
+            if (players.position === targetPos) {
                 posArray.push(players);
             }
         });
@@ -405,6 +404,29 @@ removePlr.addEventListener('click', (e) => {
                                 </span><p class="font-bold">${displayedPlr.position}</p>`;
 
     plrDisplay.classList.add('hidden');
+});
+
+changePlr.addEventListener('click', (e) => {
+    e.stopPropagation();
+
+    fetchExistingPlayers(displayedPlr.position);
+    loadPlayers(posArray, insertContainer);
+    plrDisplay.classList.add('hidden');
+
+    const insertPlr = insertContainer.querySelectorAll('.notSelected');
+    console.log(insertPlr);
+
+    insertPlr.forEach((plr) => {
+        console.log(plr);
+        plr.addEventListener('click', () => {
+            console.log('clicked');
+            insertPlr.forEach((card) => card.classList.remove('selectedCard'));
+            plr.classList.add('selectedCard');
+            selectedPlayer = plr.dataset.id;
+        });
+    });
+
+    insertContainer.parentElement.parentElement.classList.remove('hidden');
 });
 
 searchInput.addEventListener('keyup', (e) => {
