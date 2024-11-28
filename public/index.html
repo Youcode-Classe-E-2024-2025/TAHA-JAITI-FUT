@@ -307,9 +307,12 @@
 
         <!-- ERR/SCC DISPLAY -->
         <section class="hidden modalContainer z-[200]">
-            <div id="msgContainer" class="w-1/2 h-fit p-10 rounded bg-black-slate flex flex-col justify-evenly gap-4 items-center text-white">
+            <div id="msgContainer" class="w-fit h-fit p-10 rounded bg-black-slate flex flex-col justify-evenly gap-10 items-center text-white">
                 <p id="msgDisplay" class="text-center text-green-400">PLAYER ADDED SUCCESFULLY.</p>
-                <button id="closeMsg" class="submitBtn">CLOSE</button>
+                <div class="flex justify-evenly gap-6">
+                    <button id="proceedMsg" class="submitBtn hover:bg-green-500">PROCEED</button>
+                    <button id="closeMsg" class="submitBtn hover:bg-red-500">CLOSE</button>
+                </div>
             </div>
         </section>
     </main>

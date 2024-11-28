@@ -92,6 +92,13 @@ const changePlr = document.querySelector('#changePlr');
 const editPlr = document.querySelector('#editPlr');
 const deletePlr = document.querySelector('#deletePlr');
 
+const msgText = msgContainer.querySelector('#msgDisplay');
+const closeMsg = msgContainer.querySelector('#closeMsg');
+const proceedBtn = msgContainer.querySelector('#proceedMsg');
+
+const posArray = [];
+
+
 const addInputs = {
     name: document.querySelector('#nameInput'),
     nationality: document.querySelector('#natioInput'),
@@ -151,15 +158,28 @@ const displayValues = {
     rating: document.querySelector('.displayRating'),
 };
 
-const displayMsg = (msg,color) => {
+//dynamic msg display using callback
+const displayMsg = (msg, color, confirm, callback) => {
     msgContainer.parentElement.classList.remove('hidden');
-    const msgText = msgContainer.querySelector('#msgDisplay');
     msgText.textContent = msg;
     msgText.classList = `text-center text-${color}-400`;
-    msgText.nextElementSibling.addEventListener('click', (e) => {
+
+    if (confirm) {
+        proceedBtn.classList.remove('hidden');
+        proceedBtn.onclick = (e) => {
+            e.stopPropagation();
+            msgContainer.parentElement.classList.add('hidden');
+            callback('confirmed');
+        };
+    } else {
+        proceedBtn.classList.add('hidden');
+    }
+
+    closeMsg.onclick = (e) => {
         e.stopPropagation();
         msgContainer.parentElement.classList.add('hidden');
-    })
+        callback('cancel');
+    };
 };
 
 closeDisplay.addEventListener('click', () => {
@@ -314,7 +334,6 @@ const loadPlayers = (players, container) => {
     }
 };
 
-const posArray = [];
 let selectedPlayer;
 let targetCard; //the target card position
 let currTarget; //variable for the currenttarget that comes from empty card
@@ -490,20 +509,23 @@ changePlr.addEventListener('click', (e) => {
 
 //delete plr
 deletePlr.addEventListener('click', (e) => {
-    displayMsg('This will delete the player completly, are you sure?', 'red');
     e.stopPropagation();
-
-    if (currTarget && msgContainer.parentElement.classList.contains('hidden')) {
-        currTarget.innerHTML = `<span class="icon-[gg--add] text-4xl text-lime-green ">
-                                </span><p class="font-bold">${displayedPlr.position}</p>`;
-        const delIndex = data.findIndex((plr) => displayedPlr.id === plr.id);
-        if (delIndex > -1) {
-            data.splice(delIndex, 1);
-            localStorage.setItem('players', JSON.stringify(data));
+    displayMsg('This will delete the player completely. Are you sure?', 'red', true, (res) => {
+        if (currTarget && msgContainer.parentElement.classList.contains('hidden') && res === 'confirmed') {
+            currTarget.innerHTML = `<span class="icon-[gg--add] text-4xl text-lime-green ">
+                                    </span><p class="font-bold">${displayedPlr.position}</p>`;
+            const delIndex = data.findIndex((plr) => displayedPlr.id === plr.id);
+            if (delIndex > -1) {
+                data.splice(delIndex, 1);
+                localStorage.setItem('players', JSON.stringify(data));
+            }
+    
+            plrDisplay.classList.add('hidden');
+        } else {
+            return;
         }
-
-        plrDisplay.classList.add('hidden');
-    }
+    });
+    
 });
 
 //search playerlist
