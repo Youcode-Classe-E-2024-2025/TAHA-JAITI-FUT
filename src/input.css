@@ -4,15 +4,15 @@
 
 @layer components {
   .player {
-    @apply transition-all relative m-auto h-[15rem] w-[10rem] bg-card bg-cover bg-top bg-no-repeat text-white text-center flex p-2 flex-col justify-center items-center z-10;
+    @apply transition-all relative m-auto h-[15rem] w-[10rem]  bg-cover bg-top bg-no-repeat text-white text-center flex p-2 flex-col justify-center items-center z-10;
   }
 
   .player:hover {
-    @apply scale-105 filter cursor-pointer brightness-125;
+    @apply scale-105 filter cursor-pointer;
   }
 
   .player:active {
-    @apply scale-100 opacity-100;
+    @apply scale-100;
   }
 
   .player::before {

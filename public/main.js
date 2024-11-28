@@ -96,7 +96,7 @@ const msgText = msgContainer.querySelector('#msgDisplay');
 const closeMsg = msgContainer.querySelector('#closeMsg');
 const proceedBtn = msgContainer.querySelector('#proceedMsg');
 
-const posArray = [];
+let posArray = [];
 
 
 const addInputs = {
@@ -178,7 +178,6 @@ const displayMsg = (msg, color, confirm, callback) => {
     closeMsg.onclick = (e) => {
         e.stopPropagation();
         msgContainer.parentElement.classList.add('hidden');
-        callback('cancel');
     };
 };
 
@@ -207,6 +206,7 @@ closeInsert.addEventListener('click', () => {
     insertContainer.parentElement.parentElement.classList.toggle('hidden');
 });
 
+//add button
 document.querySelector('#addBtn').addEventListener('click', async (e) => {
     e.preventDefault();
 
@@ -215,6 +215,7 @@ document.querySelector('#addBtn').addEventListener('click', async (e) => {
 
     let isValid = true;
 
+    //input validation
     Object.entries(addInputs).forEach(([key, input]) => {
         let errorText = null;
         const validateInputs = () => {
@@ -272,7 +273,7 @@ document.querySelector('#addBtn').addEventListener('click', async (e) => {
         localStorage.setItem('players', JSON.stringify(data));
         loadPlayers(data, allPlayers);
 
-        displayMsg('Player added successfuly.', 'green');
+        displayMsg('Player added successfuly.', 'green', false);
 
         Object.values(addInputs).forEach((input) => { input.value = ''; });
     }
@@ -347,12 +348,13 @@ emptyCard.forEach((card) => {
         if (e.target.dataset.pos) { targetCard = e.target.dataset.pos; }
 
         loading.classList.toggle('hidden');
-        fetchExistingPlayers(targetCard);
-        loadPlayers(posArray, insertContainer);
+        posArray.length = 0;
+        posArray = fetchExistingPlayers(targetCard);
+        loadPlayers(posArray, insertContainer);//load players into the container
 
         setTimeout(() => {
             loading.classList.add('hidden');
-            insertContainer.parentElement.parentElement.classList.remove('hidden');
+            insertContainer.parentElement.parentElement.classList.remove('hidden');// display container
         }, 100);
 
         //selection
@@ -372,16 +374,17 @@ emptyCard.forEach((card) => {
 
 //check for existing players with the same pos
 const fetchExistingPlayers = (targetPos) => {
-    posArray.splice(0, posArray.length);
+    let arr = [];
     data.forEach((players) => {
         let existingCard = document.querySelector(`#plr${players.id}`);
         if (existingCard) {
             return;
         }
         if (players.position === targetPos || currTarget.dataset.sub) {
-            posArray.push(players);
+            arr.push(players);
         }
     });
+    return arr;
 }
 
 let inTeam = document.querySelectorAll('.inTeam');
@@ -412,6 +415,7 @@ const applyInsert = (e) => {
                       `;
 
     //fill the container target html
+    currTarget.classList.remove('bg-card');
     currTarget.innerHTML = `
                 <!-- PLAYER CARD -->
                 <div id="plr${playerData.id}" data-id="${playerData.id}" data-pos="${playerData.position}" class="player inTeam bg-gold-card m-0 text-black">
@@ -450,6 +454,7 @@ const applyInsert = (e) => {
                 passing: 'PAS',
                 defending: 'DEF',
                 physical: 'PHY',
+
                 diving: 'DIV',
                 handling: 'HAN',
                 kicking: 'KIC',
@@ -478,6 +483,7 @@ const applyInsert = (e) => {
 //remove plr
 removePlr.addEventListener('click', (e) => {
     e.stopPropagation();
+    currTarget.classList.add('bg-card');
     currTarget.innerHTML = `<span class="icon-[gg--add] text-4xl text-lime-green ">
                                 </span><p class="font-bold">${displayedPlr.position}</p>`;
     plrDisplay.classList.add('hidden');
@@ -512,20 +518,23 @@ deletePlr.addEventListener('click', (e) => {
     e.stopPropagation();
     displayMsg('This will delete the player completely. Are you sure?', 'red', true, (res) => {
         if (currTarget && msgContainer.parentElement.classList.contains('hidden') && res === 'confirmed') {
+
+            currTarget.classList.add('bg-card');
             currTarget.innerHTML = `<span class="icon-[gg--add] text-4xl text-lime-green ">
                                     </span><p class="font-bold">${displayedPlr.position}</p>`;
             const delIndex = data.findIndex((plr) => displayedPlr.id === plr.id);
             if (delIndex > -1) {
                 data.splice(delIndex, 1);
                 localStorage.setItem('players', JSON.stringify(data));
+                displayMsg('Player deleted successfuly!', 'green', false);
             }
-    
+
             plrDisplay.classList.add('hidden');
         } else {
             return;
         }
     });
-    
+
 });
 
 //search playerlist
