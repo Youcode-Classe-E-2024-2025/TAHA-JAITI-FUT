@@ -1,26 +1,13 @@
+import fetch from "./componants/fetch.js";
+import { createPlayerDiv } from "./componants/createPlayerDiv.js";
+import { loadPlayers } from "./componants/loadPlayers.js";
+import { displayMsg } from "./componants/displayMsg.js";
+import { validateInputs } from "./componants/validateInputs.js";
+
 const loading = document.getElementById('loadingScreen');
 let data = JSON.parse(localStorage.getItem("players") || "[]");
 let nextId = data.length > 0 ? data.length + 1 : 1;
 
-
-const fetchData = async () => {
-    if (data.length === 0 && !localStorage.getItem("players_loaded")) {
-        try {
-            const response = await axios.get('./players.json');
-            if (response.data && response.data.players) {
-                data = response.data.players;
-                localStorage.setItem("players", JSON.stringify(data));
-                localStorage.setItem("players_loaded", "true");
-                console.log(data);
-                loading.classList.add('hidden');
-            }
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
-    } else {
-        loading.classList.add('hidden');
-    }
-}
 
 // const formations = {
 //     "4-3-3": [
@@ -75,7 +62,6 @@ const insertContainer = document.getElementById('insertContainer');
 const allPlayers = document.querySelector('#allPlayersContainer');
 const plrDisplay = document.getElementById('plrDisplay');
 const addForm = document.getElementById('addForm');
-const msgContainer = document.getElementById('msgContainer');
 
 const closeAdd = addForm.querySelector('#closeAdd');
 const openAdd = document.getElementById('openAdd');
@@ -86,7 +72,6 @@ const closeDisplay = document.querySelector('#closeDisplay');
 const insertBtn = document.querySelector('#insertBtn');
 const closeInsert = document.querySelector("#closeInsert");
 
-const emptyCard = document.querySelectorAll('.emptyCard');
 const searchInput = document.querySelector('#playerSearch');
 
 const removePlr = document.querySelector('#removePlr');
@@ -94,9 +79,6 @@ const changePlr = document.querySelector('#changePlr');
 const editPlr = document.querySelector('#editPlr');
 const deletePlr = document.querySelector('#deletePlr');
 
-const msgText = msgContainer.querySelector('#msgDisplay');
-const closeMsg = msgContainer.querySelector('#closeMsg');
-const proceedBtn = msgContainer.querySelector('#proceedMsg');
 
 let posArray = JSON.parse(localStorage.getItem('playersInTeam')) || [];
 
@@ -187,84 +169,6 @@ addInputs.position.addEventListener('change', (e) => {
     addInputs.physical.previousElementSibling.textContent = value === 'GK' ? 'Positioning' : 'Physical';
 });
 
-const createPlayerDiv = (player) => {
-    const stats = player.position === 'GK'
-                ? `
-                        <p>DIV ${player.diving}</p>
-                        <p>HAN ${player.handling}</p>
-                        <p>KIC ${player.kicking}</p>
-                        <p>REF ${player.reflexes}</p>
-                        <p>SPE ${player.speed}</p>
-                        <p>POS ${player.positioning}</p>
-                      `
-                : `
-                        <p>PAC ${player.pace}</p>
-                        <p>SHO ${player.shooting}</p>
-                        <p>DRI ${player.dribbling}</p>
-                        <p>PAS ${player.passing}</p>
-                        <p>DEF ${player.defending}</p>
-                        <p>PHY ${player.physical}</p>
-                      `;
-                      
-    const newDiv = document.createElement('div');
-    newDiv.innerHTML = `<div class="w-fit font-semibold absolute top-6 left-2">
-                            <p>${player.rating}</p>
-                            <p>${player.position}</p>
-                        </div>
-                        <img class="h-1/2 mt-7" src="${player.photo}" alt="">
-                        <p>${player.name}</p>
-                        <div class="flex text-xs gap-1">
-                            ${stats}
-                        </div>
-                        <div class="flex items-center gap-1">
-                            <img class="h-4" src="${player.flag}" alt="">
-                            <img class="h-5 object-fill" src="${player.logo}" alt="">
-                        </div>`    
-
-    newDiv.className = "player inTeam notSelected bg-gold-card m-0 text-black";
-    newDiv.dataset.pos = `${player.position}`;
-    newDiv.dataset.id = `${player.id}`;
-    newDiv.id = `plr${player.id}`
-    
-    return newDiv;
-};
-
-//loadplayers into a container
-const loadPlayers = (players, container) => {
-    container.innerHTML = "";
-    if (players.length === 0) {
-        container.innerHTML = '<p class="text-2xl">No players exist.</p>'
-    } else {
-        players.forEach(player => {
-            const newDiv = createPlayerDiv(player);
-            container.appendChild(newDiv);
-        });
-    }
-};
-
-//dynamic msg display using callback
-const displayMsg = (msg, color, confirm, callback) => {
-    msgContainer.parentElement.classList.remove('hidden');
-    msgText.textContent = msg;
-    msgText.classList = `text-center text-${color}-400`;
-
-    if (confirm) {
-        proceedBtn.classList.remove('hidden');
-        proceedBtn.onclick = (e) => {
-            e.stopPropagation();
-            msgContainer.parentElement.classList.add('hidden');
-            callback('confirmed');
-        };
-    } else {
-        proceedBtn.classList.add('hidden');
-    }
-
-    closeMsg.onclick = (e) => {
-        e.stopPropagation();
-        msgContainer.parentElement.classList.add('hidden');
-    };
-};
-
 //add button
 document.querySelector('#addBtn').addEventListener('click', async (e) => {
     e.preventDefault();
@@ -277,29 +181,6 @@ document.querySelector('#addBtn').addEventListener('click', async (e) => {
     //input validation
     Object.entries(addInputs).forEach(([key, input]) => {
         let errorText = null;
-        const validateInputs = () => {
-            if (!input.value && input.type !== 'file' && key !== 'id') {
-                return `${key} can't be empty.`;
-            }
-            if (key === 'name' && !/^[a-zA-Z\s]{1,20}$/.test(input.value)) {
-                return 'Enter a valid name (20 characters or less).';
-            }
-            if (['pace', 'shooting', 'passing', 'dribbling', 'defending', 'physical', 'rating'].includes(key)) {
-                if (input.value < 0 || input.value > 100) {
-                    return `${key} must be between 0 and 100.`;
-                }
-            }
-            if (key === 'position') {
-                const validPositions = ['ST', 'LW', 'RW', 'CDM', 'CAM', 'CM', 'RM', 'LM', 'CB', 'RB', 'LB', 'GK'];
-                if (!validPositions.includes(input.value.toUpperCase())) {
-                    return `Select a valid position.`;
-                }
-            }
-            if (input.type === 'file' && !input.files.length) {
-                return `Please upload a file for ${key}.`;
-            }
-            return null;
-        };
         errorText = validateInputs();
 
         if (errorText) {
@@ -538,4 +419,4 @@ searchInput.addEventListener('keyup', (e) => {
     }
 });
 
-document.addEventListener('DOMContentLoaded', fetchData);
+document.addEventListener('DOMContentLoaded', fetch);
