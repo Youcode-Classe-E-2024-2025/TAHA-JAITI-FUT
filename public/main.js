@@ -98,7 +98,7 @@ const msgText = msgContainer.querySelector('#msgDisplay');
 const closeMsg = msgContainer.querySelector('#closeMsg');
 const proceedBtn = msgContainer.querySelector('#proceedMsg');
 
-let posArray = [];
+let posArray = JSON.parse(localStorage.getItem('playersInTeam')) || [];
 
 //inputs for adding
 const addInputs = {
@@ -187,14 +187,8 @@ addInputs.position.addEventListener('change', (e) => {
     addInputs.physical.previousElementSibling.textContent = value === 'GK' ? 'Positioning' : 'Physical';
 });
 
-//loadplayers into a container
-const loadPlayers = (players, container) => {
-    container.innerHTML = "";
-    if (players.length === 0) {
-        container.innerHTML = '<p class="text-2xl">No players exist.</p>'
-    } else {
-        players.forEach(player => {
-            const stats = player.position === 'GK'
+const createPlayerDiv = (player) => {
+    const stats = player.position === 'GK'
                 ? `
                         <p>DIV ${player.diving}</p>
                         <p>HAN ${player.handling}</p>
@@ -211,11 +205,9 @@ const loadPlayers = (players, container) => {
                         <p>DEF ${player.defending}</p>
                         <p>PHY ${player.physical}</p>
                       `;
-
-            container.innerHTML += `
-                    <!-- PLAYER CARD -->
-                    <div data-id="${player.id}" data-pos="${player.position}" class="player notSelected bg-gold-card m-0 text-black">
-                        <div class="w-fit font-semibold absolute top-6 left-2">
+                      
+    const newDiv = document.createElement('div');
+    newDiv.innerHTML = `<div class="w-fit font-semibold absolute top-6 left-2">
                             <p>${player.rating}</p>
                             <p>${player.position}</p>
                         </div>
@@ -227,9 +219,25 @@ const loadPlayers = (players, container) => {
                         <div class="flex items-center gap-1">
                             <img class="h-4" src="${player.flag}" alt="">
                             <img class="h-5 object-fill" src="${player.logo}" alt="">
-                        </div>
-                    </div>
-                `;
+                        </div>`    
+
+    newDiv.className = "player inTeam notSelected bg-gold-card m-0 text-black";
+    newDiv.dataset.pos = `${player.position}`;
+    newDiv.dataset.id = `${player.id}`;
+    newDiv.id = `plr${player.id}`
+    
+    return newDiv;
+};
+
+//loadplayers into a container
+const loadPlayers = (players, container) => {
+    container.innerHTML = "";
+    if (players.length === 0) {
+        container.innerHTML = '<p class="text-2xl">No players exist.</p>'
+    } else {
+        players.forEach(player => {
+            const newDiv = createPlayerDiv(player);
+            container.appendChild(newDiv);
         });
     }
 };
@@ -341,7 +349,6 @@ function convertToBase64(file) {
 };
 
 let selectedPlayer;
-let targetCard; //the target card position
 let currTarget; //the card container that holds position data
 let displayedPlr;
 
@@ -349,111 +356,33 @@ let displayedPlr;
 //check for existing players with the same pos
 const fetchExistingPlayers = (targetPos) => {
     let arr = [];
+    
+    insertContainer.innerHTML ="";
+
     data.forEach((players) => {
         let existingCard = document.getElementById(`plr${players.id}`);
-        if (existingCard) {
-            return;
-        }
-        if (players.position === targetPos && !existingCard || currTarget.dataset.sub) {
+
+        if ((players.position === targetPos && !existingCard)) {
             arr.push(players);
         }
     });
+
+    posArray = arr;
     return arr;
 };
 
 //applying the insertion
-const applyInsert = (e) => {
-    e.preventDefault();
+const applyInsert = () => {
     let playerData = posArray.find(plr => String(plr.id) === selectedPlayer);
     currTarget.innerHTML = "";
 
-    //checking the gk stats
-    const stats = playerData.position === 'GK'
-        ? `
-                        <p>DIV ${playerData.diving}</p>
-                        <p>HAN ${playerData.handling}</p>
-                        <p>KIC ${playerData.kicking}</p>
-                        <p>REF ${playerData.reflexes}</p>
-                        <p>SPE ${playerData.speed}</p>
-                        <p>POS ${playerData.positioning}</p>
-                      `
-        : `
-                        <p>PAC ${playerData.pace}</p>
-                        <p>SHO ${playerData.shooting}</p>
-                        <p>DRI ${playerData.dribbling}</p>
-                        <p>PAS ${playerData.passing}</p>
-                        <p>DEF ${playerData.defending}</p>
-                        <p>PHY ${playerData.physical}</p>
-                      `;
-
     //fill the container target html
     currTarget.classList.remove('bg-card', 'emptyCard');
-    currTarget.innerHTML = `
-                <!-- PLAYER CARD -->
-                <div id="plr${playerData.id}" data-id="${playerData.id}" data-pos="${playerData.position}" class="player inTeam bg-gold-card m-0 text-black">
-                    <div class="w-fit font-semibold absolute top-6 left-2">
-                        <p>${playerData.rating}</p>
-                        <p>${playerData.position}</p>
-                    </div>
-                    <img class="h-1/2 mt-7" src="${playerData.photo}" alt="">
-                    <p>${playerData.name}</p>
-                    <div class="flex text-xs gap-1">
-                        ${stats}
-                    </div>
-                    <div class="flex items-center gap-1">
-                        <img class="h-4" src="${playerData.flag}" alt="">
-                        <img class="h-5 object-fill" src="${playerData.logo}" alt="">
-                    </div>
-                </div>
-        `
+    const plrDiv = createPlayerDiv(playerData);
+
+    currTarget.appendChild(plrDiv);
+
     insertContainer.parentElement.parentElement.classList.toggle('hidden');
-
-    //adding displayplr eventlistners
-    const inTeam = document.querySelectorAll('.inTeam');
-
-    // inTeam.forEach((player) => {
-    //     const cleanPlayer = player.cloneNode(true);
-    //     player.replaceWith(cleanPlayer);
-
-    //     cleanPlayer.addEventListener('click', (event) => {
-    //         event.stopPropagation();
-    //         const playerId = cleanPlayer.dataset.id;
-    //         displayedPlr = data.find(plr => String(plr.id) === playerId);
-    //         console.log(displayedPlr);
-
-    //         currTarget = cleanPlayer.parentElement;
-
-    //         const shortStat = {
-    //             pace: 'PAC',
-    //             shooting: 'SHO',
-    //             dribbling: 'DRI',
-    //             passing: 'PAS',
-    //             defending: 'DEF',
-    //             physical: 'PHY',
-    //             diving: 'DIV',
-    //             handling: 'HAN',
-    //             kicking: 'KIC',
-    //             reflexes: 'REF',
-    //             speed: 'SPE',
-    //             positioning: 'POS',
-    //         };
-
-    //         Object.keys(displayValues).forEach(key => {
-    //             if (Object.keys(shortStat).includes(key)) {
-    //                 if (displayedPlr.position === 'GK') {
-    //                     displayValues[key].textContent = `${shortStat[key]} ${displayedPlr[key]}`;
-    //                 }
-    //             } else if (key === 'photo' || key === 'flag' || key === 'logo') {
-    //                 displayValues[key].src = displayedPlr[key];
-    //             } else {
-    //                 displayValues[key].textContent = displayedPlr[key];
-    //             }
-    //         });
-
-    //         plrDisplay.classList.remove('hidden');
-    //     });
-    // });
-
 };
 
 //event listeners for players that are in team so we can display data
@@ -501,22 +430,20 @@ formationContainer.addEventListener('click', (event) => {
     plrDisplay.classList.remove('hidden');
 });
 
-//event listeners for emptycards so we can insert a player
+//insert a player to an emptycard
 formationContainer.addEventListener('click', (e) => {
     const card = e.target.closest('.emptyCard');
     if (!card) return;
 
-    e.stopPropagation();
-    e.preventDefault();
-
     currTarget = card;
-    if (e.target.dataset.pos) {
-        targetCard = e.target.dataset.pos;
-    }
+    const targetCard = card.dataset.pos;
+    
+    
 
     loading.classList.toggle('hidden');
-    posArray.length = 0;
     posArray = fetchExistingPlayers(targetCard);
+        
+
     loadPlayers(posArray, insertContainer);
     setTimeout(() => {
         loading.classList.add('hidden');
@@ -551,7 +478,6 @@ changePlr.addEventListener('click', (e) => {
     e.stopPropagation();
 
     //fetch for players based on the position of the displayed plr
-    posArray.length = 0;
     posArray = fetchExistingPlayers(displayedPlr.position);
     loadPlayers(posArray, insertContainer);
     plrDisplay.classList.add('hidden');
@@ -574,12 +500,14 @@ changePlr.addEventListener('click', (e) => {
 deletePlr.addEventListener('click', (e) => {
     e.stopPropagation();
     displayMsg('This will delete the player completely. Are you sure?', 'red', true, (res) => {
-        if (currTarget && msgContainer.parentElement.classList.contains('hidden') && res === 'confirmed') {
+        if (currTarget && res === 'confirmed') {
 
-            currTarget.classList.add('bg-card');
+            currTarget.classList.add('bg-card', 'emptyCard');
             currTarget.innerHTML = `<span class="icon-[gg--add] text-4xl text-lime-green ">
                                     </span><p class="font-bold">${displayedPlr.position}</p>`;
+
             const delIndex = data.findIndex((plr) => displayedPlr.id === plr.id);
+
             if (delIndex > -1) {
                 data.splice(delIndex, 1);
                 localStorage.setItem('players', JSON.stringify(data));
@@ -591,7 +519,6 @@ deletePlr.addEventListener('click', (e) => {
             return;
         }
     });
-
 });
 
 //search playerlist
