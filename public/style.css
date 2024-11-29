@@ -772,7 +772,7 @@ video {
   opacity: 1;
 }
 
-.\!input {
+.input {
   width: 100%;
   border-radius: 0.125rem;
   border-width: 1px;
@@ -785,7 +785,7 @@ video {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
-.input {
+.\!input {
   width: 100%;
   border-radius: 0.125rem;
   border-width: 1px;
