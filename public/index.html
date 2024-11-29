@@ -218,6 +218,100 @@
             </div>
         </section>
 
+        <!-- EDIT FORM -->
+        <section class="hidden modalContainer z-[100]">
+            <div id="editForm" class="w-2/3 lg:w-1/2 bg-black-slate rounded-lg p-4 text-white">
+                <div class="flex justify-between">
+                    <h2 class="text-center text-2xl font-bold mb-4">EDIT PLAYER</h2>
+                    <span id="closeEdit" class="icon-[meteor-icons--xmark] iconBtn"></span>
+                </div>
+                <form class="flex flex-col gap-4">
+                    <!-- Info Column -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="flex flex-col">
+                            <label for="name" class="mb-1 text-sm font-semibold">Player Name</label>
+                            <input type="text" id="nameEdit" placeholder="Enter player name" class="input ">
+                        </div>
+
+                        <div class="flex flex-col">
+                            <label for="nationality" class="mb-1 text-sm font-semibold">Nationality</label>
+                            <input type="text" id="natioEdit" placeholder="Enter nationality" class="input">
+                        </div>
+
+                        <div class="flex flex-col">
+                            <label for="club" class="mb-1 text-sm font-semibold">Club Name</label>
+                            <input type="text" id="clubEdit" placeholder="Enter club name" class="input ">
+                        </div>
+
+                        <div class="flex flex-col">
+                            <label for="position" class="mb-1 text-sm font-semibold">Position</label>
+                            <select class="input h-10" name="position" id="positionEdit">
+                                <option value="ST">ST</option>
+                                <option value="LM">LM</option>
+                                <option value="CM">CM</option>
+                                <option value="RM">RM</option>
+                                <option value="LB">LB</option>
+                                <option value="CB">CB</option>
+                                <option value="RB">RB</option>
+                                <option value="GK">GK</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Stats Section -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="flex flex-col">
+                            <label for="pace" class="mb-1 text-sm font-semibold">Pace</label>
+                            <input type="number" id="paceEdit" placeholder="Pace (0-100)" class="input" min="0"
+                                max="100">
+                        </div>
+
+                        <div class="flex flex-col">
+                            <label for="shooting" class="mb-1 text-sm font-semibold">Shooting</label>
+                            <input type="number" id="shootingEdit" placeholder="Shooting (0-100)" class="input" min="0"
+                                max="100">
+                        </div>
+
+                        <div class="flex flex-col">
+                            <label for="passing" class="mb-1 text-sm font-semibold">Passing</label>
+                            <input type="number" id="passingEdit" placeholder="Passing (0-100)" class="input" min="0"
+                                max="100">
+                        </div>
+
+                        <div class="flex flex-col">
+                            <label for="Dribbling" class="mb-1 text-sm font-semibold">Dribbling</label>
+                            <input type="number" id="dribblingEdit" placeholder="Dribbling (0-100)" class="input"
+                                min="0" max="100">
+                        </div>
+
+                        <div class="flex flex-col">
+                            <label for="Defending" class="mb-1 text-sm font-semibold">Defending</label>
+                            <input type="number" id="defendingEdit" placeholder="Defending (0-100)" class="input"
+                                min="0" max="100">
+                        </div>
+
+                        <div class="flex flex-col">
+                            <label for="Physical" class="mb-1 text-sm font-semibold">Physical</label>
+                            <input type="number" id="physicalEdit" placeholder="Physical (0-100)" class="input" min="0"
+                                max="100">
+                        </div>
+                        <div class="flex flex-col">
+                            <label for="rating" class="mb-1 text-sm font-semibold">Rating</label>
+                            <input type="number" id="ratingEdit" placeholder="Rating (0-100)" class="input" min="0"
+                                max="100">
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="flex justify-center mt-4">
+                        <button id="editBtn" class="submitBtn">
+                            Submit Player
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
         <!-- DISPLAY FORM -->
         <section id="plrDisplay" class="hidden modalContainer gap-12 flex-col md:flex-row z-50">
             <!-- PLAYER CARD -->
@@ -308,7 +402,7 @@
         <!-- ERR/SCC DISPLAY -->
         <section class="hidden modalContainer z-[200]">
             <div id="msgContainer" class="w-fit h-fit p-10 rounded bg-black-slate flex flex-col justify-evenly gap-10 items-center text-white">
-                <p id="msgDisplay" class="text-center text-green-400">PLAYER ADDED SUCCESFULLY.</p>
+                <p id="msgDisplay" class="text-center text-blue-400">PLAYER ADDED SUCCESFULLY.</p>
                 <div class="flex justify-evenly gap-6">
                     <button id="proceedMsg" class="submitBtn hover:bg-green-500">PROCEED</button>
                     <button id="closeMsg" class="submitBtn hover:bg-red-500">CLOSE</button>

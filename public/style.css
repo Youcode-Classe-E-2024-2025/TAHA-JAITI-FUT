@@ -927,6 +927,10 @@ video {
   z-index: 200;
 }
 
+.z-\[100\] {
+  z-index: 100;
+}
+
 .col-span-4 {
   grid-column: span 4 / span 4;
 }
@@ -1348,6 +1352,11 @@ video {
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+
+.text-blue-400 {
+  --tw-text-opacity: 1;
+  color: rgb(96 165 250 / var(--tw-text-opacity, 1));
 }
 
 .bg-blend-screen {

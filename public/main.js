@@ -8,8 +8,8 @@ import { fetchExistingPlayers } from "./componants/fetchExistingPlayers.js";
 let data = JSON.parse(localStorage.getItem("players") || "[]");
 
 fetchData().then(fetchedData => {
-  data = fetchedData;
-  console.log("Updated the data:", data);
+    data = fetchedData;
+    console.log("Updated the data:", data);
 });
 
 
@@ -69,12 +69,15 @@ const insertContainer = document.getElementById('insertContainer');
 const allPlayers = document.querySelector('#allPlayersContainer');
 const plrDisplay = document.getElementById('plrDisplay');
 const addForm = document.getElementById('addForm');
+const editForm = document.getElementById('editForm');
 
 const closeAdd = addForm.querySelector('#closeAdd');
 const openAdd = document.getElementById('openAdd');
 const closeAll = document.querySelector('#closeAll');
 const openAll = document.getElementById('openAll');
 const closeDisplay = document.querySelector('#closeDisplay');
+const editBtn = document.getElementById('editBtn');
+const closeEdit = document.getElementById('closeEdit');
 
 const insertBtn = document.querySelector('#insertBtn');
 const closeInsert = document.querySelector("#closeInsert");
@@ -140,6 +143,30 @@ const displayValues = {
     rating: document.querySelector('.displayRating'),
 };
 
+//inputs for editing
+const editInputs = {
+    name: editForm.querySelector('#nameEdit'),
+    nationality: editForm.querySelector('#natioEdit'),
+    club: editForm.querySelector('#clubEdit'),
+    position: editForm.querySelector('#positionEdit'),
+
+    pace: editForm.querySelector('#paceEdit'),
+    shooting: editForm.querySelector('#shootingEdit'),
+    passing: editForm.querySelector('#passingEdit'),
+    dribbling: editForm.querySelector('#dribblingEdit'),
+    defending: editForm.querySelector('#defendingEdit'),
+    physical: editForm.querySelector('#physicalEdit'),
+
+    diving: editForm.querySelector('#paceEdit'),
+    handling: editForm.querySelector('#shootingEdit'),
+    kicking: editForm.querySelector('#passingEdit'),
+    reflexes: editForm.querySelector('#dribblingEdit'),
+    speed: editForm.querySelector('#defendingEdit'),
+    positioning: editForm.querySelector('#physicalEdit'),
+
+    rating: editForm.querySelector('#ratingEdit'),
+};
+
 closeDisplay.addEventListener('click', () => {
     closeDisplay.parentElement.parentElement.classList.toggle('hidden');
 });
@@ -166,6 +193,10 @@ closeInsert.addEventListener('click', () => {
     insertContainer.parentElement.parentElement.classList.toggle('hidden');
 });
 
+closeEdit.addEventListener('click', () => {
+    editForm.parentElement.classList.toggle('hidden');
+});
+
 //accomodating for gk inputs
 addInputs.position.addEventListener('change', (e) => {
     const value = e.target.value
@@ -175,6 +206,15 @@ addInputs.position.addEventListener('change', (e) => {
     addInputs.dribbling.previousElementSibling.textContent = value === 'GK' ? 'Reflexes' : 'Dribbling';
     addInputs.defending.previousElementSibling.textContent = value === 'GK' ? 'Speed' : 'Defending';
     addInputs.physical.previousElementSibling.textContent = value === 'GK' ? 'Positioning' : 'Physical';
+});
+editInputs.position.addEventListener('change', (e) => {
+    const value = e.target.value
+    editInputs.pace.previousElementSibling.textContent = value === 'GK' ? 'Diving' : 'Pace';
+    editInputs.shooting.previousElementSibling.textContent = value === 'GK' ? 'Handling' : 'Shooting';
+    editInputs.passing.previousElementSibling.textContent = value === 'GK' ? 'Kicking' : 'Passing';
+    editInputs.dribbling.previousElementSibling.textContent = value === 'GK' ? 'Reflexes' : 'Dribbling';
+    editInputs.defending.previousElementSibling.textContent = value === 'GK' ? 'Speed' : 'Defending';
+    editInputs.physical.previousElementSibling.textContent = value === 'GK' ? 'Positioning' : 'Physical';
 });
 
 //add button
@@ -189,7 +229,7 @@ document.querySelector('#addBtn').addEventListener('click', async (e) => {
     //input validation
     Object.entries(addInputs).forEach(([key, input]) => {
         let errorText = null;
-        errorText = validateInputs(key,input);
+        errorText = validateInputs(key, input);
 
         if (errorText) {
             const errorMsg = document.createElement('p');
@@ -253,52 +293,55 @@ const applyInsert = () => {
     currTarget.appendChild(plrDiv);
 
     insertContainer.parentElement.parentElement.classList.toggle('hidden');
+    displayEvents();
 };
 
 //event listeners for players that are in team so we can display data
-formationContainer.addEventListener('click', (event) => {
-    const playerElement = event.target.closest('.inTeam');
-    if (!playerElement) return;
-    event.stopPropagation();
+const displayEvents = () => {
+    formationContainer.addEventListener('click', (event) => {
+        const playerElement = event.target.closest('.inTeam');
+        if (!playerElement) return;
+        event.stopPropagation();
 
-    const playerId = playerElement.dataset.id;
-    displayedPlr = data.find(plr => String(plr.id) === playerId);
-    console.log(displayedPlr);
+        const playerId = playerElement.dataset.id;
+        displayedPlr = data.find(plr => String(plr.id) === playerId);
+        console.log(displayedPlr);
 
-    currTarget = playerElement.parentElement;
-    console.log('containerplr: ', currTarget);
+        currTarget = playerElement.parentElement;
+        console.log('containerplr: ', currTarget);
 
-    const shortStat = {
-        pace: 'PAC',
-        shooting: 'SHO',
-        dribbling: 'DRI',
-        passing: 'PAS',
-        defending: 'DEF',
-        physical: 'PHY',
-        diving: 'DIV',
-        handling: 'HAN',
-        kicking: 'KIC',
-        reflexes: 'REF',
-        speed: 'SPE',
-        positioning: 'POS',
-    };
+        const shortStat = {
+            pace: 'PAC',
+            shooting: 'SHO',
+            dribbling: 'DRI',
+            passing: 'PAS',
+            defending: 'DEF',
+            physical: 'PHY',
+            diving: 'DIV',
+            handling: 'HAN',
+            kicking: 'KIC',
+            reflexes: 'REF',
+            speed: 'SPE',
+            positioning: 'POS',
+        };
 
-    // Update the display values
-    Object.keys(displayValues).forEach(key => {
-        if (Object.keys(shortStat).includes(key)) {
-            if (displayedPlr.position === 'GK') {
-                displayValues[key].textContent = `${shortStat[key]} ${displayedPlr[key]}`;
+        // Update the display values
+        Object.keys(displayValues).forEach(key => {
+            if (Object.keys(shortStat).includes(key)) {
+                if (displayedPlr.position === 'GK') {
+                    displayValues[key].textContent = `${shortStat[key]} ${displayedPlr[key]}`;
+                }
+            } else if (key === 'photo' || key === 'flag' || key === 'logo') {
+                displayValues[key].src = displayedPlr[key];
+            } else {
+                displayValues[key].textContent = displayedPlr[key];
             }
-        } else if (key === 'photo' || key === 'flag' || key === 'logo') {
-            displayValues[key].src = displayedPlr[key];
-        } else {
-            displayValues[key].textContent = displayedPlr[key];
-        }
-    });
+        });
 
-    // Unhide the player display modal
-    plrDisplay.classList.remove('hidden');
-});
+        // Unhide the player display modal
+        plrDisplay.classList.remove('hidden');
+    });
+}
 
 //insert a player to an emptycard
 formationContainer.addEventListener('click', (e) => {
@@ -389,6 +432,43 @@ deletePlr.addEventListener('click', (e) => {
             return;
         }
     });
+});
+
+//edit plr
+editPlr.addEventListener('click', (e) => {
+    e.stopPropagation();
+
+    const idx = data.findIndex((plr) => displayedPlr.id === plr.id);
+
+    Object.entries(editInputs).forEach(([key, input]) => {
+        input.value = displayedPlr[key];
+    });
+
+    editBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        currTarget.classList.add('bg-card', 'emptyCard');
+        currTarget.innerHTML = `<span class="icon-[gg--add] text-4xl text-lime-green ">
+                                </span><p class="font-bold">${displayedPlr.position}</p>`;
+
+        insertContainer.innerHTML = "";
+
+        Object.entries(editInputs).forEach(([key, input]) => {
+            displayedPlr[key] = input.value;
+        });
+
+        displayMsg('Player edited successfully', 'blue', false);
+
+        data[idx] = displayedPlr;
+        localStorage.setItem('players', JSON.stringify(data));
+
+        Object.values(addInputs).forEach((input) => { input.value = ''; });
+        editForm.parentElement.classList.add('hidden');
+        plrDisplay.classList.add('hidden');
+    });
+
+    editForm.parentElement.classList.remove('hidden');
 });
 
 //search playerlist
