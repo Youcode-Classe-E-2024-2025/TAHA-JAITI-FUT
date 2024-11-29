@@ -150,19 +150,19 @@ const editInputs = {
     club: editForm.querySelector('#clubEdit'),
     position: editForm.querySelector('#positionEdit'),
 
-    pace: editForm.querySelector('#paceEdit'),
-    shooting: editForm.querySelector('#shootingEdit'),
-    passing: editForm.querySelector('#passingEdit'),
-    dribbling: editForm.querySelector('#dribblingEdit'),
-    defending: editForm.querySelector('#defendingEdit'),
-    physical: editForm.querySelector('#physicalEdit'),
-
     diving: editForm.querySelector('#paceEdit'),
     handling: editForm.querySelector('#shootingEdit'),
     kicking: editForm.querySelector('#passingEdit'),
     reflexes: editForm.querySelector('#dribblingEdit'),
     speed: editForm.querySelector('#defendingEdit'),
     positioning: editForm.querySelector('#physicalEdit'),
+
+    pace: editForm.querySelector('#paceEdit'),
+    shooting: editForm.querySelector('#shootingEdit'),
+    passing: editForm.querySelector('#passingEdit'),
+    dribbling: editForm.querySelector('#dribblingEdit'),
+    defending: editForm.querySelector('#defendingEdit'),
+    physical: editForm.querySelector('#physicalEdit'),
 
     rating: editForm.querySelector('#ratingEdit'),
 };
@@ -250,13 +250,21 @@ document.querySelector('#addBtn').addEventListener('click', async (e) => {
 
         newPlayer.id = nextId++;
 
+        const gkStats = ["diving", "handling", "kicking", "reflexes", "speed", "positioning"];
+        const stats = ["pace", "shooting", "passing", "dribbling", "defending", "physical"];
+
         for (const [key, input] of Object.entries(addInputs)) {
-            if (input.type === 'file' && input.files.length > 0) {
-                newPlayer[key] = await convertToBase64(input.files[0]);
-            } else {
-                newPlayer[key] = input.value;
+            if (
+                (newPlayer.position === "GK" && stats.includes(key)) ||
+                (newPlayer.position !== "GK" && gkStats.includes(key))
+            ) {
+                continue;
             }
+
+            newPlayer[key] = input.type === 'file' && input.files.length > 0 ? await convertToBase64(input.files[0]) : input.value;
         }
+
+
         data.push(newPlayer);
         localStorage.setItem('players', JSON.stringify(data));
         loadPlayers(data, allPlayers);
@@ -442,6 +450,8 @@ editPlr.addEventListener('click', (e) => {
         input.value = displayedPlr[key];
     });
 
+    // editInputs.passing.setAttribute('value', 29);
+
     //applying the edit
     editBtn.addEventListener('click', (e) => {
         e.preventDefault();
@@ -478,10 +488,27 @@ editPlr.addEventListener('click', (e) => {
 
             insertContainer.innerHTML = "";
 
-            //updating player data
-            Object.entries(editInputs).forEach(([key, input]) => {
-                displayedPlr[key] = input.value;
+            ["name", "position", "nationality", "club", "rating"].forEach(key => {
+                displayedPlr[key] = editInputs[key].value;
             });
+            
+            if (editInputs.position.value === 'GK') {
+                ["diving", "handling", "kicking", "reflexes", "speed", "positioning"].forEach(stat => {
+                    displayedPlr[stat] = editInputs[stat].value;
+                });
+            
+                ["pace", "shooting", "passing", "dribbling", "defending", "physical"].forEach(stat => {
+                    delete displayedPlr[stat];
+                });
+            } else {
+                ["pace", "shooting", "passing", "dribbling", "defending", "physical"].forEach(stat => {
+                    displayedPlr[stat] = editInputs[stat].value;
+                });
+            
+                ["diving", "handling", "kicking", "reflexes", "speed", "positioning"].forEach(stat => {
+                    delete displayedPlr[stat];
+                });
+            }
 
             displayMsg('Player edited successfully', 'blue', false);
 
