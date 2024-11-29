@@ -30,12 +30,12 @@
     <main class="">
 
         <!-- MAIN FIELD -->
-        <div class="flex justify-evenly items-center flex-row gap-5 ">
+        <div class="flex justify-evenly items-center flex-col lg:flex-row gap-5 ">
             <!-- FORMATION TABLE -->
             <div id="formationContainer"
-                class="mt-14 w-2/3 h-full items-center flex flex-col justify-center bg-center bg-contain bg-no-repeat bg-stadium">
+                class="scale-75 lg:scale-100 mt-14 w-full lg:w-2/3 h-full items-center flex flex-col justify-center bg-center bg-cover lg:bg-contain bg-no-repeat bg-stadium">
                 <!-- CONTAINER -->
-                <div class="grid grid-rows-3 grid-cols-4 gap-2 items-center justify-center w-full h-full">
+                <div class="grid grid-rows-3 grid-cols-4 gap-[-10px] md:gap-12 items-center justify-center w-full h-full">
                     <!-- EMPTY CARD -->
                     <div data-pos="ST" class="emptyCard player bg-card col-start-2 row-start-1 bottom-4 gap-2">
                         <span class="icon-[gg--add] text-4xl text-lime-green "></span>
@@ -85,7 +85,7 @@
             </div>
 
             <!-- MENU -->
-            <div class="rounded w-1/4 h-1/2 bg-black-rich text-white p-2 flex flex-col gap-2 items-center mr-12">
+            <div class="rounded w-full h-fit lg:w-1/4 lg:h-1/2 bg-black-rich text-white p-2 flex flex-col gap-2 items-center m-auto">
                 <h2 class="text-2xl">SQUAD INFO</h2>
                 <p>FORMATION</p>
                 <select class="bg-black-slate w-1/2 text-lime-green" name="formation" id="formationSelect">
@@ -108,7 +108,7 @@
 
         <!-- ADD FORM -->
         <section class="hidden modalContainer">
-            <div id="addForm" class="w-2/3 lg:w-1/2 bg-black-slate rounded-lg p-4 text-white">
+            <div id="addForm" class="w-full p-8 h-full md:h-fit lg:w-1/2 bg-black-slate rounded-lg lg:p-4 text-white overflow-auto">
                 <div class="flex justify-between">
                     <h2 class="text-center text-2xl font-bold mb-4">ADD A PLAYER</h2>
                     <span id="closeAdd" class="icon-[meteor-icons--xmark] iconBtn"></span>
@@ -220,7 +220,7 @@
 
         <!-- EDIT FORM -->
         <section class="hidden modalContainer z-[100]">
-            <div id="editForm" class="w-2/3 lg:w-1/2 bg-black-slate rounded-lg p-4 text-white">
+            <div id="editForm" class="w-full p-8 h-full md:h-fit lg:w-1/2 bg-black-slate rounded-lg lg:p-4 text-white overflow-auto">
                 <div class="flex justify-between">
                     <h2 class="text-center text-2xl font-bold mb-4">EDIT PLAYER</h2>
                     <span id="closeEdit" class="icon-[meteor-icons--xmark] iconBtn"></span>
@@ -361,11 +361,11 @@
         <!-- ALL PLAYERS FORM -->
         <section class="hidden modalContainer">
             <!-- PLAYERS CONTAINER -->
-            <div class="w-2/3 h-2/3 bg-black-slate text-white rounded">
-                <div class="flex justify-between p-4 bg-black-rich">
+            <div class="w-2/3 h-2/3 bg-black-slate text-white rounded ">
+                <div class="flex justify-between p-4 bg-black-rich gap-4 items-center flex-wrap">
                     <input class="bg-black-slate rounded px-1" placeholder="Search for a player" type="text"
                         name="search" id="playerSearch">
-                    <div class="flex gap-2 items-center">
+                    <div class="flex gap-2 justify-between items-center -order-10  sm:order-1 w-full sm:w-fit">
                         <h2 class="text-xl">PLAYER LIST</h2>
                         <span id="closeAll" class="icon-[meteor-icons--xmark] iconBtn"></span>
                     </div>
@@ -373,7 +373,7 @@
                 </div>
                 <!-- MAIN CONTAINER -->
                 <div id="allPlayersContainer"
-                    class="w-full h-[88%] flex flex-wrap gap-12 p-6 justify-start overflow-x-hidden overflow-y-auto">
+                    class="w-full h-[80%] sm:h-[88%] flex flex-wrap gap-12 p-6 justify-center lg:justify-start overflow-x-hidden overflow-y-auto">
 
                 </div>
             </div>
@@ -389,7 +389,7 @@
                 </div>
                 <!-- MAIN CONTAINER -->
                 <div id="insertContainer"
-                    class="w-full h-[88%] flex flex-wrap gap-12 p-6 justify-start overflow-x-hidden overflow-y-auto">
+                    class="w-full h-[88%] flex flex-wrap gap-12 p-6 justify-center lg:justify-start overflow-x-hidden overflow-y-auto">
 
                 </div>
                 <!--  -->
