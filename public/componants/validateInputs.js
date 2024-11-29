@@ -1,4 +1,4 @@
-export const validateInputs = () => {
+export const validateInputs = (key,input) => {
     if (!input.value && input.type !== 'file' && key !== 'id') {
         return `${key} can't be empty.`;
     }

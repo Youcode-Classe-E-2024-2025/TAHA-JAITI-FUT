@@ -1,23 +1,26 @@
-const loading = document.getElementById('loadingScreen');
 let data = JSON.parse(localStorage.getItem("players") || "[]");
+const loading = document.getElementById('loadingScreen');
 
-const fetch = async () => {
+export const fetchData = async () => {
     if (data.length === 0 && !localStorage.getItem("players_loaded")) {
         try {
-            const response = await axios.get('../players.json');
+            const response = await axios.get('./players.json');
             if (response.data && response.data.players) {
-                data = response.data.players;
-                localStorage.setItem("players", JSON.stringify(data));
+                const players = response.data.players;
+                localStorage.setItem("players", JSON.stringify(players));
                 localStorage.setItem("players_loaded", "true");
-                console.log(data);
                 loading.classList.add('hidden');
+                return players;
+            } else {
+                console.error("Invalid data");
             }
         } catch (error) {
             console.error("Error fetching data:", error);
+        } finally {
+            loading.classList.add('hidden');
         }
     } else {
         loading.classList.add('hidden');
+        return JSON.parse(localStorage.getItem("players") || "[]");
     }
-}
-
-export default fetch;
+};

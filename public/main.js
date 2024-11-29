@@ -1,12 +1,16 @@
-import fetch from "./componants/fetch.js";
+import { fetchData } from "./componants/fetch.js";
 import { createPlayerDiv } from "./componants/createPlayerDiv.js";
 import { loadPlayers } from "./componants/loadPlayers.js";
 import { displayMsg } from "./componants/displayMsg.js";
 import { validateInputs } from "./componants/validateInputs.js";
+import { fetchExistingPlayers } from "./componants/fetchExistingPlayers.js";
 
-const loading = document.getElementById('loadingScreen');
 let data = JSON.parse(localStorage.getItem("players") || "[]");
-let nextId = data.length > 0 ? data.length + 1 : 1;
+
+fetchData().then(fetchedData => {
+  data = fetchedData;
+  console.log("Updated the data:", data);
+});
 
 
 // const formations = {
@@ -56,6 +60,9 @@ let nextId = data.length > 0 ? data.length + 1 : 1;
 //         container.appendChild(playerDiv);
 //     });
 // };
+
+const loading = document.getElementById('loadingScreen');
+let nextId = data.length > 0 ? data.length + 1 : 1;
 
 const formationContainer = document.getElementById('formationContainer');
 const insertContainer = document.getElementById('insertContainer');
@@ -146,6 +153,7 @@ openAdd.addEventListener('click', () => {
 })
 
 closeAll.addEventListener('click', () => {
+    allPlayers.innerHTML = '';
     allPlayers.parentElement.parentElement.classList.toggle('hidden');
 });
 
@@ -181,7 +189,7 @@ document.querySelector('#addBtn').addEventListener('click', async (e) => {
     //input validation
     Object.entries(addInputs).forEach(([key, input]) => {
         let errorText = null;
-        errorText = validateInputs();
+        errorText = validateInputs(key,input);
 
         if (errorText) {
             const errorMsg = document.createElement('p');
@@ -233,25 +241,6 @@ let selectedPlayer;
 let currTarget; //the card container that holds position data
 let displayedPlr;
 
-
-//check for existing players with the same pos
-const fetchExistingPlayers = (targetPos) => {
-    let arr = [];
-    
-    insertContainer.innerHTML ="";
-
-    data.forEach((players) => {
-        let existingCard = document.getElementById(`plr${players.id}`);
-
-        if ((players.position === targetPos && !existingCard)) {
-            arr.push(players);
-        }
-    });
-
-    posArray = arr;
-    return arr;
-};
-
 //applying the insertion
 const applyInsert = () => {
     let playerData = posArray.find(plr => String(plr.id) === selectedPlayer);
@@ -277,7 +266,7 @@ formationContainer.addEventListener('click', (event) => {
     console.log(displayedPlr);
 
     currTarget = playerElement.parentElement;
-    console.log('containerplr: ',currTarget);
+    console.log('containerplr: ', currTarget);
 
     const shortStat = {
         pace: 'PAC',
@@ -318,12 +307,12 @@ formationContainer.addEventListener('click', (e) => {
 
     currTarget = card;
     const targetCard = card.dataset.pos;
-    
-    
+
+
 
     loading.classList.toggle('hidden');
     posArray = fetchExistingPlayers(targetCard);
-        
+
 
     loadPlayers(posArray, insertContainer);
     setTimeout(() => {
@@ -418,5 +407,3 @@ searchInput.addEventListener('keyup', (e) => {
         }, 250);
     }
 });
-
-document.addEventListener('DOMContentLoaded', fetch);
