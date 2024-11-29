@@ -66,28 +66,29 @@ let nextId = data.length > 0 ? data.length + 1 : 1;
 
 const formationContainer = document.getElementById('formationContainer');
 const insertContainer = document.getElementById('insertContainer');
-const allPlayers = document.querySelector('#allPlayersContainer');
+const allPlayers = document.getElementById('allPlayersContainer');
 const plrDisplay = document.getElementById('plrDisplay');
 const addForm = document.getElementById('addForm');
 const editForm = document.getElementById('editForm');
 
 const closeAdd = addForm.querySelector('#closeAdd');
 const openAdd = document.getElementById('openAdd');
-const closeAll = document.querySelector('#closeAll');
+const addBtn = document.getElementById('addBtn');
+const closeAll = document.getElementById('closeAll');
 const openAll = document.getElementById('openAll');
-const closeDisplay = document.querySelector('#closeDisplay');
+const closeDisplay = document.getElementById('closeDisplay');
 const editBtn = document.getElementById('editBtn');
 const closeEdit = document.getElementById('closeEdit');
 
-const insertBtn = document.querySelector('#insertBtn');
-const closeInsert = document.querySelector("#closeInsert");
+const insertBtn = document.getElementById('insertBtn');
+const closeInsert = document.getElementById("closeInsert");
 
-const searchInput = document.querySelector('#playerSearch');
+const searchInput = document.getElementById('playerSearch');
 
-const removePlr = document.querySelector('#removePlr');
-const changePlr = document.querySelector('#changePlr');
-const editPlr = document.querySelector('#editPlr');
-const deletePlr = document.querySelector('#deletePlr');
+const removePlr = document.getElementById('removePlr');
+const changePlr = document.getElementById('changePlr');
+const editPlr = document.getElementById('editPlr');
+const deletePlr = document.getElementById('deletePlr');
 
 
 let posArray = JSON.parse(localStorage.getItem('playersInTeam')) || [];
@@ -222,7 +223,7 @@ editInputs.position.addEventListener('change', (e) => {
 });
 
 //add button
-document.querySelector('#addBtn').addEventListener('click', async (e) => {
+addBtn.addEventListener('click', async (e) => {
     e.preventDefault();
 
     const oldMsg = document.querySelectorAll('.error-msg');
@@ -257,6 +258,7 @@ document.querySelector('#addBtn').addEventListener('click', async (e) => {
         const gkStats = ["diving", "handling", "kicking", "reflexes", "speed", "positioning"];
         const stats = ["pace", "shooting", "passing", "dribbling", "defending", "physical"];
 
+
         for (const [key, input] of Object.entries(addInputs)) {
             if (
                 (newPlayer.position === "GK" && stats.includes(key)) ||
@@ -264,7 +266,6 @@ document.querySelector('#addBtn').addEventListener('click', async (e) => {
             ) {
                 continue;
             }
-
             newPlayer[key] = input.type === 'file' && input.files.length > 0 ? await convertToBase64(input.files[0]) : input.value;
         }
 
@@ -289,9 +290,9 @@ function convertToBase64(file) {
     });
 };
 
-let selectedPlayer;
+let selectedPlayer; //which player is selected
 let currTarget; //the card container that holds position data
-let displayedPlr;
+let displayedPlr; //which player is displayed
 
 //applying the insertion
 insertBtn.addEventListener('click', (e) => {
@@ -346,7 +347,7 @@ const displayEvents = () => {
         //displaying normalvalues
         Object.entries(displayNormalValues).forEach(([key, element]) => {
             if (["photo", "flag", "logo"].includes(key)) {
-                element.src = displayedPlr[key]; 
+                element.src = displayedPlr[key];
             } else {
                 element.textContent = displayedPlr[key];
             }
@@ -499,27 +500,27 @@ editPlr.addEventListener('click', (e) => {
 
             insertContainer.innerHTML = "";
 
-            ["name", "position", "nationality", "club", "rating"].forEach(key => {
+            const normal = ["name", "position", "nationality", "club", "rating"];
+            const gkStats = ["diving", "handling", "kicking", "reflexes", "speed", "positioning"];
+            const stats = ["pace", "shooting", "passing", "dribbling", "defending", "physical"];
+
+            normal.forEach(key => {
                 displayedPlr[key] = editInputs[key].value;
             });
 
-            if (editInputs.position.value === 'GK') {
-                ["diving", "handling", "kicking", "reflexes", "speed", "positioning"].forEach(stat => {
-                    displayedPlr[stat] = editInputs[stat].value;
-                });
+            // know which stat to update and delete
+            const statsUpdate = editInputs.position.value === 'GK' ? gkStats : stats;
+            const statsDelete = editInputs.position.value === 'GK' ? stats : gkStats;
 
-                ["pace", "shooting", "passing", "dribbling", "defending", "physical"].forEach(stat => {
-                    delete displayedPlr[stat];
-                });
-            } else {
-                ["pace", "shooting", "passing", "dribbling", "defending", "physical"].forEach(stat => {
-                    displayedPlr[stat] = editInputs[stat].value;
-                });
+            //updating stats based on the statsupdate
+            statsUpdate.forEach(stat => {
+                displayedPlr[stat] = editInputs[stat].value;
+            });
 
-                ["diving", "handling", "kicking", "reflexes", "speed", "positioning"].forEach(stat => {
-                    delete displayedPlr[stat];
-                });
-            }
+            //deleting stats based on the statsdelete
+            statsDelete.forEach(stat => {
+                delete displayedPlr[stat];
+            });
 
             displayMsg('Player edited successfully', 'blue', false);
 
