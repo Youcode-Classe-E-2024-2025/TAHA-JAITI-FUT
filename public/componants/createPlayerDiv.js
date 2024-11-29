@@ -33,9 +33,9 @@ export const createPlayerDiv = (player) => {
                         </div>`
 
     newDiv.className = "player inTeam notSelected bg-gold-card m-0 text-black";
-    newDiv.dataset.pos = `${player.position}`;
-    newDiv.dataset.id = `${player.id}`;
-    newDiv.id = `plr${player.id}`
+    newDiv.setAttribute('data-pos',player.position);
+    newDiv.setAttribute('data-id',player.id);
+    newDiv.id = `plr${player.id}`;
 
     return newDiv;
 };

@@ -282,7 +282,7 @@ let currTarget; //the card container that holds position data
 let displayedPlr;
 
 //applying the insertion
-const applyInsert = () => {
+insertBtn.addEventListener('click', (e) => {
     let playerData = posArray.find(plr => String(plr.id) === selectedPlayer);
     currTarget.innerHTML = "";
 
@@ -294,7 +294,7 @@ const applyInsert = () => {
 
     insertContainer.parentElement.parentElement.classList.toggle('hidden');
     displayEvents();
-};
+});
 
 //event listeners for players that are in team so we can display data
 const displayEvents = () => {
@@ -372,9 +372,6 @@ formationContainer.addEventListener('click', (e) => {
             selectedPlayer = playerCard.dataset.id;
         });
     });
-
-    //applying insert
-    insertBtn.addEventListener('click', applyInsert);
 });
 
 //remove plr
@@ -440,32 +437,63 @@ editPlr.addEventListener('click', (e) => {
 
     const idx = data.findIndex((plr) => displayedPlr.id === plr.id);
 
+    //displaying the player data into the form
     Object.entries(editInputs).forEach(([key, input]) => {
         input.value = displayedPlr[key];
     });
 
+    //applying the edit
     editBtn.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
 
-        currTarget.classList.add('bg-card', 'emptyCard');
-        currTarget.innerHTML = `<span class="icon-[gg--add] text-4xl text-lime-green ">
-                                </span><p class="font-bold">${displayedPlr.position}</p>`;
+        const oldMsg = document.querySelectorAll('.error-msg');
+        oldMsg.forEach((error) => error.remove());
 
-        insertContainer.innerHTML = "";
+        let isValid = true;
 
+        //input validation
         Object.entries(editInputs).forEach(([key, input]) => {
-            displayedPlr[key] = input.value;
+            let errorText = null;
+            errorText = validateInputs(key, input);
+
+            if (errorText) {
+                const errorMsg = document.createElement('p');
+                errorMsg.textContent = `Error: ${errorText}`;
+                errorMsg.classList.add('text-red-500', 'error-msg');
+                input.parentElement.appendChild(errorMsg);
+                isValid = false;
+
+                setTimeout(() => {
+                    errorMsg.remove();
+                }, 7000);
+            }
         });
 
-        displayMsg('Player edited successfully', 'blue', false);
+        //if is valid proceed
+        if (isValid) {
+            currTarget.classList.add('bg-card', 'emptyCard');
+            currTarget.innerHTML = `<span class="icon-[gg--add] text-4xl text-lime-green ">
+                                </span><p class="font-bold">${displayedPlr.position}</p>`;
 
-        data[idx] = displayedPlr;
-        localStorage.setItem('players', JSON.stringify(data));
+            insertContainer.innerHTML = "";
 
-        Object.values(addInputs).forEach((input) => { input.value = ''; });
-        editForm.parentElement.classList.add('hidden');
-        plrDisplay.classList.add('hidden');
+            //updating player data
+            Object.entries(editInputs).forEach(([key, input]) => {
+                displayedPlr[key] = input.value;
+            });
+
+            displayMsg('Player edited successfully', 'blue', false);
+
+            //updating the change in localstorage
+            data[idx] = displayedPlr;
+            localStorage.setItem('players', JSON.stringify(data));
+
+            //emptying out the edit form
+            Object.values(editInputs).forEach((input) => { input.value = ''; });
+            editForm.parentElement.classList.add('hidden');
+            plrDisplay.classList.add('hidden');
+        }
     });
 
     editForm.parentElement.classList.remove('hidden');

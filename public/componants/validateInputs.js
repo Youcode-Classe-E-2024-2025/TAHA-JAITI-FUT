@@ -2,7 +2,7 @@ export const validateInputs = (key,input) => {
     if (!input.value && input.type !== 'file' && key !== 'id') {
         return `${key} can't be empty.`;
     }
-    if (key === 'name' && !/^[a-zA-Z\s]{1,20}$/.test(input.value)) {
+    if (key === 'name' && !/^[a-zA-Z\s]{1,25}$/.test(input.value)) {
         return 'Enter a valid name (20 characters or less).';
     }
     if (['pace', 'shooting', 'passing', 'dribbling', 'defending', 'physical', 'rating'].includes(key)) {
