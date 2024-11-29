@@ -119,29 +119,33 @@ const addInputs = {
     rating: document.querySelector('#ratingInput'),
 };
 
-//displaying player values
-const displayValues = {
-    name: document.querySelector('.displayName'),
-    position: document.querySelector('.displayPos'),
+//displaying normal player stats
+const displayFieldStats = {
     pace: document.querySelector('.displayPAC'),
     shooting: document.querySelector('.displaySHO'),
     dribbling: document.querySelector('.displayDRI'),
     passing: document.querySelector('.displayPAS'),
     defending: document.querySelector('.displayDEF'),
     physical: document.querySelector('.displayPHY'),
-
+};
+//displaying gk player stats
+const displayGkStats = {
     diving: document.querySelector('.displayPAC'),
     handling: document.querySelector('.displaySHO'),
     kicking: document.querySelector('.displayDRI'),
     reflexes: document.querySelector('.displayPAS'),
     speed: document.querySelector('.displayDEF'),
     positioning: document.querySelector('.displayPHY'),
-
+}
+//normal values like name etc
+const displayNormalValues = {
+    name: document.querySelector('.displayName'),
+    position: document.querySelector('.displayPos'),
     logo: document.querySelector('.displayClub'),
     flag: document.querySelector('.displayFlag'),
     photo: document.querySelector('.displayPhoto'),
     rating: document.querySelector('.displayRating'),
-};
+}
 
 //inputs for editing
 const editInputs = {
@@ -306,47 +310,54 @@ insertBtn.addEventListener('click', (e) => {
 
 //event listeners for players that are in team so we can display data
 const displayEvents = () => {
-    formationContainer.addEventListener('click', (event) => {
-        const playerElement = event.target.closest('.inTeam');
+    formationContainer.addEventListener('click', (e) => {
+        const playerElement = e.target.closest('.inTeam');
         if (!playerElement) return;
-        event.stopPropagation();
+        e.stopPropagation();
 
         const playerId = playerElement.dataset.id;
         displayedPlr = data.find(plr => String(plr.id) === playerId);
-        console.log(displayedPlr);
 
         currTarget = playerElement.parentElement;
-        console.log('containerplr: ', currTarget);
 
-        const shortStat = {
-            pace: 'PAC',
-            shooting: 'SHO',
-            dribbling: 'DRI',
-            passing: 'PAS',
-            defending: 'DEF',
-            physical: 'PHY',
-            diving: 'DIV',
-            handling: 'HAN',
-            kicking: 'KIC',
-            reflexes: 'REF',
-            speed: 'SPE',
-            positioning: 'POS',
+        //short names for stats
+        const gkStats = {
+            diving: "DIV",
+            handling: "HAN",
+            kicking: "KIC",
+            reflexes: "REF",
+            speed: "SPE",
+            positioning: "POS",
+        };
+        const stats = {
+            pace: "PAC",
+            shooting: "SHO",
+            passing: "PAS",
+            dribbling: "DRI",
+            defending: "DEF",
+            physical: "PHY",
         };
 
-        // Update the display values
-        Object.keys(displayValues).forEach(key => {
-            if (Object.keys(shortStat).includes(key)) {
-                if (displayedPlr.position === 'GK') {
-                    displayValues[key].textContent = `${shortStat[key]} ${displayedPlr[key]}`;
-                }
-            } else if (key === 'photo' || key === 'flag' || key === 'logo') {
-                displayValues[key].src = displayedPlr[key];
+        //getting the short stat if the player is a GK or not
+        const shortStat = displayedPlr.position === "GK" ? gkStats : stats;
+        //getting the right input for the player so it can be displayed
+        const statInputs = displayedPlr.position === "GK" ? displayGkStats : displayFieldStats;
+
+        //displaying normalvalues
+        Object.entries(displayNormalValues).forEach(([key, element]) => {
+            if (["photo", "flag", "logo"].includes(key)) {
+                element.src = displayedPlr[key]; 
             } else {
-                displayValues[key].textContent = displayedPlr[key];
+                element.textContent = displayedPlr[key];
             }
         });
 
-        // Unhide the player display modal
+        // displaying right stats
+        Object.entries(statInputs).forEach(([key, element]) => {
+            element.textContent = `${shortStat[key]} ${displayedPlr[key]}`;
+        });
+
+        // show the player display modal
         plrDisplay.classList.remove('hidden');
     });
 }
@@ -491,12 +502,12 @@ editPlr.addEventListener('click', (e) => {
             ["name", "position", "nationality", "club", "rating"].forEach(key => {
                 displayedPlr[key] = editInputs[key].value;
             });
-            
+
             if (editInputs.position.value === 'GK') {
                 ["diving", "handling", "kicking", "reflexes", "speed", "positioning"].forEach(stat => {
                     displayedPlr[stat] = editInputs[stat].value;
                 });
-            
+
                 ["pace", "shooting", "passing", "dribbling", "defending", "physical"].forEach(stat => {
                     delete displayedPlr[stat];
                 });
@@ -504,7 +515,7 @@ editPlr.addEventListener('click', (e) => {
                 ["pace", "shooting", "passing", "dribbling", "defending", "physical"].forEach(stat => {
                     displayedPlr[stat] = editInputs[stat].value;
                 });
-            
+
                 ["diving", "handling", "kicking", "reflexes", "speed", "positioning"].forEach(stat => {
                     delete displayedPlr[stat];
                 });
