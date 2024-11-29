@@ -6,9 +6,11 @@ import { validateInputs } from "./componants/validateInputs.js";
 import { fetchExistingPlayers } from "./componants/fetchExistingPlayers.js";
 
 let data = JSON.parse(localStorage.getItem("players") || "[]");
+let nextId = data.length > 0 ? data.length + 1 : 1;
 
 fetchData().then(fetchedData => {
     data = fetchedData;
+    nextId = data.length > 0 ? data.length + 1 : 1;
     console.log("Updated the data:", data);
 });
 
@@ -62,7 +64,6 @@ fetchData().then(fetchedData => {
 // };
 
 const loading = document.getElementById('loadingScreen');
-let nextId = data.length > 0 ? data.length + 1 : 1;
 
 const formationContainer = document.getElementById('formationContainer');
 const insertContainer = document.getElementById('insertContainer');
@@ -137,7 +138,7 @@ const displayGkStats = {
     reflexes: document.querySelector('.displayPAS'),
     speed: document.querySelector('.displayDEF'),
     positioning: document.querySelector('.displayPHY'),
-}
+};
 //normal values like name etc
 const displayNormalValues = {
     name: document.querySelector('.displayName'),
@@ -146,7 +147,7 @@ const displayNormalValues = {
     flag: document.querySelector('.displayFlag'),
     photo: document.querySelector('.displayPhoto'),
     rating: document.querySelector('.displayRating'),
-}
+};
 
 //inputs for editing
 const editInputs = {
@@ -190,6 +191,8 @@ closeAll.addEventListener('click', () => {
 });
 
 openAll.addEventListener('click', () => {
+    console.log(data);
+    
     loadPlayers(data, allPlayers);
     allPlayers.parentElement.parentElement.classList.toggle('hidden');
 });
