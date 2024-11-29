@@ -273,7 +273,6 @@ addBtn.addEventListener('click', async (e) => {
         data.push(newPlayer);
         localStorage.setItem('players', JSON.stringify(data));
         loadPlayers(data, allPlayers);
-
         displayMsg('Player added successfuly.', 'green', false);
 
         Object.values(addInputs).forEach((input) => { input.value = ''; });
