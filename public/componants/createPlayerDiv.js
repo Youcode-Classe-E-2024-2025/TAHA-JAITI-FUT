@@ -32,7 +32,7 @@ export const createPlayerDiv = (player) => {
                             <img class="h-5 object-fill" src="${player.logo}" alt="">
                         </div>`
 
-    newDiv.className = "player inTeam notSelected bg-gold-card m-0 text-black";
+    newDiv.className = "player notSelected bg-gold-card m-0 text-black";
     newDiv.setAttribute('data-pos',player.position);
     newDiv.setAttribute('data-id',player.id);
     newDiv.id = `plr${player.id}`;

@@ -304,7 +304,7 @@ insertBtn.addEventListener('click', (e) => {
     //fill the container target html
     currTarget.classList.remove('bg-card', 'emptyCard');
     const plrDiv = createPlayerDiv(playerData);
-
+    plrDiv.classList.add('inTeam');
     currTarget.appendChild(plrDiv);
 
     insertContainer.parentElement.parentElement.classList.toggle('hidden');

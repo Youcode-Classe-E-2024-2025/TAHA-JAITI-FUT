@@ -13,12 +13,14 @@
     <title>Document</title>
 </head>
 
-<body class="bg-black-rich font-roboto bg-bg-stadium bg-blend-screen bg-cover bg-no-repeat relative h-fit w-screen">
+<body
+    class="bg-black-rich font-roboto bg-bg-stadium bg-blend-screen bg-cover bg-no-repeat relative h-full w-full">
 
     <div id="loadingScreen" class="w-full h-full fixed bg-black-rich z-50 flex items-center justify-center">
         <span class="icon-[iconoir--soccer-ball] text-lime-green text-6xl animate-spin"></span>
     </div>
 
+    <!-- header -->
     <header class="w-full bg-black-slate text-white font-bold px-4 py-2 text-xl flex items-center justify-between">
         <h1><span class="text-lime-green">FUT</span> SQUAD BUILDER</h1>
         <div class="flex gap-6 justify-between">
@@ -30,62 +32,10 @@
     <main class="">
 
         <!-- MAIN FIELD -->
-        <div class="flex justify-evenly items-center flex-col lg:flex-row gap-5 ">
-            <!-- FORMATION TABLE -->
-            <div id="formationContainer"
-                class="scale-75 lg:scale-100 mt-14 w-full lg:w-2/3 h-full items-center flex flex-col justify-center bg-center bg-cover lg:bg-contain bg-no-repeat bg-stadium">
-                <!-- CONTAINER -->
-                <div class="grid grid-rows-3 grid-cols-4 gap-[-10px] md:gap-12 items-center justify-center w-full h-full">
-                    <!-- EMPTY CARD -->
-                    <div data-pos="ST" class="emptyCard player bg-card col-start-2 row-start-1 bottom-4 gap-2">
-                        <span class="icon-[gg--add] text-4xl text-lime-green "></span>
-                        <p class="font-bold">ST</p>
-                    </div>
-                    <div data-pos="ST" class="emptyCard player bg-card col-start-3 row-start-1 bottom-4 gap-2">
-                        <span class="icon-[gg--add] text-4xl text-lime-green "></span>
-                        <p class="font-bold">ST</p>
-                    </div>
-                    <div data-pos="LM" class="emptyCard player bg-card col-start-1 row-start-2 bottom-12">
-                        <span class="icon-[gg--add] text-4xl text-lime-green "></span>
-                        <p class="font-bold">LM</p>
-                    </div>
-                    <div data-pos="CM" class="emptyCard player bg-card col-start-2 row-start-2 left-4 top-2">
-                        <span class="icon-[gg--add] text-4xl text-lime-green "></span>
-                        <p class="font-bold">CM</p>
-                    </div>
-                    <div data-pos="CM" class="emptyCard player bg-card col-start-3 row-start-2 right-4 top-2">
-                        <span class="icon-[gg--add] text-4xl text-lime-green "></span>
-                        <p class="font-bold">CM</p>
-                    </div>
-                    <div data-pos="RM" class="emptyCard player bg-card col-start-4 row-start-2 bottom-12">
-                        <span class="icon-[gg--add] text-4xl text-lime-green "></span>
-                        <p class="font-bold">RM</p>
-                    </div>
-                    <div data-pos="LB" class="emptyCard player bg-card col-start-1 row-start-3 bottom-4">
-                        <span class="icon-[gg--add] text-4xl text-lime-green "></span>
-                        <p class="font-bold">LB</p>
-                    </div>
-                    <div data-pos="CB" class="emptyCard player bg-card col-start-2 row-start-3 left-4 top-2">
-                        <span class="icon-[gg--add] text-4xl text-lime-green "></span>
-                        <p class="font-bold">CB</p>
-                    </div>
-                    <div data-pos="CB" class="emptyCard player bg-card col-start-3 row-start-3 right-4 top-2">
-                        <span class="icon-[gg--add] text-4xl text-lime-green "></span>
-                        <p class="font-bold">CB</p>
-                    </div>
-                    <div data-pos="RB" class="emptyCard player bg-card col-start-4 row-start-3 bottom-4">
-                        <span class="icon-[gg--add] text-4xl text-lime-green "></span>
-                        <p class="font-bold">RB</p>
-                    </div>
-                </div>
-                <div data-pos="GK" class="emptyCard player bg-card col-span-4 justify-self-center row-start-4 relative">
-                    <span class="icon-[gg--add] text-4xl text-lime-green "></span>
-                    <p class="font-bold">GK</p>
-                </div>
-            </div>
-
+        <div class="w-full mt-10 flex justify-between items-center flex-col gap-5 ">
             <!-- MENU -->
-            <div class="rounded w-full h-fit lg:w-1/4 lg:h-1/2 bg-black-rich text-white p-2 flex flex-col gap-2 items-center m-auto">
+            <div
+                class="rounded w-full h-fit lg:w-1/4 lg:h-1/2 bg-black-rich text-white p-2 flex flex-col gap-2 items-center m-auto">
                 <h2 class="text-2xl">SQUAD INFO</h2>
                 <p>FORMATION</p>
                 <select class="bg-black-slate w-1/2 text-lime-green" name="formation" id="formationSelect">
@@ -95,6 +45,61 @@
                 <p>TOTAL CHEMISTRY</p>
                 <p class="text-lime-green">100%</p>
             </div>
+
+            <!-- FORMATION TABLE -->
+            <div id="formationContainer"
+                class="mt-14 w-full  h-full items-center flex flex-col justify-center bg-center bg-cover bg-no-repeat bg-stadium">
+                <!-- CONTAINER -->
+                <div class="grid grid-rows-3 grid-cols-4 gap-5 md:gap-20 items-center justify-center w-full h-full">
+                    <!-- EMPTY CARD -->
+                    <div data-pos="ST" class="emptyCard centered bg-card col-start-2 row-start-1">
+                        <span class="icon-[gg--add] text-4xl text-lime-green "></span>
+                        <p class="font-bold">ST</p>
+                    </div>
+                    <div data-pos="ST" class="emptyCard centered bg-card col-start-3 row-start-1">
+                        <span class="icon-[gg--add] text-4xl text-lime-green "></span>
+                        <p class="font-bold">ST</p>
+                    </div>
+                    <div data-pos="LM" class="emptyCard centered bg-card col-start-1 row-start-2 ">
+                        <span class="icon-[gg--add] text-4xl text-lime-green "></span>
+                        <p class="font-bold">LM</p>
+                    </div>
+                    <div data-pos="CM" class="emptyCard centered bg-card col-start-2 row-start-2">
+                        <span class="icon-[gg--add] text-4xl text-lime-green "></span>
+                        <p class="font-bold">CM</p>
+                    </div>
+                    <div data-pos="CM" class="emptyCard centered bg-card col-start-3 row-start-2">
+                        <span class="icon-[gg--add] text-4xl text-lime-green "></span>
+                        <p class="font-bold">CM</p>
+                    </div>
+                    <div data-pos="RM" class="emptyCard centered bg-card col-start-4 row-start-2">
+                        <span class="icon-[gg--add] text-4xl text-lime-green "></span>
+                        <p class="font-bold">RM</p>
+                    </div>
+                    <div data-pos="LB" class="emptyCard centered bg-card col-start-1 row-start-3">
+                        <span class="icon-[gg--add] text-4xl text-lime-green "></span>
+                        <p class="font-bold">LB</p>
+                    </div>
+                    <div data-pos="CB" class="emptyCard centered bg-card col-start-2 row-start-3">
+                        <span class="icon-[gg--add] text-4xl text-lime-green "></span>
+                        <p class="font-bold">CB</p>
+                    </div>
+                    <div data-pos="CB" class="emptyCard centered bg-card col-start-3 row-start-3">
+                        <span class="icon-[gg--add] text-4xl text-lime-green "></span>
+                        <p class="font-bold">CB</p>
+                    </div>
+                    <div data-pos="RB" class="emptyCard centered bg-card col-start-4 row-start-3">
+                        <span class="icon-[gg--add] text-4xl text-lime-green "></span>
+                        <p class="font-bold">RB</p>
+                    </div>
+                </div>
+                <div data-pos="GK" class="emptyCard centered  bg-card col-span-4 justify-self-center row-start-4 ">
+                    <span class="icon-[gg--add] text-4xl text-lime-green "></span>
+                    <p class="font-bold">GK</p>
+                </div>
+            </div>
+
+
         </div>
 
         <!-- SUBS -->
@@ -108,7 +113,8 @@
 
         <!-- ADD FORM -->
         <section class="hidden modalContainer">
-            <div id="addForm" class="w-full p-8 h-full md:h-fit lg:w-1/2 bg-black-slate rounded-lg lg:p-4 text-white overflow-auto">
+            <div id="addForm"
+                class="w-full p-8 h-full md:h-fit lg:w-1/2 bg-black-slate rounded-lg lg:p-4 text-white overflow-auto">
                 <div class="flex justify-between">
                     <h2 class="text-center text-2xl font-bold mb-4">ADD A PLAYER</h2>
                     <span id="closeAdd" class="icon-[meteor-icons--xmark] iconBtn"></span>
@@ -220,7 +226,8 @@
 
         <!-- EDIT FORM -->
         <section class="hidden modalContainer z-[100]">
-            <div id="editForm" class="w-full p-8 h-full md:h-fit lg:w-1/2 bg-black-slate rounded-lg lg:p-4 text-white overflow-auto">
+            <div id="editForm"
+                class="w-full p-8 h-full md:h-fit lg:w-1/2 bg-black-slate rounded-lg lg:p-4 text-white overflow-auto">
                 <div class="flex justify-between">
                     <h2 class="text-center text-2xl font-bold mb-4">EDIT PLAYER</h2>
                     <span id="closeEdit" class="icon-[meteor-icons--xmark] iconBtn"></span>
@@ -381,11 +388,11 @@
 
         <!-- INSERT PLAYERS FORM -->
         <section class="hidden modalContainer">
-             <!-- PLAYERS CONTAINER -->
-             <div class="w-2/3 h-2/3 bg-black-slate text-white rounded">
+            <!-- PLAYERS CONTAINER -->
+            <div class="w-2/3 h-2/3 bg-black-slate text-white rounded">
                 <div class="flex justify-between p-4 bg-black-rich">
-                        <h2 class="text-xl">INSERT PLAYER</h2>
-                        <span id="closeInsert" class="icon-[meteor-icons--xmark] iconBtn"></span>
+                    <h2 class="text-xl">INSERT PLAYER</h2>
+                    <span id="closeInsert" class="icon-[meteor-icons--xmark] iconBtn"></span>
                 </div>
                 <!-- MAIN CONTAINER -->
                 <div id="insertContainer"
@@ -401,7 +408,8 @@
 
         <!-- ERR/SCC DISPLAY -->
         <section class="hidden modalContainer z-[200]">
-            <div id="msgContainer" class="w-fit h-fit p-10 rounded bg-black-slate flex flex-col justify-evenly gap-10 items-center text-white">
+            <div id="msgContainer"
+                class="w-fit h-fit p-10 rounded bg-black-slate flex flex-col justify-evenly gap-10 items-center text-white">
                 <p id="msgDisplay" class="text-center text-blue-400">PLAYER ADDED SUCCESFULLY.</p>
                 <div class="flex justify-evenly gap-6">
                     <button id="proceedMsg" class="submitBtn hover:bg-green-500">PROCEED</button>

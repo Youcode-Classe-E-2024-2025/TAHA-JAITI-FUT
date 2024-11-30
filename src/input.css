@@ -4,11 +4,11 @@
 
 @layer components {
   .player {
-    @apply transition-all relative m-auto scale-50 sm:scale-[0.7] md:scale-[0.8] lg:scale-100 h-[15rem] w-[10rem]  bg-cover bg-top bg-no-repeat text-white text-center flex p-2 flex-col justify-center items-center z-auto;
+    @apply transition-all relative m-auto h-[15rem] w-[10rem]  bg-cover bg-top bg-no-repeat text-white text-center flex p-2 flex-col justify-center items-center flex-shrink z-auto;
   }
 
   .player:hover {
-    @apply scale-105 filter cursor-pointer;
+    @apply scale-105 cursor-pointer;
   }
 
   .player:active {
@@ -36,12 +36,12 @@
   .iconBtn {
     @apply text-4xl hover:text-lime-green hover:cursor-pointer active:text-dark-green;
   }
-  
+
   .modalContainer {
     @apply h-full w-full bg-black/20 flex justify-center items-center backdrop-blur-xl fixed top-0 z-10;
   }
 
-  .selectedCard{
+  .selectedCard {
     @apply scale-110;
   }
 
@@ -49,6 +49,26 @@
     content: "";
     @apply absolute inset-0 w-full h-[90%] rounded-xl opacity-100 bg-white/50 backdrop-blur-sm  transition-all;
     z-index: -1;
+  }
+
+  .emptyCard {
+    @apply transition-all relative m-auto bg-cover bg-top bg-no-repeat text-white text-center flex p-2 flex-col justify-center items-center z-10;
+  }
+
+  .inTeam {
+    @apply scale-[0.375] sm:scale-[.4] md:scale-[.5] lg:scale-[.65] xl:scale-100;
+  }
+
+  .centered {
+    @apply flex justify-center items-center m-auto h-24 w-16 md:h-28 md:w-20 lg:h-40 lg:w-28 xl:h-[15rem] xl:w-[10rem];
+  }
+
+  .emptyCard:hover {
+    @apply scale-105 cursor-pointer;
+  }
+
+  .emptyCard:active {
+    @apply scale-100;
   }
 }
 
@@ -61,17 +81,5 @@ body::before {
   left: 0;
   bottom: 0;
   top: 0;
-  background-image: linear-gradient(to top, #000000b0 20%, transparent);
-}
-
-@keyframes test {
-  0% {
-    filter: brightness(100%);
-  }
-  50% {
-    filter: brightness(125%);
-  }
-  100% {
-    filter: brightness(100%);
-  }
+  background-image: linear-gradient(to top, #000000b0 100%, transparent);
 }
