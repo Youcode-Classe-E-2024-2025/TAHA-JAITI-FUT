@@ -43,7 +43,6 @@ const changePlr = document.getElementById('changePlr');
 const editPlr = document.getElementById('editPlr');
 const deletePlr = document.getElementById('deletePlr');
 
-
 const formations = {
     "4-3-3": [
         { position: "LW", col: 1, row: 1, span: 1 },
