@@ -16,3 +16,18 @@ export const fetchExistingPlayers = (targetPos) => {
 
     return arr;
 };
+
+export const fetchPlayersInTeam = () => {
+    let data = JSON.parse(localStorage.getItem("players") || "[]");
+    let arr = [];
+
+    data.forEach((players) => {
+        let existingCard = formationContainer.querySelector(`#plr${players.id}`);
+
+        if ((!existingCard)) {
+            arr.push(players);
+        }
+    });
+
+    return arr;
+}

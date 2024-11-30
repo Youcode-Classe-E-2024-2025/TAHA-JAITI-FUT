@@ -3,7 +3,7 @@ import { createPlayerDiv } from "./componants/createPlayerDiv.js";
 import { loadPlayers } from "./componants/loadPlayers.js";
 import { displayMsg } from "./componants/displayMsg.js";
 import { validateInputs } from "./componants/validateInputs.js";
-import { fetchExistingPlayers } from "./componants/fetchExistingPlayers.js";
+import { fetchExistingPlayers, fetchPlayersInTeam } from "./componants/fetchExistingPlayers.js";
 import { display } from "./componants/displayHandler.js";
 
 let data = JSON.parse(localStorage.getItem("players") || "[]");
@@ -187,7 +187,10 @@ display('open',addForm.parentElement,openAdd);
 display('close',allPlayers.parentElement.parentElement,closeAll,() => { allPlayers.innerHTML = '';});
 
 // OPEN ALL PLAYERS
-display('open',allPlayers.parentElement.parentElement,openAll,() => {loadPlayers(data, allPlayers);});
+display('open',allPlayers.parentElement.parentElement,openAll,() => {
+    let dataFilter = fetchPlayersInTeam()
+    loadPlayers(dataFilter, allPlayers);
+});
 
 // CLOSE INSERT
 display('close',insertContainer.parentElement.parentElement,closeInsert);
