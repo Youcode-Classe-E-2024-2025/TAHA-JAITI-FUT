@@ -182,28 +182,28 @@ const editInputs = {
 };
 
 // CLOSE DISPLAY
-display('close',closeDisplay.parentElement.parentElement,closeDisplay);
+display('close', closeDisplay.parentElement.parentElement, closeDisplay);
 
 // CLOSE ADD
-display('close',addForm.parentElement,closeAdd);
+display('close', addForm.parentElement, closeAdd);
 
 // OPEN ADD
-display('open',addForm.parentElement,openAdd);
+display('open', addForm.parentElement, openAdd);
 
 // CLOSE ALL PLAYERS
-display('close',allPlayers.parentElement.parentElement,closeAll,() => { allPlayers.innerHTML = '';});
+display('close', allPlayers.parentElement.parentElement, closeAll, () => { allPlayers.innerHTML = ''; });
 
 // OPEN ALL PLAYERS
-display('open',allPlayers.parentElement.parentElement,openAll,() => {
+display('open', allPlayers.parentElement.parentElement, openAll, () => {
     let dataFilter = fetchPlayersInTeam()
     loadPlayers(dataFilter, allPlayers);
 });
 
 // CLOSE INSERT
-display('close',insertContainer.parentElement.parentElement,closeInsert);
+display('close', insertContainer.parentElement.parentElement, closeInsert);
 
 // CLOSE EDIT
-display('close',editForm.parentElement,closeEdit);
+display('close', editForm.parentElement, closeEdit);
 
 //accomodating for gk inputs
 addInputs.position.addEventListener('change', (e) => {
@@ -361,7 +361,7 @@ const displayEvents = () => {
         });
 
         // show the player display modal
-        display('open',plrDisplay);
+        display('open', plrDisplay);
     });
 }
 
@@ -377,7 +377,7 @@ formationContainer.addEventListener('click', (e) => {
 
 
     loadPlayers(posArray, insertContainer);
-    display('open',insertContainer.parentElement.parentElement);
+    display('open', insertContainer.parentElement.parentElement);
 
     // selection of player cards
     const playerCards = insertContainer.querySelectorAll('.notSelected');
@@ -396,7 +396,7 @@ removePlr.addEventListener('click', (e) => {
     currTarget.classList.add('bg-card', 'emptyCard');
     currTarget.innerHTML = `<span class="icon-[gg--add] text-4xl text-lime-green ">
                                 </span><p class="font-bold">${displayedPlr.position}</p>`;
-    display('close',plrDisplay);
+    display('close', plrDisplay);
 });
 
 //switch plr
@@ -406,7 +406,7 @@ changePlr.addEventListener('click', (e) => {
     //fetch for players based on the position of the displayed plr
     posArray = fetchExistingPlayers(displayedPlr.position);
     loadPlayers(posArray, insertContainer);
-    display('close',plrDisplay);
+    display('close', plrDisplay);
 
     const insertPlr = insertContainer.querySelectorAll('.notSelected');
 
@@ -440,7 +440,7 @@ deletePlr.addEventListener('click', (e) => {
                 displayMsg('Player deleted successfuly!', 'green', false);
             }
 
-            display('close',plrDisplay);
+            display('close', plrDisplay);
         } else {
             return;
         }
@@ -526,12 +526,12 @@ editPlr.addEventListener('click', (e) => {
 
             //emptying out the edit form
             Object.values(editInputs).forEach((input) => { input.value = ''; });
-            display('close',editForm.parentElement);
-            display('close',plrDisplay);
+            display('close', editForm.parentElement);
+            display('close', plrDisplay);
         }
     });
 
-    display('open',editForm.parentElement);
+    display('open', editForm.parentElement);
 });
 
 //search playerlist
@@ -541,12 +541,13 @@ searchInput.addEventListener('keyup', (e) => {
     if (e.target.value === "") {
         return
     } else {
-        timeout = setTimeout(() => {
+        setTimeout(() => {
             const searchData = e.target.value.toLowerCase();
 
             const filtered = data.filter(o => o.name.toLowerCase().includes(searchData));
 
             loadPlayers(filtered, allPlayers);
-        }, 250);
+        }, 500);
     }
+
 });

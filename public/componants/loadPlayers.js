@@ -2,6 +2,7 @@ import { createPlayerDiv } from "./createPlayerDiv.js";
 
 //loadplayers into a container
 export const loadPlayers = (players, container) => {
+    container.innerHTML ="";
     players.forEach(player => {
         const existingDiv = container.querySelector(`[data-id="${player.id}"]`);
         if (!existingDiv) {
