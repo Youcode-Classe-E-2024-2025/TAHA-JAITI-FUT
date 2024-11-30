@@ -11,7 +11,7 @@ export const validateInputs = (key,input) => {
         }
     }
     if (key === 'position') {
-        const validPositions = ['ST', 'LW', 'RW', 'CDM', 'CAM', 'CM', 'RM', 'LM', 'CB', 'RB', 'LB', 'GK'];
+        const validPositions = ['ST', 'LW', 'RW','CM', 'RM', 'LM', 'CB', 'RB', 'LB', 'GK'];
         if (!validPositions.includes(input.value.toUpperCase())) {
             return `Select a valid position.`;
         }
