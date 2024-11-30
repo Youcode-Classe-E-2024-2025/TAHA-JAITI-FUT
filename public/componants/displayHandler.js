@@ -1,4 +1,4 @@
-import anime from '../../node_modules/animejs/lib/anime.es.js';
+import anime from './../animejs/anime.es.js';
 
 export const display = (type, element, button = null, callback = null) => {
     if (button) {
