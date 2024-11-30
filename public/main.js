@@ -4,6 +4,7 @@ import { loadPlayers } from "./componants/loadPlayers.js";
 import { displayMsg } from "./componants/displayMsg.js";
 import { validateInputs } from "./componants/validateInputs.js";
 import { fetchExistingPlayers } from "./componants/fetchExistingPlayers.js";
+import { display } from "./componants/displayHandler.js";
 
 let data = JSON.parse(localStorage.getItem("players") || "[]");
 let nextId = data.length > 0 ? data.length + 1 : 1;
@@ -173,37 +174,26 @@ const editInputs = {
     rating: editForm.querySelector('#ratingEdit'),
 };
 
-closeDisplay.addEventListener('click', () => {
-    closeDisplay.parentElement.parentElement.classList.toggle('hidden');
-});
+// CLOSE DISPLAY
+display('close',closeDisplay.parentElement.parentElement,closeDisplay);
 
-closeAdd.addEventListener('click', () => {
-    addForm.parentElement.classList.toggle('hidden');
-});
+// CLOSE ADD
+display('close',addForm.parentElement,closeAdd);
 
-openAdd.addEventListener('click', () => {
-    addForm.parentElement.classList.toggle('hidden');
-})
+// OPEN ADD
+display('open',addForm.parentElement,openAdd);
 
-closeAll.addEventListener('click', () => {
-    allPlayers.innerHTML = '';
-    allPlayers.parentElement.parentElement.classList.toggle('hidden');
-});
+// CLOSE ALL PLAYERS
+display('close',allPlayers.parentElement.parentElement,closeAll,() => { allPlayers.innerHTML = '';});
 
-openAll.addEventListener('click', () => {
-    console.log(data);
-    
-    loadPlayers(data, allPlayers);
-    allPlayers.parentElement.parentElement.classList.toggle('hidden');
-});
+// OPEN ALL PLAYERS
+display('open',allPlayers.parentElement.parentElement,openAll,() => {loadPlayers(data, allPlayers);});
 
-closeInsert.addEventListener('click', () => {
-    insertContainer.parentElement.parentElement.classList.toggle('hidden');
-});
+// CLOSE INSERT
+display('close',insertContainer.parentElement.parentElement,closeInsert);
 
-closeEdit.addEventListener('click', () => {
-    editForm.parentElement.classList.toggle('hidden');
-});
+// CLOSE EDIT
+display('close',editForm.parentElement,closeEdit);
 
 //accomodating for gk inputs
 addInputs.position.addEventListener('change', (e) => {
@@ -361,7 +351,7 @@ const displayEvents = () => {
         });
 
         // show the player display modal
-        plrDisplay.classList.remove('hidden');
+        display('open',plrDisplay);
     });
 }
 
@@ -373,17 +363,11 @@ formationContainer.addEventListener('click', (e) => {
     currTarget = card;
     const targetCard = card.dataset.pos;
 
-
-
-    loading.classList.toggle('hidden');
     posArray = fetchExistingPlayers(targetCard);
 
 
     loadPlayers(posArray, insertContainer);
-    setTimeout(() => {
-        loading.classList.add('hidden');
-        insertContainer.parentElement.parentElement.classList.remove('hidden');
-    }, 100);
+    display('open',insertContainer.parentElement.parentElement);
 
     // selection of player cards
     const playerCards = insertContainer.querySelectorAll('.notSelected');
@@ -402,7 +386,7 @@ removePlr.addEventListener('click', (e) => {
     currTarget.classList.add('bg-card', 'emptyCard');
     currTarget.innerHTML = `<span class="icon-[gg--add] text-4xl text-lime-green ">
                                 </span><p class="font-bold">${displayedPlr.position}</p>`;
-    plrDisplay.classList.add('hidden');
+    display('close',plrDisplay);
 });
 
 //switch plr
@@ -412,7 +396,7 @@ changePlr.addEventListener('click', (e) => {
     //fetch for players based on the position of the displayed plr
     posArray = fetchExistingPlayers(displayedPlr.position);
     loadPlayers(posArray, insertContainer);
-    plrDisplay.classList.add('hidden');
+    display('close',plrDisplay);
 
     const insertPlr = insertContainer.querySelectorAll('.notSelected');
 
@@ -446,7 +430,7 @@ deletePlr.addEventListener('click', (e) => {
                 displayMsg('Player deleted successfuly!', 'green', false);
             }
 
-            plrDisplay.classList.add('hidden');
+            display('close',plrDisplay);
         } else {
             return;
         }
@@ -532,12 +516,12 @@ editPlr.addEventListener('click', (e) => {
 
             //emptying out the edit form
             Object.values(editInputs).forEach((input) => { input.value = ''; });
-            editForm.parentElement.classList.add('hidden');
-            plrDisplay.classList.add('hidden');
+            display('close',editForm.parentElement);
+            display('close',plrDisplay);
         }
     });
 
-    editForm.parentElement.classList.remove('hidden');
+    display('open',editForm.parentElement);
 });
 
 //search playerlist

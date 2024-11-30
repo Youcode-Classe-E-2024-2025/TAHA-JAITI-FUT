@@ -10,7 +10,7 @@
         rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="style.css">
-    <title>Document</title>
+    <title>FUT SQUAD BUILDER - Build your squad</title>
 </head>
 
 <body class="bg-black-rich font-roboto bg-bg-stadium bg-blend-screen bg-cover bg-no-repeat relative h-full w-full">
@@ -30,6 +30,59 @@
 
     <main class="w-full p-20 flex justify-between items-center flex-col gap-5 ">
 
+        <!-- MAIN FIELD -->
+        <div id="formationContainer"
+            class="w-full  h-full items-center flex flex-col justify-center bg-center bg-cover bg-no-repeat bg-stadium">
+            <!-- CONTAINER -->
+            <div class="grid grid-rows-3 grid-cols-4 gap-5 md:gap-20 items-center justify-center w-full h-full">
+                <!-- EMPTY CARD -->
+                <div data-pos="ST" class="emptyCard centered bg-card col-start-2 row-start-1">
+                    <span class="icon-[gg--add] text-4xl text-lime-green "></span>
+                    <p class="font-bold">ST</p>
+                </div>
+                <div data-pos="ST" class="emptyCard centered bg-card col-start-3 row-start-1">
+                    <span class="icon-[gg--add] text-4xl text-lime-green "></span>
+                    <p class="font-bold">ST</p>
+                </div>
+                <div data-pos="LM" class="mb-12 emptyCard centered bg-card col-start-1 row-start-2 ">
+                    <span class="icon-[gg--add] text-4xl text-lime-green "></span>
+                    <p class="font-bold">LM</p>
+                </div>
+                <div data-pos="CM" class="emptyCard centered bg-card col-start-2 row-start-2">
+                    <span class="icon-[gg--add] text-4xl text-lime-green "></span>
+                    <p class="font-bold">CM</p>
+                </div>
+                <div data-pos="CM" class="emptyCard centered bg-card col-start-3 row-start-2">
+                    <span class="icon-[gg--add] text-4xl text-lime-green "></span>
+                    <p class="font-bold">CM</p>
+                </div>
+                <div data-pos="RM" class="mb-12 emptyCard centered bg-card col-start-4 row-start-2">
+                    <span class="icon-[gg--add] text-4xl text-lime-green "></span>
+                    <p class="font-bold">RM</p>
+                </div>
+                <div data-pos="LB" class="mb-12 emptyCard centered bg-card col-start-1 row-start-3">
+                    <span class="icon-[gg--add] text-4xl text-lime-green "></span>
+                    <p class="font-bold">LB</p>
+                </div>
+                <div data-pos="CB" class="emptyCard centered bg-card col-start-2 row-start-3">
+                    <span class="icon-[gg--add] text-4xl text-lime-green "></span>
+                    <p class="font-bold">CB</p>
+                </div>
+                <div data-pos="CB" class="emptyCard centered bg-card col-start-3 row-start-3">
+                    <span class="icon-[gg--add] text-4xl text-lime-green "></span>
+                    <p class="font-bold">CB</p>
+                </div>
+                <div data-pos="RB" class="mb-12 emptyCard centered bg-card col-start-4 row-start-3">
+                    <span class="icon-[gg--add] text-4xl text-lime-green "></span>
+                    <p class="font-bold">RB</p>
+                </div>
+            </div>
+            <div data-pos="GK" class="mt-12 emptyCard centered bg-card col-span-4  row-start-4">
+                <span class="icon-[gg--add] text-4xl text-lime-green "></span>
+                <p class="font-bold">GK</p>
+            </div>
+        </div>
+
         <!-- MENU -->
         <div
             class="rounded w-full h-fit lg:w-1/4 lg:h-1/2 bg-black-rich text-white p-2 flex flex-col gap-2 items-center m-auto">
@@ -42,60 +95,7 @@
             <p>TOTAL CHEMISTRY</p>
             <p class="text-lime-green">100%</p>
         </div>
-
-        <!-- MAIN FIELD -->
-        <div id="formationContainer"
-            class="mt-14 w-full  h-full items-center flex flex-col justify-center bg-center bg-cover bg-no-repeat bg-stadium">
-            <!-- CONTAINER -->
-            <div class="grid grid-rows-3 grid-cols-4 gap-5 md:gap-20 items-center justify-center w-full h-full">
-                <!-- EMPTY CARD -->
-                <div data-pos="ST" class="emptyCard centered bg-card col-start-2 row-start-1">
-                    <span class="icon-[gg--add] text-4xl text-lime-green "></span>
-                    <p class="font-bold">ST</p>
-                </div>
-                <div data-pos="ST" class="emptyCard centered bg-card col-start-3 row-start-1">
-                    <span class="icon-[gg--add] text-4xl text-lime-green "></span>
-                    <p class="font-bold">ST</p>
-                </div>
-                <div data-pos="LM" class="emptyCard centered bg-card col-start-1 row-start-2 ">
-                    <span class="icon-[gg--add] text-4xl text-lime-green "></span>
-                    <p class="font-bold">LM</p>
-                </div>
-                <div data-pos="CM" class="emptyCard centered bg-card col-start-2 row-start-2">
-                    <span class="icon-[gg--add] text-4xl text-lime-green "></span>
-                    <p class="font-bold">CM</p>
-                </div>
-                <div data-pos="CM" class="emptyCard centered bg-card col-start-3 row-start-2">
-                    <span class="icon-[gg--add] text-4xl text-lime-green "></span>
-                    <p class="font-bold">CM</p>
-                </div>
-                <div data-pos="RM" class="emptyCard centered bg-card col-start-4 row-start-2">
-                    <span class="icon-[gg--add] text-4xl text-lime-green "></span>
-                    <p class="font-bold">RM</p>
-                </div>
-                <div data-pos="LB" class="emptyCard centered bg-card col-start-1 row-start-3">
-                    <span class="icon-[gg--add] text-4xl text-lime-green "></span>
-                    <p class="font-bold">LB</p>
-                </div>
-                <div data-pos="CB" class="emptyCard centered bg-card col-start-2 row-start-3">
-                    <span class="icon-[gg--add] text-4xl text-lime-green "></span>
-                    <p class="font-bold">CB</p>
-                </div>
-                <div data-pos="CB" class="emptyCard centered bg-card col-start-3 row-start-3">
-                    <span class="icon-[gg--add] text-4xl text-lime-green "></span>
-                    <p class="font-bold">CB</p>
-                </div>
-                <div data-pos="RB" class="emptyCard centered bg-card col-start-4 row-start-3">
-                    <span class="icon-[gg--add] text-4xl text-lime-green "></span>
-                    <p class="font-bold">RB</p>
-                </div>
-            </div>
-            <div data-pos="GK" class="emptyCard centered  bg-card col-span-4 justify-self-center row-start-4 ">
-                <span class="icon-[gg--add] text-4xl text-lime-green "></span>
-                <p class="font-bold">GK</p>
-            </div>
-        </div>
-
+        
         <!-- ADD FORM -->
         <section class="hidden modalContainer">
             <div id="addForm"
