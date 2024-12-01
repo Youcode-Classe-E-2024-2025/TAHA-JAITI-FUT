@@ -53,7 +53,7 @@ formationSelect.addEventListener('change', (e) => {
 //clearing the formation
 clearFormation.addEventListener('click', () => {
     displayMsg('This will clear the formation, Are you sure?', 'blue', true, (res) => {
-        if (res === 'confirm') {
+        if (res === 'confirmed') {
             const cards = document.querySelectorAll('.centered');
 
             cards.forEach((card) => {
