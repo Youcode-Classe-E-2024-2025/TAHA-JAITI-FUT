@@ -5,6 +5,7 @@ import { displayMsg } from "./componants/displayMsg.js";
 import { validateInputs } from "./componants/validateInputs.js";
 import { fetchExistingPlayers, fetchPlayersInTeam } from "./componants/fetchExistingPlayers.js";
 import { display } from "./componants/displayHandler.js";
+import { changeFormation } from "./componants/changeFormation.js";
 
 let data = JSON.parse(localStorage.getItem("players") || "[]");
 let nextId = data.length > 0 ? data.length + 1 : 1;
@@ -14,8 +15,6 @@ fetchData().then(fetchedData => {
     nextId = data.length > 0 ? data.length + 1 : 1;
     console.log("Updated the data:", data);
 });
-
-const loading = document.getElementById('loadingScreen');
 
 const formationContainer = document.getElementById('formationContainer');
 const insertContainer = document.getElementById('insertContainer');
@@ -36,6 +35,7 @@ const closeEdit = document.getElementById('closeEdit');
 const insertBtn = document.getElementById('insertBtn');
 const closeInsert = document.getElementById("closeInsert");
 
+const clearFormation = document.getElementById('clearFormation');
 const searchInput = document.getElementById('playerSearch');
 
 const removePlr = document.getElementById('removePlr');
@@ -43,64 +43,29 @@ const changePlr = document.getElementById('changePlr');
 const editPlr = document.getElementById('editPlr');
 const deletePlr = document.getElementById('deletePlr');
 
-const formations = {
-    "4-3-3": [
-        { position: "LW", col: 1, row: 1, span: 1 },
-        { position: "ST", col: 2, row: 1, span: 2 },
-        { position: "RW", col: 4, row: 1, span: 1 },
-        { position: "CM", col: 1, row: 2, span: 1 },
-        { position: "CM", col: 2, row: 2, span: 2 },
-        { position: "CM", col: 4, row: 2, span: 1 },
-        { position: "LB", col: 1, row: 3, span: 1 },
-        { position: "CB", col: 2, row: 3, span: 1 },
-        { position: "CB", col: 3, row: 3, span: 1 },
-        { position: "RB", col: 4, row: 3, span: 1 },
-    ],
-    "4-4-2": [
-        { position: "ST", col: 2, row: 1, span: 1 },
-        { position: "ST", col: 3, row: 1, span: 1 },
-        { position: "LM", col: 1, row: 2, span: 1 },
-        { position: "CM", col: 2, row: 2, span: 1 },
-        { position: "CM", col: 3, row: 2, span: 1 },
-        { position: "RM", col: 4, row: 2, span: 1 },
-        { position: "LB", col: 1, row: 3, span: 1 },
-        { position: "CB", col: 2, row: 3, span: 1 },
-        { position: "CB", col: 3, row: 3, span: 1 },
-        { position: "RB", col: 4, row: 3, span: 1 },
-    ]
-};
-
-const changeFormation = (formationValue) => {
-    const formation = formations[formationValue];
-    const container = document.querySelector("#formaaaa");
-
-    container.innerHTML = "";
-
-    formation.forEach((player) => {
-        const playerDiv = document.createElement('div');
-
-        let classes = `col-start-${player.col} row-start-${player.row} emptyCard centered bg-card`;
-
-        if (player.span > 1) {
-            classes += ` col-span-${player.span}`;
-        }
-
-        playerDiv.className = classes;
-        playerDiv.innerHTML = `<span class="icon-[gg--add] text-4xl text-lime-green "></span>
-                                <p class="font-bold">${player.position}</p>`;
-
-        playerDiv.setAttribute('data-pos', player.position);
-        container.appendChild(playerDiv);
-    });
-};
-
 const formationSelect = document.getElementById('formationSelect');
 
+//select formation
 formationSelect.addEventListener('change', (e) => {
     changeFormation(e.target.value);
-})
+});
 
-let posArray = JSON.parse(localStorage.getItem('playersInTeam')) || [];
+//clearing the formation
+clearFormation.addEventListener('click', () => {
+    displayMsg('This will clear the formation, Are you sure?', 'blue', true, (res) => {
+        if (res === 'confirm') {
+            const cards = document.querySelectorAll('.centered');
+
+            cards.forEach((card) => {
+                card.classList.add('emptyCard', 'bg-card');
+                card.innerHTML = `<span class="icon-[gg--add] text-4xl text-lime-green ">
+                          </span><p class="font-bold">${card.dataset.pos}</p>`
+            });
+        } else {return;}
+    })
+});
+
+let posArray = [];
 
 //inputs for adding
 const addInputs = {
@@ -254,23 +219,33 @@ addBtn.addEventListener('click', async (e) => {
 
     if (isValid) {
         isValid = false;
-        const newPlayer = {};
+        const newPlayer = {
+            id: nextId++,
+            name: addInputs.name.value,
+            position: addInputs.position.value,
+            rating: addInputs.rating.value,
+            nationality: addInputs.nationality.value,
+            club: addInputs.club.value,
+            photo: await convertToBase64(addInputs.photo.files[0]),
+            logo: await convertToBase64(addInputs.logo.files[0]),
+            flag: await convertToBase64(addInputs.flag.files[0]),
+        };
 
-        newPlayer.id = nextId++;
-
-        const gkStats = ["diving", "handling", "kicking", "reflexes", "speed", "positioning"];
-        const stats = ["pace", "shooting", "passing", "dribbling", "defending", "physical"];
-
-
-        for (const [key, input] of Object.entries(addInputs)) {
-            if (
-                (newPlayer.position === "GK" && stats.includes(key)) ||
-                (newPlayer.position !== "GK" && gkStats.includes(key))
-            ) {
-                continue;
-            }
-            newPlayer[key] = input.type === 'file' && input.files.length > 0 ? await convertToBase64(input.files[0]) : input.value;
-        }
+        if (addInputs.position === "GK") {
+            newPlayer.diving = addInputs.diving.value;
+            newPlayer.handling = addInputs.handling.value;
+            newPlayer.kicking = addInputs.kicking.value;
+            newPlayer.reflexes = addInputs.reflexes.value;
+            newPlayer.speed = addInputs.speed.value;
+            newPlayer.positioning = addInputs.positioning.value;
+        } else {
+            newPlayer.pace = addInputs.pace.value;
+            newPlayer.shooting = addInputs.shooting.value;
+            newPlayer.passing = addInputs.passing.value;
+            newPlayer.dribbling = addInputs.dribbling.value;
+            newPlayer.defending = addInputs.defending.value;
+            newPlayer.physical = addInputs.physical.value;
+        };
 
 
         data.push(newPlayer);
