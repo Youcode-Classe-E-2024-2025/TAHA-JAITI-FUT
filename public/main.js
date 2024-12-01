@@ -45,6 +45,8 @@ const deletePlr = document.getElementById('deletePlr');
 
 const formationSelect = document.getElementById('formationSelect');
 
+let dataFilter = fetchPlayersInTeam();
+
 //select formation
 formationSelect.addEventListener('change', (e) => {
     changeFormation(e.target.value);
@@ -160,7 +162,7 @@ display('close', allPlayers.parentElement.parentElement, closeAll, () => { allPl
 
 // OPEN ALL PLAYERS
 display('open', allPlayers.parentElement.parentElement, openAll, () => {
-    let dataFilter = fetchPlayersInTeam()
+    dataFilter = fetchPlayersInTeam();
     loadPlayers(dataFilter, allPlayers);
 });
 
@@ -512,14 +514,15 @@ editPlr.addEventListener('click', (e) => {
 //search playerlist
 searchInput.addEventListener('keyup', (e) => {
     e.stopPropagation();
-
     if (e.target.value === "") {
         return
     } else {
         setTimeout(() => {
+            dataFilter = fetchPlayersInTeam();
             const searchData = e.target.value.toLowerCase();
+            
 
-            const filtered = data.filter(o => o.name.toLowerCase().includes(searchData));
+            const filtered = dataFilter.filter(o => o.name.toLowerCase().includes(searchData));
 
             loadPlayers(filtered, allPlayers);
         }, 500);
