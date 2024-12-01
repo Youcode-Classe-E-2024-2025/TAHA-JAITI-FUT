@@ -6,6 +6,7 @@
     "@iconify-json/mdi": "^1.2.1",
     "@iconify-json/meteor-icons": "^1.2.0",
     "@iconify-json/mingcute": "^1.2.1",
+    "@iconify-json/solar": "^1.2.1",
     "@iconify-json/svg-spinners": "^1.2.1",
     "animejs": "^3.2.2",
     "tailwindcss": "^3.4.15"

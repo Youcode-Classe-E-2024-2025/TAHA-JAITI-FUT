@@ -13,10 +13,11 @@
     <title>FUT SQUAD BUILDER - Build your squad</title>
 </head>
 
-<body class="bg-black-rich font-roboto bg-bg-stadium bg-blend-screen bg-cover bg-no-repeat relative h-full w-full overflow-x-hidden">
+<body
+    class="bg-black-rich font-roboto bg-bg-stadium bg-blend-screen bg-cover bg-no-repeat relative h-full w-full overflow-x-hidden">
 
     <!-- LOADING -->
-    <div id="loadingScreen" class="w-full h-full fixed bg-black-rich z-50 flex items-center justify-center">
+    <div id="loadingScreen" class="w-full h-full fixed bg-black-rich  z-50 flex items-center justify-center">
         <span class="icon-[iconoir--soccer-ball] text-lime-green text-6xl animate-spin"></span>
     </div>
 
@@ -24,12 +25,12 @@
     <header class="w-full bg-black-slate text-white font-bold px-4 py-2 text-xl flex items-center justify-between">
         <h1><span class="text-lime-green">FUT</span> SQUAD BUILDER</h1>
         <div class="flex gap-6 justify-between">
-            <span id="openAll" class="icon-[mingcute--list-check-fill] iconBtn"></span>
-            <span id="openAdd" class="icon-[mingcute--user-add-fill] iconBtn"></span>
+            <span id="openAll" title="Reserved players" class="icon-[mingcute--list-check-fill] iconBtn"></span>
+            <span id="openAdd" title="Add a new player" class="icon-[mingcute--user-add-fill] iconBtn"></span>
         </div>
     </header>
 
-    <main class="w-full p-20 flex justify-between items-center flex-col gap-5 ">
+    <main class="w-full p-2 md:p-20 flex justify-between items-center flex-col gap-5 ">
 
         <!-- MENU -->
         <div
@@ -47,7 +48,8 @@
         <div id="formationContainer"
             class="w-full  h-full items-center flex flex-col justify-center bg-center bg-cover bg-no-repeat bg-stadium">
             <!-- CONTAINER -->
-            <div id="formaaaa" class="grid grid-rows-3 grid-cols-4 gap-5 md:gap-20 items-center justify-center w-full h-full">
+            <div id="formaaaa"
+                class="grid grid-rows-3 grid-cols-4 gap-5 md:gap-20 items-center justify-center w-full h-full">
                 <!-- EMPTY CARD -->
                 <div data-pos="ST" class="emptyCard centered bg-card col-start-2 row-start-1">
                     <span class="icon-[gg--add] text-4xl text-lime-green "></span>
@@ -95,7 +97,7 @@
                 <p class="font-bold">GK</p>
             </div>
         </div>
-        
+
         <!-- ADD FORM -->
         <section class="hidden modalContainer">
             <div id="addForm"
@@ -406,8 +408,16 @@
                 </div>
             </div>
         </section>
-
     </main>
+
+    <!-- FOOTER-->
+    <footer class="flex justify-center flex-col items-center gap-2 pt-10 text-white/30 text-2xl z-0">
+        <h2 class="relative">FUT SQUAD BUILDER <span
+                class="icon-[solar--copyright-broken] align-top text-[1rem] absolute"></span>
+        </h2>
+        <a href="https://github.com/tahajaiti" target="_blank" aria-label="Github Profile"><span
+                class="icon-[mdi--github] text-4xl hover:scale-125 transition-all"></span></a>
+    </footer>
 
     <script type="module" src="main.js"></script>
 </body>
