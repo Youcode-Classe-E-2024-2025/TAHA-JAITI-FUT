@@ -63,7 +63,7 @@ clearFormation.addEventListener('click', () => {
                 card.innerHTML = `<span class="icon-[gg--add] text-4xl text-lime-green ">
                           </span><p class="font-bold">${card.dataset.pos}</p>`
             });
-        } else {return;}
+        } else { return; }
     })
 });
 
@@ -95,18 +95,22 @@ const addInputs = {
     photo: document.querySelector('#photoInput'),
     rating: document.querySelector('#ratingInput'),
 };
+//fields for display
+const displayFields = {
+    name: document.querySelector('.displayName'),
+    position: document.querySelector('.displayPos'),
+    logo: document.querySelector('.displayClub'),
+    flag: document.querySelector('.displayFlag'),
+    photo: document.querySelector('.displayPhoto'),
+    rating: document.querySelector('.displayRating'),
 
-//displaying normal player stats
-const displayFieldStats = {
     pace: document.querySelector('.displayPAC'),
     shooting: document.querySelector('.displaySHO'),
     dribbling: document.querySelector('.displayDRI'),
     passing: document.querySelector('.displayPAS'),
     defending: document.querySelector('.displayDEF'),
     physical: document.querySelector('.displayPHY'),
-};
-//displaying gk player stats
-const displayGkStats = {
+
     diving: document.querySelector('.displayPAC'),
     handling: document.querySelector('.displaySHO'),
     kicking: document.querySelector('.displayDRI'),
@@ -114,16 +118,6 @@ const displayGkStats = {
     speed: document.querySelector('.displayDEF'),
     positioning: document.querySelector('.displayPHY'),
 };
-//normal values like name etc
-const displayNormalValues = {
-    name: document.querySelector('.displayName'),
-    position: document.querySelector('.displayPos'),
-    logo: document.querySelector('.displayClub'),
-    flag: document.querySelector('.displayFlag'),
-    photo: document.querySelector('.displayPhoto'),
-    rating: document.querySelector('.displayRating'),
-};
-
 //inputs for editing
 const editInputs = {
     name: editForm.querySelector('#nameEdit'),
@@ -300,42 +294,28 @@ const displayEvents = () => {
 
         currTarget = playerElement.parentElement;
 
-        //short names for stats
-        const gkStats = {
-            diving: "DIV",
-            handling: "HAN",
-            kicking: "KIC",
-            reflexes: "REF",
-            speed: "SPE",
-            positioning: "POS",
-        };
-        const stats = {
-            pace: "PAC",
-            shooting: "SHO",
-            passing: "PAS",
-            dribbling: "DRI",
-            defending: "DEF",
-            physical: "PHY",
-        };
+        displayFields.name.textContent = displayedPlr.name;
+        displayFields.position.textContent = displayedPlr.position;
+        displayFields.rating.textContent = displayedPlr.rating;
+        displayFields.logo.src = displayedPlr.logo;
+        displayFields.flag.src = displayedPlr.flag;
+        displayFields.photo.src = displayedPlr.photo;
 
-        //getting the short stat if the player is a GK or not
-        const shortStat = displayedPlr.position === "GK" ? gkStats : stats;
-        //getting the right input for the player so it can be displayed
-        const statInputs = displayedPlr.position === "GK" ? displayGkStats : displayFieldStats;
-
-        //displaying normalvalues
-        Object.entries(displayNormalValues).forEach(([key, element]) => {
-            if (["photo", "flag", "logo"].includes(key)) {
-                element.src = displayedPlr[key];
-            } else {
-                element.textContent = displayedPlr[key];
-            }
-        });
-
-        // displaying right stats
-        Object.entries(statInputs).forEach(([key, element]) => {
-            element.textContent = `${shortStat[key]} ${displayedPlr[key]}`;
-        });
+        if (displayedPlr.position === "GK"){
+            displayFields.reflexes.textContent = `REF ${displayedPlr.reflexes}`;
+            displayFields.diving.textContent = `DIV ${displayedPlr.diving}`;
+            displayFields.handling.textContent = `HAN ${displayedPlr.handling}`;
+            displayFields.kicking.textContent = `KIC ${displayedPlr.kicking}`;
+            displayFields.speed.textContent = `SPE ${displayedPlr.speed}`;
+            displayFields.positioning.textContent = `POS ${displayedPlr.positioning}`;
+        } else {
+            displayFields.shooting.textContent = `SHO ${displayedPlr.shooting}`;
+            displayFields.dribbling.textContent = `DRI ${displayedPlr.dribbling}`;
+            displayFields.passing.textContent = `PAS ${displayedPlr.passing}`;
+            displayFields.pace.textContent = `PAC ${displayedPlr.pace}`;
+            displayFields.defending.textContent = `DEF ${displayedPlr.defending}`;
+            displayFields.physical.textContent = `PHY ${displayedPlr.physical}`;
+        }
 
         // show the player display modal
         display('open', plrDisplay);
@@ -473,27 +453,45 @@ editPlr.addEventListener('click', (e) => {
 
             insertContainer.innerHTML = "";
 
-            const normal = ["name", "position", "nationality", "club", "rating"];
-            const gkStats = ["diving", "handling", "kicking", "reflexes", "speed", "positioning"];
-            const stats = ["pace", "shooting", "passing", "dribbling", "defending", "physical"];
+            displayedPlr.name = editInputs.name.value;
+            displayedPlr.position = editInputs.position.value;
+            displayedPlr.nationality = editInputs.nationality.value;
+            displayedPlr.club = editInputs.club.value;
+            displayedPlr.rating = editInputs.rating.value;
 
-            normal.forEach(key => {
-                displayedPlr[key] = editInputs[key].value;
-            });
 
-            // know which stat to update and delete
-            const statsUpdate = editInputs.position.value === 'GK' ? gkStats : stats;
-            const statsDelete = editInputs.position.value === 'GK' ? stats : gkStats;
+            if (editInputs.position.value === "GK") {
+                displayedPlr.diving = editInputs.diving.value;
+                displayedPlr.handling = editInputs.handling.value;
+                displayedPlr.kicking = editInputs.kicking.value;
+                displayedPlr.reflexes = editInputs.reflexes.value;
+                displayedPlr.speed = editInputs.speed.value;
+                displayedPlr.positioning = editInputs.positioning.value;
 
-            //updating stats based on the statsupdate
-            statsUpdate.forEach(stat => {
-                displayedPlr[stat] = editInputs[stat].value;
-            });
+                // removing normal stats
+                delete displayedPlr.pace;
+                delete displayedPlr.shooting;
+                delete displayedPlr.passing;
+                delete displayedPlr.dribbling;
+                delete displayedPlr.defending;
+                delete displayedPlr.physical;
+            } else {
+                displayedPlr.pace = editInputs.pace.value;
+                displayedPlr.shooting = editInputs.shooting.value;
+                displayedPlr.passing = editInputs.passing.value;
+                displayedPlr.dribbling = editInputs.dribbling.value;
+                displayedPlr.defending = editInputs.defending.value;
+                displayedPlr.physical = editInputs.physical.value;
 
-            //deleting stats based on the statsdelete
-            statsDelete.forEach(stat => {
-                delete displayedPlr[stat];
-            });
+                // removing gk stats
+                delete displayedPlr.diving;
+                delete displayedPlr.handling;
+                delete displayedPlr.kicking;
+                delete displayedPlr.reflexes;
+                delete displayedPlr.speed;
+                delete displayedPlr.positioning;
+            }
+
 
             displayMsg('Player edited successfully', 'blue', false);
 
@@ -520,7 +518,7 @@ searchInput.addEventListener('keyup', (e) => {
         setTimeout(() => {
             dataFilter = fetchPlayersInTeam();
             const searchData = e.target.value.toLowerCase();
-            
+
 
             const filtered = dataFilter.filter(o => o.name.toLowerCase().includes(searchData));
 
