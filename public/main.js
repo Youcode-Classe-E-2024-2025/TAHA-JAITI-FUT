@@ -93,7 +93,7 @@ const addInputs = {
     logo: document.querySelector('#clubImageInput'),
     flag: document.querySelector('#flagImageInput'),
     photo: document.querySelector('#photoInput'),
-    rating: document.querySelector('#ratingInput'),
+    // rating: document.querySelector('#ratingInput'),
 };
 //fields for display
 const displayFields = {
@@ -139,7 +139,7 @@ const editInputs = {
     defending: editForm.querySelector('#defendingEdit'),
     physical: editForm.querySelector('#physicalEdit'),
 
-    rating: editForm.querySelector('#ratingEdit'),
+    // rating: editForm.querySelector('#ratingEdit'),
 };
 
 // CLOSE DISPLAY
@@ -219,13 +219,22 @@ addBtn.addEventListener('click', async (e) => {
             id: nextId++,
             name: addInputs.name.value,
             position: addInputs.position.value,
-            rating: addInputs.rating.value,
             nationality: addInputs.nationality.value,
             club: addInputs.club.value,
             photo: await convertToBase64(addInputs.photo.files[0]),
             logo: await convertToBase64(addInputs.logo.files[0]),
             flag: await convertToBase64(addInputs.flag.files[0]),
         };
+
+
+        let ratingCalc = Math.floor((
+            Number(addInputs.pace.value) +
+            Number(addInputs.shooting.value) +
+            Number(addInputs.passing.value) +
+            Number(addInputs.dribbling.value) +
+            Number(addInputs.defending.value) +
+            Number(addInputs.physical.value)
+        ) / 6);
 
         if (addInputs.position.value === "GK") {
             newPlayer.diving = addInputs.diving.value;
@@ -234,13 +243,16 @@ addBtn.addEventListener('click', async (e) => {
             newPlayer.reflexes = addInputs.reflexes.value;
             newPlayer.speed = addInputs.speed.value;
             newPlayer.positioning = addInputs.positioning.value;
-        } else if(addInputs.position.value !== "GK") {
+            newPlayer.rating = ratingCalc;
+
+        } else if (addInputs.position.value !== "GK") {
             newPlayer.pace = addInputs.pace.value;
             newPlayer.shooting = addInputs.shooting.value;
             newPlayer.passing = addInputs.passing.value;
             newPlayer.dribbling = addInputs.dribbling.value;
             newPlayer.defending = addInputs.defending.value;
             newPlayer.physical = addInputs.physical.value;
+            newPlayer.rating = ratingCalc;
         };
 
 
@@ -301,7 +313,7 @@ const displayEvents = () => {
         displayFields.flag.src = displayedPlr.flag;
         displayFields.photo.src = displayedPlr.photo;
 
-        if (displayedPlr.position === "GK"){
+        if (displayedPlr.position === "GK") {
             displayFields.reflexes.textContent = `REF ${displayedPlr.reflexes}`;
             displayFields.diving.textContent = `DIV ${displayedPlr.diving}`;
             displayFields.handling.textContent = `HAN ${displayedPlr.handling}`;
@@ -453,11 +465,20 @@ editPlr.addEventListener('click', (e) => {
 
             insertContainer.innerHTML = "";
 
+            let ratingCalc = Math.floor((
+                Number(editInputs.pace.value) +
+                Number(editInputs.shooting.value) +
+                Number(editInputs.passing.value) +
+                Number(editInputs.dribbling.value) +
+                Number(editInputs.defending.value) +
+                Number(editInputs.physical.value)
+            ) / 6);
+
             displayedPlr.name = editInputs.name.value;
             displayedPlr.position = editInputs.position.value;
             displayedPlr.nationality = editInputs.nationality.value;
             displayedPlr.club = editInputs.club.value;
-            displayedPlr.rating = editInputs.rating.value;
+            displayedPlr.rating = ratingCalc;
 
 
             if (editInputs.position.value === "GK") {
