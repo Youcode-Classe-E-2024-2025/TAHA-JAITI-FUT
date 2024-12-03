@@ -227,14 +227,14 @@ addBtn.addEventListener('click', async (e) => {
             flag: await convertToBase64(addInputs.flag.files[0]),
         };
 
-        if (addInputs.position === "GK") {
+        if (addInputs.position.value === "GK") {
             newPlayer.diving = addInputs.diving.value;
             newPlayer.handling = addInputs.handling.value;
             newPlayer.kicking = addInputs.kicking.value;
             newPlayer.reflexes = addInputs.reflexes.value;
             newPlayer.speed = addInputs.speed.value;
             newPlayer.positioning = addInputs.positioning.value;
-        } else {
+        } else if(addInputs.position.value !== "GK") {
             newPlayer.pace = addInputs.pace.value;
             newPlayer.shooting = addInputs.shooting.value;
             newPlayer.passing = addInputs.passing.value;

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <ul id="list">
+        <li class="player" data-nationality="France" data-club="Paris">Joueur 1</li>
+        <li class="player" data-nationality="France" data-club="Lyon">Joueur 2</li>
+        <li class="player" data-nationality="Espagne" data-club="Madrid">Joueur 3</li>
+    </ul>
+    <button id="calculate-chemistry">Calculer Chimie</button>
+</body>
+    <script>
+        const btn = document.getElementById('calculate-chemistry');
+        const list = document.querySelectorAll('.player');
+        let number = {};
+
+        btn.addEventListener('click', ()=> {
+            let num = 0;
+            let num2 = 0;
+           list.forEach(plr => {
+                if (plr.dataset.nationality === 'France'){
+                    num++;
+                    number.nationality = `${plr.dataset.nationality} ${num}`;
+                } else {
+                }
+           })
+
+           console.log(number);
+           
+        })
+
+    </script>
+</html>
